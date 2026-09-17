@@ -22,27 +22,21 @@ interface Beat {
 /**
  * Cinematic storytelling copy, scrubbed by scroll. Each beat owns a timeline
  * window and animates in → holds → out as the user scrolls through it (and
- * reverses when scrolling back). A storm opener + a portal line ride Section 1;
- * four story beats form the Hero text sequence before the Doom trailer; a closing
- * line punctuates the trailer; and three beats narrate the Section 5 ending
- * (Thor → Doom → Captain America). Original, movie-style copy. (The reserved
- * AVENGERS: DOOMSDAY title is deliberately NOT here.)
+ * reverses when scrolling back). Four story beats form the Hero text sequence
+ * before the Doom trailer; a closing line punctuates the trailer climax.
+ * (The reserved AVENGERS: DOOMSDAY title is deliberately NOT here.)
+ *
+ * Beat positions are expressed in the original 49-unit scale (100vh = 1 unit)
+ * and converted to scroll fractions at runtime via TIMELINE_UNITS. Windows have
+ * been widened so each beat lingers on screen for ~60–70 vh of scroll.
  */
 const BEATS: Beat[] = [
-  // ── Section 1 · storm + portal ──
-  { id: "unravel", lines: ["REALITY IS UNRAVELING"], startU: 0.35, endU: 1.2, variant: "rise" },
-  { id: "rift", lines: ["THE RIFT OPENS"], startU: 3.95, endU: 4.6, variant: "chroma" },
   // ── Hero · text sequence before the Doom trailer ──
-  { id: "threat", lines: ["A NEW THREAT"], startU: 5.35, endU: 6.0, variant: "rise", kicker: "I" },
-  { id: "multiverse", lines: ["THE MULTIVERSE", "IS BREAKING"], startU: 6.05, endU: 6.7, variant: "chroma", kicker: "II" },
-  { id: "coming", lines: ["THEY ARE COMING"], startU: 6.75, endU: 7.25, variant: "loom", kicker: "III" },
-  { id: "legends", lines: ["ONLY LEGENDS REMAIN"], startU: 7.3, endU: 7.75, variant: "metallic", kicker: "IV" },
+  { id: "threat",   lines: ["A NEW THREAT"],       startU:  2.0, endU:  4.5, variant: "rise",     kicker: "I" },
+  { id: "coming",   lines: ["THEY ARE COMING"],     startU:  5.5, endU:  8.0, variant: "loom",     kicker: "II" },
+  { id: "legends",  lines: ["ONLY LEGENDS REMAIN"], startU:  8.5, endU: 10.2, variant: "metallic", kicker: "III" },
   // ── Hero · trailer climax ──
-  { id: "end", lines: ["THE END BEGINS"], startU: 10.6, endU: 11.15, variant: "rise" },
-  // ── Section 5 · the battle (Thor → Doom → Captain America) ──
-  { id: "thor", lines: ["THOR ENTERS", "THE FRAY"], startU: 31.95, endU: 33.3, variant: "loom" },
-  { id: "thunder", lines: ["THE GOD OF THUNDER"], startU: 35.8, endU: 36.8, variant: "metallic" },
-  { id: "cap", lines: ["THE FIRST", "AVENGER RETURNS"], startU: 37.5, endU: 38.35, variant: "rise" },
+  { id: "end",      lines: ["THE END BEGINS"],      startU: 10.8, endU: 12.8, variant: "rise" },
 ];
 
 const smoothstep = (a: number, b: number, x: number) => {

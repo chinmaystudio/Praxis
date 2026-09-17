@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { signals } from "@/lib/signals";
 import { VIDEO } from "@/lib/constants";
 import { useRaf } from "@/lib/useRaf";
@@ -8,8 +9,8 @@ import styles from "./ui.module.css";
 
 /**
  * Hero-section chrome over the scrubbed Doom trailer: a kicker + line (NOT the
- * reserved title), and a live scrub bar that fills with the trailer's scroll
- * position — so it's obvious the viewer is directing the footage.
+ * reserved title), a live scrub bar that fills with the trailer's scroll
+ * position, and an "Explore Events" CTA that navigates to the full orbit page.
  */
 export default function HeroOverlay() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -32,12 +33,27 @@ export default function HeroOverlay() {
       <div className={styles.heroText}>
         <span className={styles.heroKicker}>Phase 01 · Marvel Studios</span>
       </div>
+
       <div className={styles.heroScrub}>
         <span className={styles.heroScrubLabel}>Scroll to play the trailer</span>
         <span className={styles.scrubTrack}>
           <span ref={barRef} className={styles.scrubFill} />
         </span>
       </div>
+
+      {/* "Explore Events" CTA — navigates to the infinite orbit page */}
+      <Link
+        href="/events"
+        className={styles.exploreBtn}
+        aria-label="Explore Events"
+        aria-hidden={false}
+        style={{ pointerEvents: "auto" }}
+      >
+        <span className={styles.exploreBtnIcon} aria-hidden />
+        Explore Events
+        <span className={styles.exploreBtnArrow} aria-hidden>→</span>
+      </Link>
     </div>
   );
 }
+
