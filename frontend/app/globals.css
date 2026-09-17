@@ -138,6 +138,7 @@ a {
   position: absolute;
   inset: 0;
   z-index: 3;
+  pointer-events: none;
 }
 
 /* Overlays that sit above the WebGL canvas. */

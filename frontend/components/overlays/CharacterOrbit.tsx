@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import styles from "./orbit.module.css";
@@ -17,43 +17,67 @@ import styles from "./orbit.module.css";
  * it. Videos live in fixed DOM slots and only pause when the section is off-screen,
  * so they never restart, reload, or flicker while orbiting.
  */
-interface Character {
+interface EventCard {
   slug: string;
-  name: string;
+  title: string;
+  theme: string;
   desc: string;
+  image: string;
+  rulebook: string;
+  downloadName: string;
+  accent: string;
 }
 
-// Identified from the uploaded clips. Names/copy are trivially editable here.
-const CHARACTERS: Character[] = [
+const EVENTS: EventCard[] = [
   {
-    slug: "doom",
-    name: "Doctor Doom",
-    desc: "The iron-willed sovereign of Latveria — master of science and sorcery, bending every reality to his design.",
+    slug: "infinity-trials",
+    title: "Infinity Trials",
+    theme: "Infinity War",
+    desc: "Face a cosmic challenge where strategy, speed, and teamwork decide who is worthy of the stones.",
+    image: "/events/infinity-trials.png",
+    rulebook: "/rulebooks/infinity-trials-rulebook.pdf",
+    downloadName: "Infinity-Trials-Rulebook.pdf",
+    accent: "#f2b84b",
   },
   {
-    slug: "blackpanther",
-    name: "Black Panther",
-    desc: "Wakanda's fearless protector, striking with the speed, precision, and fury of the panther goddess.",
+    slug: "research-x",
+    title: "Research X",
+    theme: "Thor",
+    desc: "Channel thunderous ideas into a sharp research showcase built around insight, evidence, and impact.",
+    image: "/events/research-x.png",
+    rulebook: "/rulebooks/research-x-rulebook.pdf",
+    downloadName: "Research-X-Rulebook.pdf",
+    accent: "#65cfff",
   },
   {
-    slug: "cyclops",
-    name: "Cyclops",
-    desc: "Field leader of the X-Men, unleashing devastating optic force with unshakable discipline and resolve.",
+    slug: "bgmi-elite-showdown",
+    title: "BGMI Elite Showdown",
+    theme: "Captain America",
+    desc: "Enter the battleground with disciplined teamwork, tactical precision, and the resolve to hold the line.",
+    image: "/events/bgmi-elite-showdown.png",
+    rulebook: "/rulebooks/bgmi-elite-showdown-rulebook.pdf",
+    downloadName: "BGMI-Elite-Showdown-Rulebook.pdf",
+    accent: "#ff4458",
   },
   {
-    slug: "mystique",
-    name: "Mystique",
-    desc: "The shape-shifting infiltrator who can wear any face — trusted by none, lethal in every form she takes.",
+    slug: "tech-roulette",
+    title: "Tech Roulette",
+    theme: "Iron Man",
+    desc: "A three-round technical showdown combining sustainability knowledge, rapid prototyping, and high-pressure solution pitching.",
+    image: "/events/tech-roulette.png",
+    rulebook: "/rulebooks/tech-roulette-rulebook.docx",
+    downloadName: "Tech-Roulette-Rulebook.docx",
+    accent: "#35d9ff",
   },
   {
-    slug: "gambit",
-    name: "Gambit",
-    desc: "The Ragin' Cajun — charging every card with explosive kinetic energy and every fight with reckless charm.",
-  },
-  {
-    slug: "namor",
-    name: "Namor",
-    desc: "The winged sovereign of Talokan — as ancient as the deep and as merciless as the tide he commands.",
+    slug: "storyverse",
+    title: "StoryVerse",
+    theme: "Doctor Strange Multiverse",
+    desc: "Transform an AI-generated story video into an interactive browser game across two connected creative rounds.",
+    image: "/events/storyverse.png",
+    rulebook: "/rulebooks/storyverse-rulebook.docx",
+    downloadName: "StoryVerse-Rulebook.docx",
+    accent: "#ff9f3f",
   },
 ];
 
@@ -67,18 +91,8 @@ const smoothstep = (a: number, b: number, x: number) => {
 
 export default function CharacterOrbit() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-
-  // Guarantee muted inline playback (works around React not always reflecting the
-  // `muted` attribute) so programmatic play() is never blocked by autoplay policy.
-  useEffect(() => {
-    videoRefs.current.forEach((v) => {
-      if (!v) return;
-      v.muted = true;
-      v.defaultMuted = true;
-      v.playsInline = true;
-    });
-  }, []);
+  const [activeEvent, setActiveEvent] = useState<EventCard | null>(null);
+  const [registrationMessage, setRegistrationMessage] = useState(false);
 
   useRaf(() => {
     const s = signals.showcase;
@@ -86,19 +100,12 @@ export default function CharacterOrbit() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    const wantPlay = s > 0.006; // play while the section is (near) visible
     const Rx = vw * 0.3; // horizontal orbit radius
     const Ry = vh * 0.15; // vertical tilt (front lower, back higher)
     const base = s * TAU * 0.85 + t * 0.045; // scroll rotates the ring + slow idle
-    const N = CHARACTERS.length;
+    const N = EVENTS.length;
 
     for (let i = 0; i < N; i++) {
-      const vid = videoRefs.current[i];
-      if (vid) {
-        if (wantPlay && vid.paused) vid.play().catch(() => {});
-        else if (!wantPlay && s < 0.002 && !vid.paused) vid.pause();
-      }
-
       const card = cardRefs.current[i];
       if (!card) continue;
 
@@ -126,6 +133,7 @@ export default function CharacterOrbit() {
       card.style.opacity = (lerp(0.32, 1, depth01) * enter).toFixed(3);
       // straddle the atmosphere/model canvas (z3): front over, back behind
       card.style.zIndex = d > 0 ? "4" : "2";
+      card.style.pointerEvents = d > 0.35 ? "auto" : "none";
       // depth blur on the far cards
       card.style.filter = d < -0.05 ? `blur(${(-d * 3).toFixed(2)}px)` : "none";
       // green glow strongest on the front-most card
@@ -134,45 +142,68 @@ export default function CharacterOrbit() {
   });
 
   return (
-    <div className={styles.layer} aria-hidden>
-      {CHARACTERS.map((c, i) => (
+    <div className={styles.layer}>
+      {EVENTS.map((event, i) => (
         <div
-          key={c.slug}
+          key={event.slug}
           className={styles.card}
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
-          style={{ visibility: "hidden" }}
+          tabIndex={0}
+          style={{ visibility: "hidden", "--accent": event.accent } as React.CSSProperties}
         >
-          <video
-            ref={(el) => {
-              if (el) {
-                el.muted = true;
-                el.playsInline = true;
-              }
-              videoRefs.current[i] = el;
-            }}
-            className={styles.video}
-            src={`/videos/char-${c.slug}.mp4`}
-            poster={`/videos/char-${c.slug}-poster.jpg`}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            disablePictureInPicture
-          />
+          <img className={styles.poster} src={event.image} alt="" />
           <div className={styles.grad} />
           <div className={styles.frame} />
-          <div className={styles.tick}>
-            <span className={styles.dot} />
-            {`0${i + 1} · Doomsday`}
+          <div className={styles.namePlate}>
+            <div className={styles.name}>{event.title}</div>
           </div>
           <div className={styles.info}>
-            <div className={styles.name}>{c.name}</div>
-            <div className={styles.desc}>{c.desc}</div>
+            <div className={styles.name}>{event.title}</div>
+            <div className={styles.desc}>{event.desc}</div>
+            <div className={styles.actions}>
+              <button className={styles.exploreButton} type="button" onClick={() => { setActiveEvent(event); setRegistrationMessage(false); }}>
+                Explore <span aria-hidden="true">↗</span>
+              </button>
+              <a className={styles.rulebookButton} href={event.rulebook} download={event.downloadName}>
+                View Rulebook <span aria-hidden="true">↓</span>
+              </a>
+            </div>
           </div>
         </div>
       ))}
+
+      {activeEvent && (
+        <div className={styles.modalBackdrop} role="presentation" onClick={() => { setActiveEvent(null); setRegistrationMessage(false); }}>
+          <section
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="event-dialog-title"
+            style={{ "--accent": activeEvent.accent } as React.CSSProperties}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img className={styles.modalPoster} src={activeEvent.image} alt="" />
+            <div className={styles.modalShade} />
+            <button className={styles.closeButton} type="button" aria-label="Close event details" onClick={() => { setActiveEvent(null); setRegistrationMessage(false); }}>×</button>
+            <div className={styles.modalContent}>
+              <div className={styles.modalTheme}>{activeEvent.theme}</div>
+              <h2 id="event-dialog-title" className={styles.modalTitle}>{activeEvent.title}</h2>
+              <p className={styles.modalDescription}>{activeEvent.desc}</p>
+              <div className={styles.modalActions}>
+                <button className={styles.registerButton} type="button" onClick={() => setRegistrationMessage(true)}>
+                  Register <span aria-hidden="true">↗</span>
+                </button>
+                <a className={styles.modalDownload} href={activeEvent.rulebook} download={activeEvent.downloadName}>
+                  Download Rulebook <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+              {registrationMessage && <p className={styles.registrationMessage} role="status">Registration link coming soon.</p>}
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
