@@ -1,0 +1,366 @@
+/* ============================================================
+   Praxis Footer — Dedicated separate section at the bottom of the home page
+   Features the user-provided video, Praxis techno-cultural festival text,
+   event cards, prize stats, and clean navigation.
+   ============================================================ */
+
+.footerSection {
+  position: relative;
+  z-index: 40;
+  width: 100%;
+  min-height: 100vh;
+  background: #010805;
+  color: #eafff6;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 5vw, 4.5rem) 2.5rem;
+  box-shadow: 0 -50px 120px 20px rgba(0, 0, 0, 0.98);
+}
+
+.footerSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green) 50%, transparent);
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.85);
+  z-index: 2;
+}
+
+/* ── Video Backdrop ────────────────────────────────────────── */
+.videoWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bgVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.38;
+  filter: saturate(1.2) contrast(1.1);
+  transform: scale(1.02);
+  transition: opacity 0.5s ease;
+}
+
+.videoOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(0, 255, 156, 0.08), transparent 70%),
+    linear-gradient(180deg, rgba(1, 8, 5, 0.94) 0%, rgba(1, 8, 5, 0.72) 40%, rgba(1, 8, 5, 0.96) 100%);
+  pointer-events: none;
+}
+
+/* ── Content Container ─────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Top Header / Branding ─────────────────────────────────── */
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-bottom: clamp(2.5rem, 5vh, 4rem);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--green);
+  font-weight: 600;
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 2px;
+  background: rgba(0, 255, 156, 0.08);
+  border: 1px solid rgba(0, 255, 156, 0.25);
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.15);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
+  line-height: 0.98;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 35px rgba(0, 255, 156, 0.3);
+}
+
+.titleAccent {
+  color: var(--green);
+  text-shadow: 0 0 40px rgba(0, 255, 156, 0.6);
+}
+
+.lead {
+  font-family: var(--font-ui);
+  font-size: clamp(13px, 1.1vw, 16px);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: rgba(220, 245, 235, 0.8);
+  max-width: 680px;
+}
+
+/* ── Stats Strip ───────────────────────────────────────────── */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1.8rem 0;
+  border-top: 1px solid rgba(0, 255, 156, 0.18);
+  border-bottom: 1px solid rgba(0, 255, 156, 0.18);
+  margin-bottom: clamp(2.5rem, 5vh, 4rem);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.statNum {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  color: var(--green);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 230, 218, 0.6);
+}
+
+/* ── Pillars / Event Highlights Grid ───────────────────────── */
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5vh, 4rem);
+}
+
+.pillarCard {
+  background: rgba(3, 20, 14, 0.55);
+  border: 1px solid rgba(0, 255, 156, 0.16);
+  border-radius: 6px;
+  padding: 1.4rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pillarCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 156, 0.5);
+  box-shadow: 0 12px 35px -10px rgba(0, 255, 156, 0.25);
+}
+
+.pillarTag {
+  font-family: var(--font-ui);
+  font-size: 9.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--green);
+  opacity: 0.85;
+}
+
+.pillarName {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #eafff6;
+  margin: 0.3rem 0 0.5rem;
+}
+
+.pillarDesc {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: rgba(200, 230, 218, 0.65);
+}
+
+/* ── CTA Action Bar ────────────────────────────────────────── */
+.actionsBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: clamp(3rem, 6vh, 4.5rem);
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.2rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #03140e;
+  background: linear-gradient(120deg, var(--green) 0%, var(--mint) 100%);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 0 35px rgba(0, 255, 156, 0.55);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 50px rgba(0, 255, 156, 0.8);
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: rgba(0, 255, 156, 0.06);
+  border: 1px solid rgba(0, 255, 156, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.secondaryBtn:hover {
+  background: rgba(0, 255, 156, 0.16);
+  border-color: var(--green);
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.35);
+}
+
+/* ── Bottom Base Bar ───────────────────────────────────────── */
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 255, 156, 0.14);
+}
+
+.copyright {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(185, 215, 200, 0.45);
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.socialLinks a {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(220, 240, 230, 0.65);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.socialLinks a:hover {
+  color: var(--green);
+}
+
+.toTop {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: none;
+  border: 1px solid rgba(0, 255, 156, 0.25);
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.toTop:hover {
+  background: rgba(0, 255, 156, 0.12);
+  border-color: var(--green);
+  box-shadow: 0 0 16px rgba(0, 255, 156, 0.35);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .pillarsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statsRow {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pillarsGrid {
+    grid-template-columns: 1fr;
+  }
+  .statsRow {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footerSection {
+    padding: 3rem 1.2rem 2rem;
+  }
+  .bottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+}

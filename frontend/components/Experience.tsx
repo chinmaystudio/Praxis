@@ -14,6 +14,7 @@ import CinematicText from "@/components/overlays/CinematicText";
 import ScrollCue from "@/components/ui/ScrollCue";
 import SiteHeader from "@/components/ui/SiteHeader";
 import HeroOverlay from "@/components/ui/HeroOverlay";
+import PraxisFooter from "@/components/ui/PraxisFooter";
 
 /**
  * The director — scroll opens directly into the Hero.
@@ -82,6 +83,7 @@ export default function Experience() {
     signals.header  = 0;
     signals.heroOp  = 0;
     signals.heroT   = 0;
+    signals.footer  = 0;
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
@@ -149,6 +151,9 @@ export default function Experience() {
       <div className="scroll-track" ref={trackRef} aria-hidden>
         <section style={{ height: `${heroVh}vh` }} aria-label="Hero" />
       </div>
+
+      {/* ── Separate Dedicated Praxis Footer Section ────────────── */}
+      <PraxisFooter />
     </>
   );
 }

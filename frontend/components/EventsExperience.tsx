@@ -35,6 +35,7 @@ export default function EventsExperience() {
     signals.showcase = 1.0;
     signals.energy   = 0.22;
     signals.orbit    = 0;
+    signals.footer   = 0;
     signals.scroll   = 0;
     signals.heroOp   = 0;
     signals.header   = 0;
