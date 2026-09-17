@@ -255,15 +255,15 @@ export default function Experience() {
 
       {/* invisible scroll track — the distance the scrub travels over */}
       <div className="scroll-track" ref={trackRef} aria-hidden>
-        <section style={{ height: `${marvelVh}vh` }} aria-label="Marvel Intro" />
-        <section style={{ height: `${heroVh}vh` }} aria-label="Hero" />
-        <section style={{ height: `${showcaseVh}vh` }} aria-label="Characters" />
-        <section style={{ height: `${storyVh}vh` }} aria-label="Story" />
-        <section style={{ height: `${reelVh}vh` }} aria-label="Timeline" />
-        <section style={{ height: `${finaleVh}vh` }} aria-label="Finale" />
-        <section style={{ height: `${mcuVh}vh` }} aria-label="Saga" />
-        <section style={{ height: `${titleVh}vh` }} aria-label="Title" />
-        <section style={{ height: `${footerVh}vh` }} aria-label="Footer" />
+        <section id="section-intro" style={{ height: `${marvelVh}vh` }} aria-label="Marvel Intro" />
+        <section id="section-hero" style={{ height: `${heroVh}vh` }} aria-label="Hero" />
+        <section id="section-characters" style={{ height: `${showcaseVh}vh` }} aria-label="Characters" />
+        <section id="section-story" style={{ height: `${storyVh}vh` }} aria-label="Story" />
+        <section id="section-timeline" style={{ height: `${reelVh}vh` }} aria-label="Timeline" />
+        <section id="section-finale" style={{ height: `${finaleVh}vh` }} aria-label="Finale" />
+        <section id="section-saga" style={{ height: `${mcuVh}vh` }} aria-label="Saga" />
+        <section id="section-title" style={{ height: `${titleVh}vh` }} aria-label="Title" />
+        <section id="section-footer" style={{ height: `${footerVh}vh` }} aria-label="Footer" />
       </div>
     </>
   );

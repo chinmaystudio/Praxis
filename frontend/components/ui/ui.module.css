@@ -23,7 +23,11 @@
   padding: 0.6rem 0.9rem;
   border-radius: 2px;
   backdrop-filter: blur(6px);
-  transition: color 0.3s, border-color 0.3s, background 0.3s, opacity 0.6s;
+  transition:
+    color 0.3s,
+    border-color 0.3s,
+    background 0.3s,
+    opacity 0.6s;
 }
 .btn:hover {
   color: #eafff6;
@@ -53,18 +57,31 @@
   border-radius: 1px;
   animation: bar 1.1s ease-in-out infinite;
 }
-.eq span:nth-child(1) { animation-delay: 0s; }
-.eq span:nth-child(2) { animation-delay: 0.18s; }
-.eq span:nth-child(3) { animation-delay: 0.36s; }
-.eq span:nth-child(4) { animation-delay: 0.54s; }
+.eq span:nth-child(1) {
+  animation-delay: 0s;
+}
+.eq span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.eq span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+.eq span:nth-child(4) {
+  animation-delay: 0.54s;
+}
 .muted span {
   animation-play-state: paused;
   transform: scaleY(0.14);
   background: rgba(174, 187, 181, 0.5);
 }
 @keyframes bar {
-  0%, 100% { transform: scaleY(0.28); }
-  50% { transform: scaleY(1); }
+  0%,
+  100% {
+    transform: scaleY(0.28);
+  }
+  50% {
+    transform: scaleY(1);
+  }
 }
 
 /* skip */
@@ -111,114 +128,467 @@
   animation: wheel 1.6s ease-in-out infinite;
 }
 @keyframes wheel {
-  0% { opacity: 0; transform: translateY(0); }
-  40% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(10px); }
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 /* corner HUD marks */
-.hudTL { top: clamp(1rem, 3vw, 2rem); left: clamp(1rem, 3vw, 2rem); }
-.hudBL { bottom: clamp(1rem, 3vw, 2rem); left: clamp(1rem, 3vw, 2rem); }
+.hudTL {
+  top: clamp(1rem, 3vw, 2rem);
+  left: clamp(1rem, 3vw, 2rem);
+}
+.hudBL {
+  bottom: clamp(1rem, 3vw, 2rem);
+  left: clamp(1rem, 3vw, 2rem);
+}
 .hudLabel {
   font-size: 0.62rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
   opacity: 0.7;
 }
-.hudLabel b { color: var(--green); font-weight: 700; }
+.hudLabel b {
+  color: var(--green);
+  font-weight: 700;
+}
 
-/* ── Website header / navigation (Hero section chrome) ───────────── */
+/* ── Website Header (Cinematic Chrome) ───────────────────────────── */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 84px;
   z-index: 12;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding: clamp(0.9rem, 2vw, 1.5rem) clamp(1.1rem, 4vw, 3rem);
+  padding: 0 clamp(1.5rem, 4vw, 3.8rem);
   font-family: var(--font-ui);
   will-change: opacity, transform;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
-  backdrop-filter: blur(2px);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.5) 75%,
+    transparent 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 255, 156, 0.08);
 }
+
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.mark {
-  width: 16px;
-  height: 16px;
-  transform: rotate(45deg);
-  background: linear-gradient(135deg, var(--green), var(--mint));
-  box-shadow: 0 0 14px rgba(0, 255, 156, 0.7);
+
+.brand:hover {
+  transform: scale(1.04);
 }
-.brandText {
-  font-weight: 500;
-  letter-spacing: 0.34em;
-  font-size: 0.72rem;
+
+.brandLogo {
+  height: clamp(52px, 6.8vh, 66px);
+  width: auto;
+  aspect-ratio: 1024 / 341;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 12px rgba(255, 45, 45, 0.35));
+  transition: filter 0.3s ease;
+}
+
+.brand:hover .brandLogo {
+  filter: drop-shadow(0 0 24px rgba(255, 60, 60, 0.65))
+    drop-shadow(0 0 16px rgba(0, 255, 156, 0.45));
+}
+
+/* ── Bespoke Sci-Fi Register CTA Button ──────────────────────────── */
+.registerBtn {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.75rem;
+  background: linear-gradient(
+    135deg,
+    rgba(6, 26, 18, 0.94) 0%,
+    rgba(2, 10, 7, 0.98) 100%
+  );
+  border: 1.5px solid rgba(0, 255, 156, 0.65);
+  border-radius: 4px;
+  clip-path: polygon(
+    9px 0%,
+    100% 0%,
+    100% calc(100% - 9px),
+    calc(100% - 9px) 100%,
+    0% 100%,
+    0% 9px
+  );
+  box-shadow:
+    0 0 20px rgba(0, 255, 156, 0.3),
+    inset 0 0 12px rgba(0, 255, 156, 0.12);
+  color: #eafff6;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* Animated scanline beam sweeping across */
+.btnScanline {
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 156, 0.35),
+    rgba(255, 255, 255, 0.85),
+    rgba(0, 255, 156, 0.35),
+    transparent
+  );
+  transform: rotate(25deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+
+.registerBtn:hover .btnScanline {
+  left: 170%;
+}
+
+/* Corner HUD reticles */
+.btnCornerTL {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 5px;
+  height: 5px;
+  border-top: 2px solid var(--green);
+  border-left: 2px solid var(--green);
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.btnCornerBR {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  border-bottom: 2px solid var(--green);
+  border-right: 2px solid var(--green);
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Pulsing quantum green dot */
+.btnDot {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  min-height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: dotGlow 1.8s ease-in-out infinite;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+@keyframes dotGlow {
+  0%,
+  100% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.btnLabel {
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.btnArrow {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  stroke: var(--green);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    stroke 0.3s ease;
+}
+
+/* Hover state: intense emerald-mint glow */
+.registerBtn:hover {
+  background: linear-gradient(135deg, #00ff9c 0%, #00b473 100%);
+  border-color: #9dffd6;
+  box-shadow:
+    0 0 35px rgba(0, 255, 156, 0.75),
+    inset 0 0 16px rgba(255, 255, 255, 0.45);
+  color: #02120a;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.registerBtn:hover .btnCornerTL,
+.registerBtn:hover .btnCornerBR {
+  border-color: #02120a;
+}
+
+.registerBtn:hover .btnDot {
+  background: #02120a;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.registerBtn:hover .btnArrow {
+  stroke: #02120a;
+  transform: translateX(4px);
+}
+
+.registerBtn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 72px;
+    padding: 0 1.2rem;
+  }
+  .brandLogo {
+    height: 44px;
+  }
+  .registerBtn {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+}
+
+/* ── Interactive Registration Modal ────────────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalCard {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: #060b09;
+  border: 1px solid rgba(0, 255, 156, 0.35);
+  border-radius: 6px;
+  padding: clamp(1.8rem, 4vw, 2.6rem);
+  box-shadow:
+    0 0 45px rgba(0, 255, 156, 0.2),
+    inset 0 0 20px rgba(0, 255, 156, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: modalPop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalClose {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(0, 255, 156, 0.2);
+  color: var(--silver);
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
   color: var(--white);
+  border-color: var(--green);
+  background: rgba(0, 255, 156, 0.1);
 }
-.brandText b {
+
+.modalHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modalBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
   color: var(--green);
   font-weight: 700;
-  margin-left: 0.34em;
 }
-.nav {
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1;
+}
+
+.modalDesc {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--silver);
+  letter-spacing: 0.04em;
+}
+
+.modalForm {
   display: flex;
-  gap: clamp(0.9rem, 2.4vw, 2.2rem);
+  flex-direction: column;
+  gap: 1.1rem;
 }
-.navLink {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formLabel {
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--silver);
-  position: relative;
-  padding: 0.2rem 0;
-  transition: color 0.3s;
+  font-weight: 600;
 }
-.navLink::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: var(--green);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s ease;
-}
-.navLink:hover {
-  color: var(--white);
-}
-.navLink:hover::after {
-  transform: scaleX(1);
-}
-.cta {
-  cursor: pointer;
+
+.formInput {
+  background: rgba(4, 20, 15, 0.6);
+  border: 1px solid rgba(0, 255, 156, 0.22);
+  border-radius: 3px;
+  padding: 0.75rem 0.9rem;
   font-family: var(--font-ui);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #04140f;
-  background: linear-gradient(120deg, var(--green), var(--mint));
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.formInput:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 14px rgba(0, 255, 156, 0.35);
+}
+
+.modalSubmit {
+  cursor: pointer;
+  margin-top: 0.5rem;
+  padding: 0.85rem 1.2rem;
+  background: linear-gradient(135deg, var(--green) 0%, var(--mint) 100%);
   border: none;
-  padding: 0.7rem 1.4rem;
-  border-radius: 2px;
+  border-radius: 3px;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
   font-weight: 700;
-  box-shadow: 0 0 22px rgba(0, 255, 156, 0.35);
-  transition: transform 0.25s, box-shadow 0.25s;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #03140c;
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.45);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
-.cta:hover {
+
+.modalSubmit:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 34px rgba(0, 255, 156, 0.6);
+  box-shadow: 0 0 35px rgba(0, 255, 156, 0.75);
 }
-@media (max-width: 720px) {
-  .nav { display: none; }
+
+.successBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.8rem;
+  padding: 1.5rem 0;
+}
+
+.successIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 255, 156, 0.5);
 }
 
 /* ── Hero content chrome + scrub bar ─────────────────────────────── */
@@ -230,7 +600,8 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.2rem, 4vw, 3rem) clamp(1.1rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3rem);
+  padding: clamp(1.2rem, 4vw, 3rem) clamp(1.1rem, 4vw, 3rem)
+    clamp(1.6rem, 4vw, 3rem);
   pointer-events: none;
   will-change: opacity;
 }
