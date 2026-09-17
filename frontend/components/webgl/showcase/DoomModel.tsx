@@ -184,14 +184,12 @@ export default function DoomModel() {
     const sc = 0.85 + rise * 0.15;
     group.scale.setScalar(sc);
 
-    // idle: breathing + a slight turn toward the cursor + slow sway + a subtle
-    // scroll-driven rotation so the model turns as the user scrolls the section.
+    // idle: breathing + subtle cursor awareness (stable in centre, no scroll rotation)
     const breathe = 1 + Math.sin(t * 1.1) * 0.012;
     group.scale.y = sc * breathe;
-    const lookX = signals.mx * 0.28;
-    const scrollTurn = s * 0.8; // ~46° across the section
-    group.rotation.y += (lookX + scrollTurn + Math.sin(t * 0.25) * 0.08 - group.rotation.y) * Math.min(1, dt * 2.5);
-    group.rotation.x = -signals.my * 0.06 + Math.sin(t * 0.4) * 0.015;
+    const lookX = signals.mx * 0.08;
+    group.rotation.y += (lookX + Math.sin(t * 0.25) * 0.03 - group.rotation.y) * Math.min(1, dt * 2.5);
+    group.rotation.x = -signals.my * 0.03 + Math.sin(t * 0.4) * 0.01;
 
     // pulsing green accents
     const pulse = 1.8 + Math.sin(t * 2.2) * 0.7;

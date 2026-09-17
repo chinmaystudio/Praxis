@@ -126,9 +126,31 @@
   overflow: hidden;
 }
 
-/* mobile: cards take more width so they stay legible */
+/* mobile: cards take more width so they stay legible, large & cinematic */
 @media (max-width: 820px) {
   .card {
-    width: clamp(230px, 62vw, 460px);
+    width: clamp(290px, 84vw, 440px);
+    border-radius: 14px;
+  }
+
+  .info {
+    padding: 10px 14px 10px;
+  }
+
+  .name {
+    font-size: clamp(1.05rem, 4.2vw, 1.45rem);
+  }
+
+  .desc {
+    margin-top: 0.25rem;
+    font-size: clamp(9.5px, 2.5vw, 11.5px);
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+
+  .tick {
+    top: 10px;
+    left: 12px;
+    font-size: 9px;
   }
 }
