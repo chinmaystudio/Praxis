@@ -654,3 +654,70 @@
   background: linear-gradient(90deg, var(--green), var(--mint));
   box-shadow: 0 0 10px rgba(0, 255, 156, 0.8);
 }
+
+/* ── Explore Events CTA button ───────────────────────────────────── */
+.exploreBtn {
+  position: fixed;
+  bottom: clamp(2rem, 5vh, 3.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 13;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 2rem 0.85rem 1.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  text-transform: uppercase;
+  color: #04140f;
+  background: linear-gradient(120deg, var(--green) 0%, var(--mint) 100%);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    0 0 30px rgba(0, 255, 156, 0.45),
+    0 4px 24px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.28s ease,
+    background 0.28s ease;
+  will-change: transform, box-shadow;
+}
+.exploreBtn:hover {
+  transform: translateX(-50%) translateY(-3px) scale(1.03);
+  box-shadow:
+    0 0 48px rgba(0, 255, 156, 0.7),
+    0 8px 32px rgba(0, 0, 0, 0.7);
+}
+.exploreBtn:active {
+  transform: translateX(-50%) translateY(-1px) scale(0.99);
+}
+.exploreBtnIcon {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #04140f;
+  box-shadow: 0 0 6px rgba(4, 20, 15, 0.6);
+  flex-shrink: 0;
+  animation: pulseDot 1.8s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.55; transform: scale(0.7); }
+}
+.exploreBtnArrow {
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+.exploreBtn:hover .exploreBtnArrow {
+  transform: translateX(4px);
+}
+

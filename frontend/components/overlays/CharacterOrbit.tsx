@@ -65,7 +65,7 @@ const smoothstep = (a: number, b: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-export default function CharacterOrbit() {
+export default function CharacterOrbit({ autoRotate = false }: { autoRotate?: boolean }) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -86,10 +86,11 @@ export default function CharacterOrbit() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    const wantPlay = s > 0.006; // play while the section is (near) visible
+    const wantPlay = autoRotate || s > 0.006; // play while visible, or always in auto mode
     const Rx = vw * 0.3; // horizontal orbit radius
     const Ry = vh * 0.15; // vertical tilt (front lower, back higher)
-    const base = s * TAU * 0.85 + t * 0.045; // scroll rotates the ring + slow idle
+    // autoRotate: pure time-based continuous spin; scroll: scroll-scrubbed ring + slow idle
+    const base = autoRotate ? t * 0.38 : s * TAU * 0.85 + t * 0.045;
     const N = CHARACTERS.length;
 
     for (let i = 0; i < N; i++) {
@@ -102,10 +103,10 @@ export default function CharacterOrbit() {
       const card = cardRefs.current[i];
       if (!card) continue;
 
-      // staggered fly-in from the right as the section rises
+      // autoRotate: all cards fully visible from start; scroll mode: staggered fly-in
       const enterAt = 0.05 + i * 0.055;
-      const enter = smoothstep(enterAt, enterAt + 0.16, s);
-      if (enter <= 0.001) {
+      const enter = autoRotate ? 1 : smoothstep(enterAt, enterAt + 0.16, s);
+      if (!autoRotate && enter <= 0.001) {
         if (card.style.visibility !== "hidden") card.style.visibility = "hidden";
         continue;
       }
