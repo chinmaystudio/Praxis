@@ -1,0 +1,108 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.beat {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 1100px);
+  text-align: center;
+  will-change: transform, opacity, filter;
+  transform: translate(-50%, -50%);
+}
+
+.kicker {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  font-size: clamp(0.6rem, 1.4vw, 0.95rem);
+  color: var(--mint);
+  opacity: 0.85;
+  margin-bottom: clamp(0.6rem, 1.6vw, 1.3rem);
+}
+
+.line {
+  display: block;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.035em;
+  font-size: clamp(2.4rem, 8.5vw, 8.4rem);
+  color: #eafff6;
+  margin: 0;
+}
+.small {
+  font-size: clamp(1.9rem, 6.4vw, 6.2rem);
+}
+
+.glow {
+  text-shadow:
+    0 0 12px rgba(0, 255, 156, 0.55),
+    0 0 42px rgba(0, 255, 156, 0.35),
+    0 0 90px rgba(0, 200, 130, 0.25);
+}
+
+/* metallic sheen — "ONLY LEGENDS REMAIN" */
+.metallic {
+  background: linear-gradient(
+    100deg,
+    #4f6b60 0%,
+    #eafff6 18%,
+    #9dffd6 34%,
+    #2a3d36 52%,
+    #eafff6 70%,
+    #00ff9c 86%,
+    #6f8a80 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sheen 3.2s linear infinite;
+  filter: drop-shadow(0 0 22px rgba(0, 255, 156, 0.35));
+}
+@keyframes sheen {
+  0% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+/* chromatic split — "THE MULTIVERSE IS BREAKING" / "THE RIFT OPENS" */
+.chroma {
+  position: relative;
+  color: #eafff6;
+}
+.chroma::before,
+.chroma::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.chroma::before {
+  color: #ff2d55;
+  transform: translate(-3px, 0);
+  opacity: 0.6;
+  animation: chromaA 1.6s steps(2) infinite;
+}
+.chroma::after {
+  color: #00fff2;
+  transform: translate(3px, 0);
+  opacity: 0.6;
+  animation: chromaB 1.9s steps(2) infinite;
+}
+@keyframes chromaA {
+  0%, 100% { transform: translate(-3px, 0); }
+  50% { transform: translate(-6px, 1px); }
+}
+@keyframes chromaB {
+  0%, 100% { transform: translate(3px, 0); }
+  50% { transform: translate(6px, -1px); }
+}

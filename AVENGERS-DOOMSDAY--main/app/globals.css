@@ -1,0 +1,179 @@
+/* ============================================================
+   AVENGERS: DOOMSDAY — global cinematic base
+   ============================================================ */
+
+:root {
+  --black: #000000;
+  --graphite: #07090b;
+  --ink: #04140f;
+  --green: #00ff9c;
+  --green-deep: #00b473;
+  --green-dark: #083b2a;
+  --mint: #9dffd6;
+  --core: #e6fff4;
+  --white: #eafff6;
+  --silver: #aebbb5;
+
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-ui: var(--font-chakra), ui-monospace, monospace;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background: #000;
+  color: var(--white);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+body {
+  /* The experience is scroll-driven from load — the page always scrolls. */
+  cursor: default;
+}
+
+/* Hide the scrollbar — the scroll is a camera move, not a document. */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The full-viewport stage that holds the canvas + every overlay.
+   `inset: 0` (not 100vw/100dvh) fills the viewport exactly and excludes the
+   scrollbar, so there is never an edge gap. */
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  z-index: 0;
+}
+
+/* Any layer that must truly fill the viewport. */
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The DOM trailers live here, behind the transparent atmosphere canvas. */
+.video-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Video assets: true fullscreen, cover, no letterboxing. Sized by width/height
+   100% (replaced elements need explicit sizing) + inset:0, so they always fill
+   the .video-layer exactly with no offset. */
+.cover-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  background: #000;
+  will-change: opacity;
+}
+
+/* The Hero (portrait) trailer: shown WHOLE (object-fit: contain), centered, at
+   full height — the green atmosphere fills the sides instead of black bars.
+   A gentle cinematic grade keeps the dark footage rich rather than flat black. */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+  background: transparent;
+  will-change: opacity;
+  filter: brightness(1.12) contrast(1.06) saturate(1.08)
+    drop-shadow(0 0 60px rgba(0, 255, 156, 0.25));
+}
+
+/* Sections 3–5 all live between the video (z1) and the atmosphere (z3), so the
+   shared green particles/fog wash over every one consistently. Only one is ever
+   on screen at a time (each gated + faded by its own signal). */
+.story-layer,
+.reel-layer,
+.mcu-layer,
+.title-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Transparent WebGL atmosphere sits ABOVE the video + story panels. */
+.canvas-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+/* Overlays that sit above the WebGL canvas. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.82; }
+}
+
+/* Reduced-motion: keep it watchable but calmer. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* The invisible scroll track — its height is the distance the scrub spans.
+   The fixed .stage renders on top; scrolling this drives every cinematic value. */
+.scroll-track {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.scroll-track section {
+  width: 100%;
+}

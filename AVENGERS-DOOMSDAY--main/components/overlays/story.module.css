@@ -1,0 +1,189 @@
+/* ============================================================
+   Section 3 — Cinematic Story Stack (uploaded poster images)
+   Six fullscreen chapters rise from the bottom and stack over one
+   another (animation unchanged — .panel transform / .dim / .edge).
+   Each panel is a real cover image with a bottom-right title +
+   description themed by a per-panel accent (--accent/--accent2/--title).
+   ============================================================ */
+
+.panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  background: #02100b;
+  /* the leading (top) edge casts a soft shadow up onto the previous panel */
+  box-shadow: 0 -34px 90px -8px rgba(0, 0, 0, 0.85);
+}
+
+/* the uploaded artwork — fills the whole panel, no bars, subtle living zoom */
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, center);
+  transform: scale(1.03);
+  animation: kenburns 30s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes kenburns {
+  from { transform: scale(1.03); }
+  to { transform: scale(1.1); }
+}
+
+/* legibility scrim — darkens the bottom + right so the artwork's subject
+   (usually centred/left) stays clear while the corner text stays readable */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(2, 8, 6, 0.92) 0%, rgba(2, 8, 6, 0.42) 22%, transparent 48%),
+    linear-gradient(to left, rgba(2, 8, 6, 0.66) 0%, rgba(2, 8, 6, 0.14) 28%, transparent 50%);
+}
+
+/* accent glow pooled in the bottom-right behind the text */
+.glow {
+  position: absolute;
+  right: -12vw;
+  bottom: -16vh;
+  width: 72vw;
+  height: 64vh;
+  pointer-events: none;
+  background: radial-gradient(circle at 68% 70%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 60%);
+  filter: blur(30px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+/* cinematic vignette */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(132% 112% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* accent hairline along the leading edge (part of the reveal) */
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 85%, transparent) 50%, transparent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* small chapter counter, top-right */
+.counter {
+  position: absolute;
+  right: clamp(22px, 6vw, 110px);
+  top: clamp(18px, 4vh, 46px);
+  z-index: 2;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: color-mix(in srgb, var(--accent) 74%, #eafff6);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+}
+
+/* ── bottom-right title block ── */
+.content {
+  position: absolute;
+  right: clamp(24px, 6vw, 112px);
+  bottom: clamp(28px, 8vh, 92px);
+  z-index: 2;
+  max-width: min(52ch, 66vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  will-change: transform, opacity;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-ui);
+  font-size: clamp(11px, 1vw, 14px);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: clamp(0.7rem, 1.4vw, 1.2rem);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+}
+.kicker::before {
+  content: "";
+  width: clamp(26px, 3vw, 56px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.01em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.8rem, 8vw, 7.2rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--title, #f2fff9);
+  text-shadow:
+    0 3px 26px rgba(0, 0, 0, 0.72),
+    0 0 46px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.titleLine {
+  display: block;
+}
+
+/* themed accent divider */
+.rule {
+  margin-top: clamp(0.7rem, 1.1vw, 1rem);
+  width: clamp(120px, 15vw, 250px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent2, var(--accent)) 42%, var(--accent));
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.desc {
+  margin-top: clamp(0.75rem, 1.2vw, 1.15rem);
+  max-width: 46ch;
+  font-family: var(--font-ui);
+  font-size: clamp(12.5px, 1.05vw, 15px);
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+  color: rgba(240, 248, 244, 0.92);
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.88);
+}
+
+/* dark veil as the next panel rises over this one (recede into shadow) */
+.dim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .content {
+    left: clamp(20px, 7vw, 40px);
+    max-width: none;
+  }
+  .title {
+    font-size: clamp(2.4rem, 13vw, 4rem);
+  }
+}

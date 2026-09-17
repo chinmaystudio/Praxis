@@ -1,0 +1,133 @@
+/* ============================================================
+   Section 6 — MCU Timeline artwork
+   The uploaded image is a tall vertical timeline, so instead of
+   cropping it to a slice we pan it vertically with scroll (fills
+   the viewport width, reveals the whole artwork top→bottom).
+   Bottom-right cinematic title. .mcu-layer (globals.css) = z2.
+   ============================================================ */
+
+.pan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+/* melt the panning top/bottom edges into the atmosphere (no hard image seam) */
+.fade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(1, 6, 4, 0.92) 0%,
+    transparent 13%,
+    transparent 86%,
+    rgba(1, 6, 4, 0.94) 100%
+  );
+}
+
+/* bottom-right legibility scrim */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(1, 6, 4, 0.92) 0%, rgba(1, 6, 4, 0.4) 20%, transparent 46%),
+    linear-gradient(to left, rgba(1, 6, 4, 0.62) 0%, transparent 42%);
+}
+
+/* accent glow pooled behind the title */
+.glow {
+  position: absolute;
+  right: -12vw;
+  bottom: -16vh;
+  width: 70vw;
+  height: 60vh;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at 68% 70%, rgba(0, 255, 156, 0.26), transparent 60%);
+  filter: blur(32px);
+  mix-blend-mode: screen;
+}
+
+.content {
+  position: absolute;
+  right: clamp(24px, 6vw, 112px);
+  bottom: clamp(28px, 8vh, 92px);
+  z-index: 3;
+  max-width: min(54ch, 70vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  will-change: transform, opacity;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-ui);
+  font-size: clamp(11px, 1vw, 14px);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: clamp(0.7rem, 1.4vw, 1.2rem);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+}
+.kicker::before {
+  content: "";
+  width: clamp(26px, 3vw, 56px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green));
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.01em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7.5vw, 6.8rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #f2fff9;
+  text-shadow:
+    0 3px 26px rgba(0, 0, 0, 0.75),
+    0 0 46px rgba(0, 255, 156, 0.4);
+}
+.titleLine {
+  display: block;
+}
+
+.rule {
+  margin-top: clamp(0.7rem, 1.1vw, 1rem);
+  width: clamp(120px, 15vw, 250px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #9dffd6 42%, var(--green));
+  box-shadow: 0 0 14px rgba(0, 255, 156, 0.5);
+}
+
+.desc {
+  margin-top: clamp(0.75rem, 1.2vw, 1.15rem);
+  max-width: 46ch;
+  font-family: var(--font-ui);
+  font-size: clamp(12.5px, 1.05vw, 15px);
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+  color: rgba(240, 248, 244, 0.92);
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.9);
+}
