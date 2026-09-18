@@ -1,23 +1,16 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import styles from "./footer.module.css";
 
-/**
- * The closing footer — rises from the bottom after the title reveal, driven by
- * `signals.footer`. Minimal + elegant, in the same dark-green cinematic language.
- * Links are placeholders for now.
- */
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const smoothstep = (a: number, b: number, x: number) => {
   const t = clamp01((x - a) / (b - a));
   return t * t * (3 - 2 * t);
 };
-
-const NAV = ["Overview", "Characters", "Story", "Timeline"];
-const SOCIAL = ["Instagram", "X", "YouTube"];
 
 export default function SiteFooter() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -38,7 +31,9 @@ export default function SiteFooter() {
     }
   });
 
-  const noop = (e: React.MouseEvent) => e.preventDefault();
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className={styles.wrap} ref={wrapRef} style={{ visibility: "hidden" }}>
@@ -46,39 +41,49 @@ export default function SiteFooter() {
         <span className={styles.glow} />
         <div className={styles.inner}>
           <div className={styles.brand}>
+            <div className={styles.studio}>MARVEL STUDIOS</div>
             <span className={styles.mark}>
-              Doomsday<span>.</span>
+              AVENGERS<span>: DOOMSDAY</span>
             </span>
-            <span className={styles.tag}>A scroll-driven cinematic concept experience.</span>
+            <span className={styles.tag}>
+              A scroll-driven cinematic concept experience exploring the sovereign of Latveria and the multiverse.
+            </span>
           </div>
 
           <nav>
-            <div className={styles.colHead}>Explore</div>
+            <div className={styles.colHead}>Experience</div>
             <div className={styles.links}>
-              {NAV.map((l) => (
-                <a key={l} href="#" onClick={noop}>
-                  {l}
-                </a>
-              ))}
+              <Link href="/events" className={styles.exploreLink}>
+                Explore Events Orbit →
+              </Link>
+              <button type="button" onClick={scrollToTop} className={styles.btnLink}>
+                Replay Experience ↑
+              </button>
             </div>
           </nav>
 
           <div>
             <div className={styles.colHead}>Follow</div>
             <div className={styles.social}>
-              {SOCIAL.map((l) => (
-                <a key={l} href="#" onClick={noop}>
-                  {l}
-                </a>
-              ))}
+              <a href="https://www.marvel.com" target="_blank" rel="noopener noreferrer">
+                Marvel.com ↗
+              </a>
+              <a href="https://x.com/MarvelStudios" target="_blank" rel="noopener noreferrer">
+                X (Twitter) ↗
+              </a>
+              <a href="https://www.youtube.com/marvel" target="_blank" rel="noopener noreferrer">
+                YouTube ↗
+              </a>
             </div>
           </div>
         </div>
 
         <div className={styles.rule} />
         <div className={styles.base}>
-          <span>© 2026 · Placeholder — fan concept, not affiliated with Marvel.</span>
-          <span>Built as a cinematic web experience.</span>
+          <span>© 2026 MARVEL STUDIOS · FAN CONCEPT EXPERIENCE</span>
+          <button type="button" onClick={scrollToTop} className={styles.toTopBtn} aria-label="Back to top">
+            BACK TO TOP ↑
+          </button>
         </div>
       </footer>
     </div>

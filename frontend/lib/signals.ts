@@ -35,6 +35,7 @@ export interface Signals {
   heroOp: number;
   header: number; // website chrome reveal (0..1)
   showcase: number; // Section 2 (character showcase) progress (0..1)
+  orbit: number; // Character cards orbit rotation (scrubbed on /events)
   story: number; // Section 3 (story-stack) progress (0..1)
   reel: number; // Section 4 (horizontal cinematic timeline) progress (0..1)
   finale: number; // Section 5 (scroll-scrubbed battle) opacity/reveal (0..1)
@@ -71,6 +72,7 @@ export const signals: Signals = {
   heroOp: 0,
   header: 0,
   showcase: 0,
+  orbit: 0,
   story: 0,
   reel: 0,
   finale: 0,

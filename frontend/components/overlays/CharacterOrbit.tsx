@@ -95,49 +95,82 @@ export default function CharacterOrbit() {
   const [registrationMessage, setRegistrationMessage] = useState(false);
 
   useRaf(() => {
-    const s = signals.showcase;
+    const s = signals.orbit;
     const t = signals.time;
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-
-    const Rx = vw * 0.3; // horizontal orbit radius
-    const Ry = vh * 0.15; // vertical tilt (front lower, back higher)
-    const base = s * TAU * 0.85 + t * 0.045; // scroll rotates the ring + slow idle
     const N = EVENTS.length;
+    const isMobile = vw <= 820;
+
+    if (!isMobile) {
+      const Rx = vw * 0.3;
+      const Ry = vh * 0.15;
+      const base = s * TAU * 0.85 + t * 0.045;
+
+      for (let i = 0; i < N; i++) {
+        const card = cardRefs.current[i];
+        if (!card) continue;
+
+        card.style.visibility = "visible";
+        const theta = base + i * (TAU / N);
+        const d = Math.cos(theta);
+        const depth01 = (d + 1) / 2;
+        const x = Math.sin(theta) * Rx;
+        const y = d * Ry;
+        const scale = lerp(0.6, 1.06, depth01);
+        const rotY = -Math.sin(theta) * 12;
+
+        card.style.transform =
+          `translate(-50%, -50%) perspective(1100px) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)` +
+          ` rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        card.style.opacity = lerp(0.32, 1, depth01).toFixed(3);
+        card.style.zIndex = d > 0 ? "4" : "2";
+        card.style.pointerEvents = d > 0.35 ? "auto" : "none";
+        card.style.filter = d < -0.05 ? `blur(${(-d * 3).toFixed(2)}px)` : "none";
+        card.style.setProperty("--glow", smoothstep(0.55, 1, depth01).toFixed(3));
+      }
+      return;
+    }
+
+    const base = s * 0.3 + t * 0.025;
+    const Rx = vw * 0.22;
+    const yRange = vh * 0.72;
+    const turns = 1.35;
 
     for (let i = 0; i < N; i++) {
       const card = cardRefs.current[i];
       if (!card) continue;
 
-      // staggered fly-in from the right as the section rises
-      const enterAt = 0.05 + i * 0.055;
-      const enter = smoothstep(enterAt, enterAt + 0.16, s);
-      if (enter <= 0.001) {
-        if (card.style.visibility !== "hidden") card.style.visibility = "hidden";
+      const p = (base + i / N) % 1;
+      const u = p - 0.5;
+      const envelope = smoothstep(0.01, 0.16, p) * (1 - smoothstep(0.84, 0.99, p));
+
+      if (envelope <= 0.005) {
+        card.style.visibility = "hidden";
+        card.style.pointerEvents = "none";
         continue;
       }
+
+      const theta = u * turns * TAU;
+      const d = Math.cos(theta);
+      const depth01 = (d + 1) / 2;
+      const x = Math.sin(theta) * Rx * (1 - Math.abs(u) * 0.25);
+      const y = u * yRange;
+      const centerProximity = 1 - Math.abs(u) * 1.5;
+      const scale = lerp(0.62, 1.05, clamp01(centerProximity * (0.55 + 0.45 * depth01)));
+      const rotY = -Math.sin(theta) * 20;
+      const rotX = -u * 16;
+      const rotZ = Math.sin(theta) * 4.5;
+
       card.style.visibility = "visible";
-
-      const theta = base + i * (TAU / N);
-      const d = Math.cos(theta); // 1 = front, -1 = behind the model
-      const depth01 = (d + 1) / 2; // 0 back .. 1 front
-      const x = Math.sin(theta) * Rx;
-      const y = d * Ry;
-      const scale = lerp(0.6, 1.06, depth01) * lerp(0.5, 1, enter);
-      const rotY = -Math.sin(theta) * 12; // subtle turn
-      const enterX = (1 - enter) * (vw * 0.55);
-
       card.style.transform =
-        `translate(-50%, -50%) perspective(1100px) translate3d(${(x + enterX).toFixed(1)}px, ${y.toFixed(1)}px, 0)` +
-        ` rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      card.style.opacity = (lerp(0.32, 1, depth01) * enter).toFixed(3);
-      // straddle the atmosphere/model canvas (z3): front over, back behind
-      card.style.zIndex = d > 0 ? "4" : "2";
+        `translate(-50%, -50%) perspective(950px) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)` +
+        ` rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      card.style.opacity = (lerp(0.35, 1, depth01) * envelope).toFixed(3);
+      card.style.zIndex = d > 0.75 ? "5" : d > 0 ? "4" : "2";
       card.style.pointerEvents = d > 0.35 ? "auto" : "none";
-      // depth blur on the far cards
-      card.style.filter = d < -0.05 ? `blur(${(-d * 3).toFixed(2)}px)` : "none";
-      // green glow strongest on the front-most card
-      card.style.setProperty("--glow", smoothstep(0.55, 1, depth01).toFixed(3));
+      card.style.filter = d < -0.1 ? `blur(${((-d - 0.1) * 3.5).toFixed(2)}px)` : "none";
+      card.style.setProperty("--glow", smoothstep(0.5, 1, depth01 * envelope).toFixed(3));
     }
   });
 

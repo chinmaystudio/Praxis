@@ -302,11 +302,14 @@
   color: rgba(244, 251, 255, 0.82);
 }
 
-/* mobile: cards take more width so they stay legible */
+/* Mobile cards follow the helical orbit at a large, cinematic size. */
 @media (max-width: 820px) {
   .card {
-    width: clamp(230px, 62vw, 460px);
+    width: clamp(290px, 84vw, 440px);
+    border-radius: 14px;
   }
+  .info { padding: 10px 14px 10px; }
+  .name { font-size: clamp(1.05rem, 4.2vw, 1.45rem); }
   .desc { display: none; }
   .actions { margin-top: 0.55rem; }
   .exploreButton, .rulebookButton { min-height: 28px; padding: 0.42rem 0.55rem; font-size: 8px; }
@@ -314,7 +317,6 @@
 }
 
 @media (max-width: 520px) {
-  .card { width: 78vw; }
   .info { min-height: 82%; padding: 12px 14px 14px; }
   .namePlate { padding: 14px 16px 16px; }
   .name { font-size: 1.2rem; }

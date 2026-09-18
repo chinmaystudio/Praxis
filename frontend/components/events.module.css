@@ -1,0 +1,143 @@
+/* ── Events page layout ──────────────────────────────────────────── */
+
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+}
+
+/* ── Top navigation bar ────────────────────────────────────────── */
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(0.9rem, 2vw, 1.5rem) clamp(1.1rem, 4vw, 3rem);
+  font-family: var(--font-ui);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(2px);
+  animation: fadeDown 0.7s ease both;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Back button */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--silver);
+  text-decoration: none;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid rgba(0, 255, 156, 0.18);
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+  background: rgba(4, 20, 15, 0.25);
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+.back:hover {
+  color: var(--white);
+  border-color: rgba(0, 255, 156, 0.5);
+  background: rgba(6, 40, 28, 0.45);
+}
+.backArrow {
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: transform 0.25s ease;
+}
+.back:hover .backArrow {
+  transform: translateX(-3px);
+}
+
+/* Centre brand */
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.titleMark {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, var(--green), var(--mint));
+  box-shadow: 0 0 12px rgba(0, 255, 156, 0.65);
+}
+.titleText {
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  font-size: 0.7rem;
+  color: var(--white);
+}
+.titleText b {
+  color: var(--green);
+  font-weight: 700;
+  margin-left: 0.34em;
+}
+
+/* Right label */
+.label {
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--silver);
+  opacity: 0.7;
+}
+@media (max-width: 560px) {
+  .label { display: none; }
+}
+
+/* ── Bottom kicker ──────────────────────────────────────────────── */
+.kicker {
+  position: fixed;
+  bottom: clamp(1.2rem, 3vh, 2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--silver);
+  opacity: 0.65;
+  pointer-events: none;
+  animation: fadeUp 0.9s 0.3s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 0.65; transform: translateX(-50%) translateY(0); }
+}
+.kickerDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(0, 255, 156, 0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.kickerSep {
+  opacity: 0.4;
+}
+.kickerSub {
+  opacity: 0.5;
+}
