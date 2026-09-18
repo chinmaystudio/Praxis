@@ -4,29 +4,6 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import styles from "./praxisFooter.module.css";
 
-const PILLARS = [
-  {
-    tag: "Track 01 · Code & AI",
-    name: "Optic Arena",
-    desc: "24-hour national hackathon & algorithmic combat. Engineer solutions bending real-world constraints.",
-  },
-  {
-    tag: "Track 02 · Hardware & Bot",
-    name: "Latverian Protocol",
-    desc: "Autonomous robotics, battle-bot warfare, and drone navigation across multi-terrain arenas.",
-  },
-  {
-    tag: "Track 03 · Gaming & Esports",
-    name: "Multiverse Combat",
-    desc: "High-stakes tactical tournament spanning PC & mobile arenas. Only one champion survives.",
-  },
-  {
-    tag: "Track 04 · Creative & 3D",
-    name: "Arcane Design",
-    desc: "Interactive web experiences, WebGL shaders, visual VFX, and cinematic concept design.",
-  },
-];
-
 const STATS = [
   { num: "₹5L+", label: "Cash Prize Pool" },
   { num: "30+", label: "Flagship Events" },
@@ -100,18 +77,6 @@ export default function PraxisFooter() {
         </div>
 
         {/* ── Pillars Grid ──────────────────────────────────────── */}
-        <div className={styles.pillarsGrid}>
-          {PILLARS.map((p) => (
-            <div key={p.name} className={styles.pillarCard}>
-              <div>
-                <span className={styles.pillarTag}>{p.tag}</span>
-                <h3 className={styles.pillarName}>{p.name}</h3>
-                <p className={styles.pillarDesc}>{p.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* ── Action Buttons ────────────────────────────────────── */}
         <div className={styles.actionsBar}>
           <Link href="/events" className={styles.primaryBtn}>
