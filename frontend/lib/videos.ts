@@ -45,12 +45,15 @@ export function primeElement(el: HTMLVideoElement | null) {
   }
 }
 
-/** Seek a scrubbed video, skipping micro-moves that would thrash the decoder. */
-export function scrubEl(el: HTMLVideoElement | null, t: number) {
+/** Seek on real frame boundaries so rapid scroll updates do not thrash the decoder. */
+export function scrubEl(el: HTMLVideoElement | null, t: number, frameRate = 30) {
   if (!el || el.readyState < 1) return;
   const dur = el.duration || 1;
-  const clamped = Math.max(0, Math.min(dur - 0.03, t));
-  if (Math.abs(el.currentTime - clamped) > 0.008) {
-    el.currentTime = clamped;
+  const frameDuration = 1 / frameRate;
+  const clamped = Math.max(0, Math.min(dur - frameDuration, t));
+  const frameTime = Math.round(clamped * frameRate) * frameDuration;
+
+  if (Math.abs(el.currentTime - frameTime) >= frameDuration * 0.5) {
+    el.currentTime = frameTime;
   }
 }

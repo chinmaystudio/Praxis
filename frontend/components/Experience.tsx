@@ -68,14 +68,14 @@ export default function Experience() {
 
     // ── Timeline positions (units; 100vh = 1 unit) — hero only ──
     const heroText  = SCROLL.heroText  / 100; // 2.6
-    const heroScrub = SCROLL.heroScrub / 100; // 3.4
+    const heroScrub = SCROLL.heroScrub / 100; // 7.2
     const heroOutro = SCROLL.heroOutro / 100; // 0.8
-    const TOTAL = heroText + heroScrub + heroOutro; // 6.8
+    const TOTAL = heroText + heroScrub + heroOutro; // 10.6
 
     const T = {
       videoStart: heroText,             // 2.6 — trailer appears
-      videoEnd:   heroText + heroScrub, // 6.0 — trailer fully scrubbed
-      total:      TOTAL,                // 6.8
+      videoEnd:   heroText + heroScrub, // 9.8 — trailer fully scrubbed
+      total:      TOTAL,                // 10.6
     };
 
     // Initialise signals cleanly.
@@ -129,7 +129,7 @@ export default function Experience() {
     };
   }, [mounted]);
 
-  // Scroll track spans only the hero section (680vh).
+  // Scroll track spans only the hero section (1060vh).
   const heroVh = SCROLL.heroText + SCROLL.heroScrub + SCROLL.heroOutro;
 
   return (
