@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./ui.module.css";
 
 const MUSIC_SRC = "/audio/avengers-theme.mp3";
+const SCROLL_KEYS = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "]);
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -24,26 +25,25 @@ export default function BackgroundMusic() {
         setIsPlaying(false);
       });
     };
-    const unlockAudio = (event: Event) => {
-      const target = event.target;
-      if (target instanceof Element && target.closest("[data-music-toggle]")) return;
-      tryPlay();
+    const startFromScroll = () => tryPlay();
+    const startFromScrollKey = (event: KeyboardEvent) => {
+      if (SCROLL_KEYS.has(event.key)) tryPlay();
     };
 
     audio.addEventListener("play", syncPlayingState);
     audio.addEventListener("pause", syncPlayingState);
-    window.addEventListener("pointerdown", unlockAudio, { passive: true });
-    window.addEventListener("keydown", unlockAudio);
-    window.addEventListener("touchstart", unlockAudio, { passive: true });
-
-    tryPlay();
+    window.addEventListener("wheel", startFromScroll, { passive: true });
+    window.addEventListener("scroll", startFromScroll, { passive: true });
+    window.addEventListener("touchstart", startFromScroll, { passive: true });
+    window.addEventListener("keydown", startFromScrollKey);
 
     return () => {
       audio.removeEventListener("play", syncPlayingState);
       audio.removeEventListener("pause", syncPlayingState);
-      window.removeEventListener("pointerdown", unlockAudio);
-      window.removeEventListener("keydown", unlockAudio);
-      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("wheel", startFromScroll);
+      window.removeEventListener("scroll", startFromScroll);
+      window.removeEventListener("touchstart", startFromScroll);
+      window.removeEventListener("keydown", startFromScrollKey);
     };
   }, []);
 
