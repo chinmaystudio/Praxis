@@ -47,11 +47,13 @@ export function primeElement(el: HTMLVideoElement | null) {
 
 /** Seek on real frame boundaries so rapid scroll updates do not thrash the decoder. */
 export function scrubEl(el: HTMLVideoElement | null, t: number, frameRate = 30) {
-  if (!el || el.readyState < 1) return;
-  const dur = el.duration || 1;
+  if (!el || el.readyState < 2 || el.seeking || !Number.isFinite(t)) return;
+  const dur = el.duration;
+  if (!Number.isFinite(dur) || dur <= 0 || !Number.isFinite(frameRate) || frameRate <= 0) return;
   const frameDuration = 1 / frameRate;
-  const clamped = Math.max(0, Math.min(dur - frameDuration, t));
-  const frameTime = Math.round(clamped * frameRate) * frameDuration;
+  const lastFrame = Math.max(0, Math.ceil(dur * frameRate) - 1);
+  const frame = Math.max(0, Math.min(lastFrame, Math.round(t * frameRate)));
+  const frameTime = frame * frameDuration;
 
   if (Math.abs(el.currentTime - frameTime) >= frameDuration * 0.5) {
     el.currentTime = frameTime;

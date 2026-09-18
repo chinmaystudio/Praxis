@@ -85,6 +85,18 @@ export default function Experience() {
     signals.heroT   = 0;
     signals.footer  = 0;
 
+    // Follow the eased timeline even after scroll events stop. Retry on the next
+    // tick while the decoder is busy so the final requested frame is not lost.
+    const renderHero = () => {
+      const hero = getVideoEl("hero");
+      if (!hero) return;
+      hero.style.opacity = signals.heroOp.toFixed(3);
+      if (signals.heroOp > 0.002) {
+        const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
+        scrubEl(hero, (signals.heroT / VIDEO.heroDur) * duration);
+      }
+    };
+
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
@@ -95,13 +107,6 @@ export default function Experience() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           signals.scroll = self.progress;
-          // Drive the hero trailer synchronously on the scroll event —
-          // never rAF-throttled: fade + frame-accurate seek.
-          const hero = getVideoEl("hero");
-          if (hero) {
-            hero.style.opacity = signals.heroOp.toFixed(3);
-            if (signals.heroOp > 0.002) scrubEl(hero, signals.heroT);
-          }
         },
       },
     });
@@ -117,12 +122,14 @@ export default function Experience() {
     tl.to(signals, { energy: 0.15, duration: 0.6 }, T.videoStart);
     tl.to(signals, { heroT: VIDEO.heroDur, duration: T.videoEnd - T.videoStart }, T.videoStart);
     tl.to(signals, { energy: 0.13, duration: 0.8 }, T.videoEnd);
+    gsap.ticker.add(renderHero);
 
     if (process.env.NODE_ENV !== "production") {
       (window as unknown as Record<string, unknown>).__doom = { signals, tl };
     }
 
     return () => {
+      gsap.ticker.remove(renderHero);
       tl.scrollTrigger?.kill();
       tl.kill();
       builtRef.current = false;
