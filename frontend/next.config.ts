@@ -5,6 +5,23 @@ const nextConfig: NextConfig = {
   // double-mount disposes and rebuilds GPU resources (and churns Fast Refresh),
   // which fights the WebGL lifecycle. Off in dev; production is unaffected.
   reactStrictMode: false,
+  async rewrites() {
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+    return [
+      {
+        source: "/events/bgmi-elite-showdown",
+        destination: "/bgmi/index.html",
+      },
+      {
+        source: "/bgmi",
+        destination: "/bgmi/index.html",
+      },
+      {
+        source: "/api/payments/:path*",
+        destination: `${backendUrl}/api/payments/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRAXIS — Enter the Experience</title>
+  <meta name="description"
+    content="PRAXIS — A premium cinematic event experience. Explore curated events in an elite, immersive environment." />
+  <meta name="theme-color" content="#060c13" />
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <!-- Preload videos -->
+  <link rel="preload" as="video" href="/videos/hero-video.mp4" type="video/mp4" />
+  <link rel="preload" as="video" href="/videos/vid2.mp4" type="video/mp4" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/bgmi/style.css" />
+</head>
+
+<body>
+  <!-- Fixed Return to Praxis button -->
+  <a href="/events" class="praxis-return-pill" aria-label="Return to Praxis Events">
+    <span class="praxis-return-arrow" aria-hidden="true">←</span>
+    <span class="praxis-return-text">BACK TO PRAXIS</span>
+  </a>
+
+
+  <!-- ═══════════════════════════════════════════════════
+         LANDING PAGE — Cinematic Video-First Experience
+         Flow: VIDEO → SPLASH → EXPLORE → EVENTS
+         ═══════════════════════════════════════════════════ -->
+
+  <div id="app">
+
+    <!-- ─── VIDEO INTRO ─── -->
+    <section id="video-intro" class="video-intro" aria-label="Cinematic introduction">
+      <!-- Loading state -->
+      <div id="intro-loader" class="intro-loader" role="status" aria-live="polite">
+        <div class="loader-ring"></div>
+        <p class="loader-text">INITIALIZING</p>
+      </div>
+
+      <!-- Video element (Default Unmuted Audio) -->
+      <video id="hero-video" class="hero-video" playsinline preload="auto" disablepictureinpicture
+        disableremoteplayback aria-hidden="true">
+        <source src="/videos/hero-video.mp4" type="video/mp4" />
+      </video>
+
+
+      <!-- Audio toggle control (Default Audio ON) -->
+      <button id="sound-btn" class="sound-btn" hidden aria-label="Mute audio">
+        <span class="sound-icon-wrapper" aria-hidden="true">
+          <svg class="sound-icon sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg class="sound-icon sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
+        </span>
+        <span id="sound-label" class="sound-label">AUDIO ON</span>
+      </button>
+
+      <!-- Skip intro control (Tactical Watermark Mask) -->
+      <button id="skip-btn" class="skip-btn tactical-skip-btn" hidden aria-label="Skip cinematic introduction">
+        <span class="skip-btn-corner tl" aria-hidden="true"></span>
+        <span class="skip-btn-corner br" aria-hidden="true"></span>
+        <span class="skip-inner">
+          <span class="skip-dot" aria-hidden="true"></span>
+          <span class="skip-text">SKIP INTRO</span>
+          <svg class="skip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </button>
+    </section>
+
+    <!-- ─── INTRO SPLASH / BRANDED REVEAL ─── -->
+    <section id="intro-splash" class="intro-splash" aria-label="Brand reveal" hidden>
+      <div class="splash-container">
+        <!-- Ring/halo motif -->
+        <div class="splash-ring" aria-hidden="true">
+          <div class="ring-outer"></div>
+          <div class="ring-inner"></div>
+          <div class="ring-glow"></div>
+        </div>
+
+        <!-- Brand reveal -->
+        <div class="splash-brand">
+          <p class="splash-subtitle">SECURE LINK ACTIVE</p>
+          <h1 class="splash-title">PRAXIS</h1>
+          <div class="splash-line" aria-hidden="true"></div>
+          <p class="splash-tagline">EVENTS INTELLIGENCE DIVISION</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── EXPLORE EVENTS CTA ─── -->
+    <section id="explore-events" class="explore-events" aria-label="Explore event call to action" hidden>
+      <!-- Armory backdrop replacing second screenshot -->
+      <div class="explore-bg-media" aria-hidden="true">
+        <img src="/images/armory.jpg" alt="Special Operations Armory" class="explore-bg-img" />
+        <div class="explore-bg-overlay"></div>
+        <div class="explore-bg-vignette"></div>
+      </div>
+
+      <div class="explore-container">
+        <div class="explore-content">
+          <!-- Tactical BGMI Badge -->
+          <div class="bgmi-badge">
+            <span class="badge-icon">▲</span>
+            <span class="badge-brand">BATTLEGROUNDS MOBILE INDIA</span>
+            <span class="badge-tag">AIRDROP READY</span>
+          </div>
+
+          <!-- Metallic Battle-Royale Headline -->
+          <h2 class="explore-heading bgmi-title">
+            <span class="title-accent">LEVEL 3 PROTOCOL</span>
+            <span class="title-main">BATTLEGROUND<br />OF LEGENDS</span>
+          </h2>
+
+          <!-- BGMI Tactical Telemetry Line -->
+          <div class="bgmi-telemetry">
+            <span class="telemetry-item"><span class="pulse-dot"></span> SQUAD AIRDROP</span>
+            <span class="telemetry-sep">|</span>
+            <span class="telemetry-item">SECURE ARSENAL</span>
+            <span class="telemetry-sep">|</span>
+            <span class="telemetry-item">FINAL PLAYZONE</span>
+          </div>
+
+          <p class="explore-quote">DIFFERENT BATTLES — SAME HEROES</p>
+
+          <div class="explore-divider" aria-hidden="true"></div>
+
+          <!-- Authentic BGMI Gold Tactical Primary Button -->
+          <a href="#events-section" id="explore-cta" class="explore-cta bgmi-cta-btn" role="button">
+            <span class="btn-slant-bg" aria-hidden="true"></span>
+            <span class="btn-inner">
+              <svg class="btn-play-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"
+                aria-hidden="true">
+                <polygon points="6 4 20 12 6 20 6 4" />
+              </svg>
+              <span class="btn-label">EXPLORE EVENT</span>
+              <span class="btn-flare" aria-hidden="true"></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── VID2 CINEMATIC TRANSITION & PLAYBACK ─── -->
+    <section id="vid2-container" class="vid2-container" aria-label="Tactical briefing video vid2" hidden>
+      <!-- Video element vid2: Hardware accelerated 4K presentation -->
+      <video id="vid2" class="vid2-video" playsinline preload="auto" disablepictureinpicture disableremoteplayback
+        aria-label="Mission Briefing Vid2">
+        <source src="/videos/vid2.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Decoupled optical flash overlay (keeps video decoding 100% on GPU) -->
+      <div id="vid2-flash-overlay" class="vid2-flash-overlay" aria-hidden="true"></div>
+
+      <!-- Smooth Outro Fade Veil (Dissolves video & audio smoothly before end) -->
+      <div id="vid2-outro-fade" class="vid2-outro-fade" aria-hidden="true"></div>
+
+      <!-- Tactical HUD Overlay for vid2 -->
+      <div class="vid2-hud" aria-hidden="true">
+        <div class="vid2-hud-top">
+          <div class="vid2-badge">
+            <span class="pulse-dot"></span>
+            <span class="vid2-badge-text">LIVE TRANSMISSION // CLASSIFIED INTEL</span>
+          </div>
+          <div class="vid2-tag">VID-02 PROTOCOL</div>
+        </div>
+
+        <div class="vid2-hud-bottom">
+          <div class="vid2-progress-track">
+            <div id="vid2-progress-bar" class="vid2-progress-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vid2 Sound toggle -->
+      <button id="vid2-sound-btn" class="sound-btn is-unmuted vid2-sound-btn" aria-label="Toggle sound">
+        <span class="sound-icon-wrapper" aria-hidden="true">
+          <svg class="sound-icon sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg class="sound-icon sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
+        </span>
+        <span id="vid2-sound-label" class="sound-label">AUDIO ON</span>
+      </button>
+
+      <!-- Vid2 Skip Button (Tactical Watermark Mask) -->
+      <button id="vid2-skip-btn" class="skip-btn vid2-skip-btn tactical-skip-btn" aria-label="Skip briefing video">
+        <span class="skip-btn-corner tl" aria-hidden="true"></span>
+        <span class="skip-btn-corner br" aria-hidden="true"></span>
+        <span class="skip-inner">
+          <span class="skip-dot" aria-hidden="true"></span>
+          <span class="skip-text">SKIP TO EVENTS</span>
+          <svg class="skip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </button>
+    </section>
+
+    <!-- ─── BGMI SHOWDOWN OFFICIAL OVERVIEW & REGISTRATION ─── -->
+    <section id="events-section" class="events-section showdown-section"
+      aria-label="BGMI Showdown Official Event Overview">
+      <!-- Sticky / Floating Registration Action Bar with Smooth Section Tabs -->
+      <div class="showdown-sticky-bar">
+        <div class="sticky-bar-left">
+          <span class="live-pulse"></span>
+          <span class="sticky-title">PRAXIS '26 // SHOWDOWN</span>
+          <span class="sticky-tag">SLOTS LIVE</span>
+        </div>
+
+        <!-- Smooth In-Page Tab Navigation -->
+        <nav class="sticky-nav-tabs" aria-label="Section Navigation">
+          <a href="#overview-hero" class="sticky-nav-tab active" data-target="overview-hero">OVERVIEW</a>
+          <a href="#prizes-section" class="sticky-nav-tab" data-target="prizes-section">PRIZES</a>
+          <a href="#rules-breakdown" class="sticky-nav-tab" data-target="rules-breakdown">STAGES</a>
+          <a href="#points-system" class="sticky-nav-tab" data-target="points-system">POINTS</a>
+          <a href="#general-rules" class="sticky-nav-tab" data-target="general-rules">RULES</a>
+          <a href="#contact-support" class="sticky-nav-tab" data-target="contact-support">HELP</a>
+        </nav>
+
+        <a href="#register-now" class="sticky-register-btn">
+          <span class="btn-flare" aria-hidden="true"></span>
+          REGISTER SQUAD NOW
+        </a>
+      </div>
+
+      <div class="showdown-container">
+        <!-- Hero Header -->
+        <header id="overview-hero" class="showdown-hero">
+          <div class="showdown-badge">
+            <span class="badge-icon">▲</span>
+            <span class="badge-text">OFFICIAL TOURNAMENT RULEBOOK & OVERVIEW</span>
+            <span class="badge-tag">PRAXIS '26</span>
+          </div>
+          <h1 class="showdown-main-title">
+            <span class="title-sub">BATTLEGROUNDS MOBILE INDIA</span>
+            <span class="title-core">BGMI SHOWDOWN</span>
+          </h1>
+          <p class="showdown-tagline">THE ULTIMATE SQUAD BATTLE | SKILL • STRATEGY • SURVIVAL</p>
+
+          <!-- Primary Register CTA Button -->
+          <div class="showdown-hero-actions">
+            <a href="#register-now" class="hero-register-btn bgmi-cta-btn" role="button">
+              <span class="btn-slant-bg" aria-hidden="true"></span>
+              <span class="btn-inner">
+                <svg class="btn-play-icon" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"
+                  aria-hidden="true">
+                  <polygon points="6 4 20 12 6 20 6 4" />
+                </svg>
+                <span class="btn-label">REGISTER SQUAD NOW</span>
+                <span class="btn-flare" aria-hidden="true"></span>
+              </span>
+            </a>
+            <a href="#rules-breakdown" class="hero-rules-link">
+              <span>VIEW TOURNAMENT SPECS</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                aria-hidden="true">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+              </svg>
+            </a>
+          </div>
+        </header>
+
+        <!-- Quick Event Specs (4 key pillars) -->
+        <div id="specs-breakdown" class="specs-grid">
+          <div class="spec-card">
+            <div class="spec-icon">👥</div>
+            <div class="spec-label">EVENT TYPE</div>
+            <div class="spec-val">TEAM EVENT</div>
+            <div class="spec-sub">Squad Battle (4 Members)</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-icon">⚔️</div>
+            <div class="spec-label">TOTAL ROUNDS</div>
+            <div class="spec-val">2 ROUNDS</div>
+            <div class="spec-sub">Eliminator → Grand Finale</div>
+          </div>
+          <div class="spec-card highlight">
+            <div class="spec-icon">🏆</div>
+            <div class="spec-label">TOTAL PRIZE POOL</div>
+            <div class="spec-val text-gold">₹15,000</div>
+            <div class="spec-sub">Cash on top for Top 3</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-icon">📱</div>
+            <div class="spec-label">DEVICE POLICY</div>
+            <div class="spec-val">MOBILE ONLY</div>
+            <div class="spec-sub">No Emulators, iPads, or Tablets</div>
+          </div>
+        </div>
+
+        <!-- Prize Pool Showcase -->
+        <section id="prizes-section" class="prize-section">
+          <div class="section-title-wrap">
+            <span class="section-kicker">// OFFICIAL REWARDS</span>
+            <h2 class="section-heading">PRIZE DISTRIBUTION</h2>
+            <div class="heading-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="prize-grid">
+            <!-- 2nd Place -->
+            <div class="prize-card silver">
+              <div class="prize-crown">🥈</div>
+              <div class="prize-rank">RUNNER-UP</div>
+              <div class="prize-amount">₹5,000</div>
+              <div class="prize-desc">"Clutch plays, solid reward."</div>
+              <div class="prize-badge">2ND PLACE</div>
+            </div>
+
+            <!-- 1st Place (Winner, elevated in middle) -->
+            <div class="prize-card gold winner-card">
+              <div class="winner-glow" aria-hidden="true"></div>
+              <div class="prize-crown">🥇</div>
+              <div class="prize-rank">CHAMPION</div>
+              <div class="prize-amount">₹7,000</div>
+              <div class="prize-desc">"Chicken Dinner with cash on top."</div>
+              <div class="prize-badge">1ST PLACE WINNER</div>
+            </div>
+
+            <!-- 3rd Place -->
+            <div class="prize-card bronze">
+              <div class="prize-crown">🥉</div>
+              <div class="prize-rank">SECOND RUNNER-UP</div>
+              <div class="prize-amount">₹3,000</div>
+              <div class="prize-desc">"Proof you belong among the best."</div>
+              <div class="prize-badge">3RD PLACE</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tournament Stages (Rounds 1 & 2) -->
+        <section id="rules-breakdown" class="rounds-section">
+          <div class="section-title-wrap">
+            <span class="section-kicker">// TOURNAMENT ROADMAP</span>
+            <h2 class="section-heading">ROUNDS BREAKDOWN</h2>
+            <div class="heading-line" aria-hidden="true"></div>
+          </div>
+
+          <!-- Interactive Stage Filter Tabs -->
+          <div class="stage-tabs-wrapper" role="tablist" aria-label="Tournament Stages Selection">
+            <button type="button" class="stage-tab-btn active" data-stage="all" role="tab" aria-selected="true">
+              <span class="stage-tab-dot"></span>
+              <span class="stage-tab-text">ALL STAGES</span>
+            </button>
+            <button type="button" class="stage-tab-btn" data-stage="stage-1" role="tab" aria-selected="false">
+              <span class="stage-tab-num">01</span>
+              <span class="stage-tab-text">STAGE 1: ELIMINATOR</span>
+            </button>
+            <button type="button" class="stage-tab-btn" data-stage="stage-2" role="tab" aria-selected="false">
+              <span class="stage-tab-num">02</span>
+              <span class="stage-tab-text">STAGE 2: GRAND FINALE</span>
+            </button>
+          </div>
+
+          <div class="rounds-grid">
+            <!-- Round 1 -->
+            <div class="round-card" data-stage-card="stage-1">
+              <div class="round-header">
+                <span class="round-badge">STAGE 01</span>
+                <h3 class="round-name">ROUND 1: ELIMINATOR ROUND</h3>
+                <p class="round-quote">"Survive or get eliminated. No second chances."</p>
+              </div>
+              <div class="round-body">
+                <div class="round-stat-row">
+                  <span class="stat-name">Total Matches:</span>
+                  <span class="stat-val highlight-orange">2 Matches</span>
+                </div>
+                <div class="map-pool">
+                  <div class="map-pill"><span class="map-num">M1</span> Erangel</div>
+                  <div class="map-pill"><span class="map-num">M2</span> Miramar</div>
+                </div>
+                <div class="round-rules-list">
+                  <div class="rule-bullet">Points from both matches will be combined.</div>
+                  <div class="rule-bullet">All registered teams must play both matches.</div>
+                  <div class="rule-bullet">No skipping matches is allowed.</div>
+                </div>
+                <div class="round-qualification-box">
+                  <div class="qual-icon">▲</div>
+                  <div>
+                    <strong>QUALIFICATION:</strong> The Top 8 teams from the combined leaderboard will qualify for the
+                    Grand Finale. Scores from this round are only for qualification and will not be carried forward.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Round 2 -->
+            <div class="round-card highlight-card" data-stage-card="stage-2">
+              <div class="round-header">
+                <span class="round-badge gold-badge">STAGE 02 — THE CLIMAX</span>
+                <h3 class="round-name">ROUND 2: GRAND FINALE</h3>
+                <p class="round-quote">"Pressure peaks. Legends are decided here."</p>
+              </div>
+              <div class="round-body">
+                <div class="round-stat-row">
+                  <span class="stat-name">Qualified Teams:</span>
+                  <span class="stat-val">Top 8 Teams from Eliminator Round</span>
+                </div>
+                <div class="round-stat-row">
+                  <span class="stat-name">Total Matches:</span>
+                  <span class="stat-val highlight-orange">4 Matches</span>
+                </div>
+                <div class="map-pool">
+                  <div class="map-pill"><span class="map-num">M1</span> Erangel</div>
+                  <div class="map-pill"><span class="map-num">M2</span> Miramar</div>
+                  <div class="map-pill"><span class="map-num">M3</span> Sanhok</div>
+                  <div class="map-pill"><span class="map-num">M4</span> Erangel</div>
+                </div>
+                <div class="round-rules-list">
+                  <div class="rule-bullet">Points from all 4 matches will be combined.</div>
+                  <div class="rule-bullet">Final winners will be decided only on Grand Finale points.</div>
+                  <div class="rule-bullet">Round 1 scores do not affect final standings.</div>
+                </div>
+                <div class="round-qualification-box championship-box">
+                  <div class="qual-icon">👑</div>
+                  <div>
+                    <strong>CHAMPIONSHIP DECISION:</strong> Highest aggregate points across all 4 matches claims the
+                    ₹7,000 top cash prize.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Points System -->
+        <section id="points-system" class="points-section">
+          <div class="section-title-wrap">
+            <span class="section-kicker">// HOW YOU SCORE</span>
+            <h2 class="section-heading">POINTS SYSTEM</h2>
+            <p class="section-subtext">Every match rewards both survival and aggression. Smart rotations + clean
+              finishes = max points.</p>
+            <div class="heading-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="points-container">
+            <!-- Placement Points Table -->
+            <div class="points-block">
+              <h4 class="points-subheading">📍 PLACEMENT POINTS</h4>
+              <div class="points-table">
+                <div class="pt-row pt-top"><span class="pt-rank">1st Place (Winner)</span><span class="pt-val">15
+                    Points</span></div>
+                <div class="pt-row"><span class="pt-rank">2nd Place</span><span class="pt-val">12 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">3rd Place</span><span class="pt-val">10 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">4th Place</span><span class="pt-val">8 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">5th Place</span><span class="pt-val">6 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">6th Place</span><span class="pt-val">4 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">7th Place</span><span class="pt-val">2 Points</span></div>
+                <div class="pt-row"><span class="pt-rank">8th to 12th Place</span><span class="pt-val">1 Point</span>
+                </div>
+                <div class="pt-row pt-zero"><span class="pt-rank">13th to 16th Place</span><span class="pt-val">0
+                    Points</span></div>
+              </div>
+            </div>
+
+            <!-- Finish Points & Formula Card -->
+            <div class="points-block formula-block">
+              <h4 class="points-subheading">🎯 FINISH (KILL) POINTS</h4>
+              <div class="finish-callout">
+                <div class="finish-pts">1 POINT</div>
+                <div class="finish-label">Each Confirmed Finish = 1 Point</div>
+                <p class="finish-desc">Every individual kill secured by any member of your squad adds 1 full point to
+                  your team's leaderboard score.</p>
+              </div>
+
+              <div class="formula-box">
+                <div class="formula-title">// TOTAL SCORE CALCULATION</div>
+                <div class="formula-math">
+                  <span class="formula-item">Total Points</span>
+                  <span class="formula-op">=</span>
+                  <span class="formula-item highlight">Placement Points</span>
+                  <span class="formula-op">+</span>
+                  <span class="formula-item highlight">Finish Points</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- General Rules Grid -->
+        <section id="general-rules" class="general-rules-section">
+          <div class="section-title-wrap">
+            <span class="section-kicker">// COMPLIANCE & INTEGRITY</span>
+            <h2 class="section-heading">GENERAL RULES</h2>
+            <div class="heading-line" aria-hidden="true"></div>
+          </div>
+
+          <div class="rules-grid">
+            <div class="rule-card danger-card">
+              <div class="rule-icon">🚫</div>
+              <h4>MOBILE PHONES ONLY</h4>
+              <p>Emulators, iPads, and tablets are <strong>not allowed</strong>. Only mobile phones are permitted. Any
+                device violation leads to <strong>immediate disqualification</strong>.</p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">🛡️</div>
+              <h4>FAIR PLAY PROTOCOL</h4>
+              <p>Cheating, abusive language, misconduct, teaming, or information sharing is strictly prohibited and will
+                result in <strong>disqualification</strong>.</p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">🔑</div>
+              <h4>CUSTOM ROOM ACCESS</h4>
+              <p>Matches will be played in organizer-hosted custom rooms. Teams must join using the official
+                <strong>Room ID and Password</strong> within the given time. Late entry may result in match forfeiture.
+              </p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-icon">⚖️</div>
+              <h4>COORDINATOR DECISIONS FINAL</h4>
+              <p>Teams must follow all coordinator and referee instructions. Event coordinators’ decisions are final.
+                <em>Play fair. Play clean. Respect the game.</em></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Event Leads & Contact -->
+        <section id="contact-support" class="contact-section">
+          <div class="contact-card">
+            <div class="contact-left">
+              <span class="contact-kicker">// EVENT LEADS & CONTACT</span>
+              <h3 class="contact-name">Ayush Chandwadkar</h3>
+              <p class="contact-role">Official Event Coordinator — BGMI Showdown PRAXIS '26</p>
+            </div>
+            <div class="contact-actions">
+              <a href="tel:9309157331" class="contact-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  aria-hidden="true">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>CALL: 9309157331</span>
+              </a>
+              <a href="https://wa.me/919309157331" target="_blank" rel="noopener noreferrer"
+                class="contact-btn whatsapp-btn">
+                <span>WHATSAPP SUPPORT</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Integrated Multi-Step Squad Registration Wizard -->
+        <section id="register-now" class="registration-wizard-section" aria-label="BGMI Squad Registration Wizard">
+          <div class="reg-wizard-container">
+
+            <!-- Wizard Header Banner -->
+            <div class="reg-wizard-header">
+              <div class="reg-header-pill">
+                <svg class="reg-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span>TEAM REGISTRATION // PRAXIS '26 SHOWDOWN</span>
+              </div>
+              <h2 class="reg-main-title">ENLIST YOUR SQUAD</h2>
+              <p class="reg-subtitle">Complete the 3-step squad registration and payment verification to secure your official tournament slot.</p>
+            </div>
+
+            <!-- Multi-Step Progress Tracker (Step 1, 2, 3) -->
+            <div class="reg-stepper" role="tablist" aria-label="Registration Steps">
+              <div class="stepper-step active" data-step="1" id="step-tab-1">
+                <div class="step-bubble">
+                  <span class="step-num">1</span>
+                  <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="15" height="15" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div class="step-meta">
+                  <span class="step-title">Registration</span>
+                  <span class="step-sub">Step 1 of 3</span>
+                </div>
+              </div>
+
+              <div class="stepper-connector" aria-hidden="true">
+                <div class="stepper-connector-bar" id="stepper-bar-1"></div>
+              </div>
+
+              <div class="stepper-step" data-step="2" id="step-tab-2">
+                <div class="step-bubble">
+                  <span class="step-num">2</span>
+                  <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="15" height="15" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div class="step-meta">
+                  <span class="step-title">Team Information</span>
+                  <span class="step-sub">Step 2 of 3</span>
+                </div>
+              </div>
+
+              <div class="stepper-connector" aria-hidden="true">
+                <div class="stepper-connector-bar" id="stepper-bar-2"></div>
+              </div>
+
+              <div class="stepper-step" data-step="3" id="step-tab-3">
+                <div class="step-bubble">
+                  <span class="step-num">3</span>
+                  <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="15" height="15" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div class="step-meta">
+                  <span class="step-title">Verify & Payment</span>
+                  <span class="step-sub">Step 3 of 3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Body -->
+            <form id="squad-reg-form" class="reg-form-body" novalidate autocomplete="off">
+
+              <!-- ════════════ STEP 1: LEADER & INSTITUTION DETAILS ════════════ -->
+              <div class="form-step-panel is-active" id="panel-step-1" data-panel="1">
+                
+                <!-- Important Instructions Card -->
+                <div class="form-alert-card">
+                  <div class="alert-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div class="alert-content">
+                    <h4 class="alert-title">Important Instructions</h4>
+                    <ul class="alert-list">
+                      <li><strong>Team Limit:</strong> Squad size is strictly 4 playing members (1 optional substitute, 4 to 5 total).</li>
+                      <li><strong>Device Policy:</strong> Only mobile phones are permitted. Emulators, iPads, and tablets are strictly prohibited.</li>
+                      <li><strong>Crucial Requirement:</strong> Please complete the entire 3-step registration process in one go, or your entry will be invalid.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Section: Team Information -->
+                <div class="reg-card">
+                  <div class="reg-card-header">
+                    <div class="card-icon-badge">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </div>
+                    <h3 class="card-heading">Team Information</h3>
+                  </div>
+                  <div class="reg-card-body">
+                    <div class="form-group full-width">
+                      <label for="team-name" class="form-label">Team Name <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <input type="text" id="team-name" name="teamName" class="form-control" placeholder="Enter your team name (e.g. Soul Reapers)" required />
+                      </div>
+                      <span class="field-error-msg" id="err-team-name">Please enter your squad team name</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section: Leader Information -->
+                <div class="reg-card">
+                  <div class="reg-card-header">
+                    <div class="card-icon-badge">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
+                    <h3 class="card-heading">Leader Information</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                      <label for="leader-name" class="form-label">Full Name <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input type="text" id="leader-name" name="leaderName" class="form-control" placeholder="John Doe" required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-name">Leader full name is required</span>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="form-group">
+                      <label for="leader-email" class="form-label">Email Address <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                          <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="leader-email" name="leaderEmail" class="form-control" placeholder="johndoe@example.com" required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-email">Valid email address is required</span>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group">
+                      <label for="leader-gender" class="form-label">Gender <span class="req">*</span></label>
+                      <div class="select-wrap">
+                        <select id="leader-gender" name="leaderGender" class="form-control" required>
+                          <option value="" disabled selected>Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                      <span class="field-error-msg" id="err-leader-gender">Please select gender</span>
+                    </div>
+
+                    <!-- Contact Number -->
+                    <div class="form-group">
+                      <label for="leader-phone" class="form-label">Contact Number <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <input type="tel" id="leader-phone" name="leaderPhone" class="form-control" placeholder="+91 9876543210" required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-phone">Contact phone number is required</span>
+                    </div>
+
+                    <!-- Stream (UG/PG) -->
+                    <div class="form-group">
+                      <label for="leader-stream" class="form-label">Stream (UG/PG) <span class="req">*</span></label>
+                      <div class="select-wrap">
+                        <select id="leader-stream" name="leaderStream" class="form-control" required>
+                          <option value="" disabled selected>Select Stream</option>
+                          <option value="UG">Undergraduate (UG)</option>
+                          <option value="PG">Postgraduate (PG)</option>
+                          <option value="Diploma">Diploma</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                      <span class="field-error-msg" id="err-leader-stream">Please select your stream</span>
+                    </div>
+
+                    <!-- Year of Study -->
+                    <div class="form-group">
+                      <label for="leader-year" class="form-label">Year of Study <span class="req">*</span></label>
+                      <div class="select-wrap">
+                        <select id="leader-year" name="leaderYear" class="form-control" required>
+                          <option value="" disabled selected>Select Year</option>
+                          <option value="First Year">First Year (FE / 1st Year)</option>
+                          <option value="Second Year">Second Year (SE / 2nd Year)</option>
+                          <option value="Third Year">Third Year (TE / 3rd Year)</option>
+                          <option value="Final Year">Final Year (BE / 4th Year)</option>
+                        </select>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                      <span class="field-error-msg" id="err-leader-year">Please select year of study</span>
+                    </div>
+
+                    <!-- Branch / Specialization -->
+                    <div class="form-group full-width">
+                      <label for="leader-branch" class="form-label">Branch / Specialization <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        <input type="text" id="leader-branch" name="leaderBranch" class="form-control" placeholder="e.g. Computer Engineering, IT, AI & DS, Mechanical, etc." required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-branch">Branch / specialization is required</span>
+                    </div>
+
+                    <!-- Leader BGMI IGN -->
+                    <div class="form-group">
+                      <label for="leader-ign" class="form-label">Leader BGMI In-Game Name (IGN) <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <input type="text" id="leader-ign" name="leaderIgn" class="form-control" placeholder="e.g. Mortal_OP" required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-ign">Leader In-Game Name is required</span>
+                    </div>
+
+                    <!-- Leader BGMI Character ID -->
+                    <div class="form-group">
+                      <label for="leader-uid" class="form-label">Leader BGMI Character ID (Numeric) <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <line x1="4" y1="9" x2="20" y2="9"></line>
+                          <line x1="4" y1="15" x2="20" y2="15"></line>
+                          <line x1="10" y1="3" x2="8" y2="21"></line>
+                          <line x1="16" y1="3" x2="14" y2="21"></line>
+                        </svg>
+                        <input type="text" id="leader-uid" name="leaderUid" class="form-control" placeholder="e.g. 5123456789" required />
+                      </div>
+                      <span class="field-error-msg" id="err-leader-uid">Numeric Character ID is required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section: Institution Details -->
+                <div class="reg-card">
+                  <div class="reg-card-header">
+                    <div class="card-icon-badge">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                      </svg>
+                    </div>
+                    <h3 class="card-heading">Institution Details</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <div class="form-group full-width">
+                      <label for="inst-name" class="form-label">Institute Name <span class="req">*</span></label>
+                      <div class="input-with-icon">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <input type="text" id="inst-name" name="instName" class="form-control" placeholder="PCCOE Pune" required />
+                      </div>
+                      <span class="field-error-msg" id="err-inst-name">College / Institute name is required</span>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inst-country" class="form-label">Country <span class="req">*</span></label>
+                      <div class="select-wrap">
+                        <select id="inst-country" name="instCountry" class="form-control" required>
+                          <option value="India" selected>India</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inst-state" class="form-label">State <span class="req">*</span></label>
+                      <div class="select-wrap">
+                        <select id="inst-state" name="instState" class="form-control" required>
+                          <option value="" disabled selected>Select State</option>
+                          <option value="Maharashtra">Maharashtra</option>
+                          <option value="Delhi">Delhi</option>
+                          <option value="Karnataka">Karnataka</option>
+                          <option value="Gujarat">Gujarat</option>
+                          <option value="Madhya Pradesh">Madhya Pradesh</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                          <option value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option value="Telangana">Telangana</option>
+                          <option value="Tamil Nadu">Tamil Nadu</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                      <span class="field-error-msg" id="err-inst-state">Please select your state</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 1 Navigation -->
+                <div class="step-nav-footer">
+                  <div></div>
+                  <button type="button" class="btn-step-nav btn-next" id="btn-next-step-1">
+                    <span>Continue to Next Step</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" aria-hidden="true">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ════════════ STEP 2: SQUAD ROSTER (PLAYERS 2, 3, 4 & SUB) ════════════ -->
+              <div class="form-step-panel" id="panel-step-2" data-panel="2">
+                <div class="step-subhead-banner">
+                  <span class="subhead-kicker">// SQUAD ROSTER SPECIFICATION</span>
+                  <h3 class="subhead-title">TEAM MEMBERS INFORMATION</h3>
+                  <p class="subhead-desc">Enter details for remaining 3 active squad members and an optional 5th substitute player.</p>
+                </div>
+
+                <!-- Player 2 -->
+                <div class="reg-card member-card">
+                  <div class="reg-card-header">
+                    <span class="member-tag">PLAYER 02</span>
+                    <h3 class="card-heading">Member 2 Details</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <div class="form-group">
+                      <label for="p2-name" class="form-label">Full Name <span class="req">*</span></label>
+                      <input type="text" id="p2-name" name="p2Name" class="form-control" placeholder="Player 2 Name" required />
+                      <span class="field-error-msg" id="err-p2-name">Player 2 name is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p2-phone" class="form-label">Contact / WhatsApp <span class="req">*</span></label>
+                      <input type="tel" id="p2-phone" name="p2Phone" class="form-control" placeholder="+91 9876543211" required />
+                      <span class="field-error-msg" id="err-p2-phone">Contact number is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p2-ign" class="form-label">BGMI In-Game Name (IGN) <span class="req">*</span></label>
+                      <input type="text" id="p2-ign" name="p2Ign" class="form-control" placeholder="e.g. Viper_Kill" required />
+                      <span class="field-error-msg" id="err-p2-ign">Player 2 IGN is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p2-uid" class="form-label">BGMI Character ID (Numeric) <span class="req">*</span></label>
+                      <input type="text" id="p2-uid" name="p2Uid" class="form-control" placeholder="e.g. 5234567890" required />
+                      <span class="field-error-msg" id="err-p2-uid">Character ID is required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Player 3 -->
+                <div class="reg-card member-card">
+                  <div class="reg-card-header">
+                    <span class="member-tag">PLAYER 03</span>
+                    <h3 class="card-heading">Member 3 Details</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <div class="form-group">
+                      <label for="p3-name" class="form-label">Full Name <span class="req">*</span></label>
+                      <input type="text" id="p3-name" name="p3Name" class="form-control" placeholder="Player 3 Name" required />
+                      <span class="field-error-msg" id="err-p3-name">Player 3 name is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p3-phone" class="form-label">Contact / WhatsApp <span class="req">*</span></label>
+                      <input type="tel" id="p3-phone" name="p3Phone" class="form-control" placeholder="+91 9876543212" required />
+                      <span class="field-error-msg" id="err-p3-phone">Contact number is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p3-ign" class="form-label">BGMI In-Game Name (IGN) <span class="req">*</span></label>
+                      <input type="text" id="p3-ign" name="p3Ign" class="form-control" placeholder="e.g. Shadow_X" required />
+                      <span class="field-error-msg" id="err-p3-ign">Player 3 IGN is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p3-uid" class="form-label">BGMI Character ID (Numeric) <span class="req">*</span></label>
+                      <input type="text" id="p3-uid" name="p3Uid" class="form-control" placeholder="e.g. 5345678901" required />
+                      <span class="field-error-msg" id="err-p3-uid">Character ID is required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Player 4 -->
+                <div class="reg-card member-card">
+                  <div class="reg-card-header">
+                    <span class="member-tag">PLAYER 04</span>
+                    <h3 class="card-heading">Member 4 Details</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <div class="form-group">
+                      <label for="p4-name" class="form-label">Full Name <span class="req">*</span></label>
+                      <input type="text" id="p4-name" name="p4Name" class="form-control" placeholder="Player 4 Name" required />
+                      <span class="field-error-msg" id="err-p4-name">Player 4 name is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p4-phone" class="form-label">Contact / WhatsApp <span class="req">*</span></label>
+                      <input type="tel" id="p4-phone" name="p4Phone" class="form-control" placeholder="+91 9876543213" required />
+                      <span class="field-error-msg" id="err-p4-phone">Contact number is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p4-ign" class="form-label">BGMI In-Game Name (IGN) <span class="req">*</span></label>
+                      <input type="text" id="p4-ign" name="p4Ign" class="form-control" placeholder="e.g. Apex_Sniper" required />
+                      <span class="field-error-msg" id="err-p4-ign">Player 4 IGN is required</span>
+                    </div>
+                    <div class="form-group">
+                      <label for="p4-uid" class="form-label">BGMI Character ID (Numeric) <span class="req">*</span></label>
+                      <input type="text" id="p4-uid" name="p4Uid" class="form-control" placeholder="e.g. 5456789012" required />
+                      <span class="field-error-msg" id="err-p4-uid">Character ID is required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Player 5 (Optional Substitute) -->
+                <div class="reg-card member-card optional-card">
+                  <div class="reg-card-header">
+                    <span class="member-tag optional-tag">OPTIONAL SUBSTITUTE</span>
+                    <h3 class="card-heading">Player 05 (Substitute)</h3>
+                  </div>
+                  <div class="reg-card-body form-grid-2">
+                    <div class="form-group">
+                      <label for="p5-name" class="form-label">Full Name</label>
+                      <input type="text" id="p5-name" name="p5Name" class="form-control" placeholder="Substitute Name (Optional)" />
+                    </div>
+                    <div class="form-group">
+                      <label for="p5-phone" class="form-label">Contact / WhatsApp</label>
+                      <input type="tel" id="p5-phone" name="p5Phone" class="form-control" placeholder="+91 9876543214" />
+                    </div>
+                    <div class="form-group">
+                      <label for="p5-ign" class="form-label">BGMI In-Game Name (IGN)</label>
+                      <input type="text" id="p5-ign" name="p5Ign" class="form-control" placeholder="e.g. Phoenix_Sub" />
+                    </div>
+                    <div class="form-group">
+                      <label for="p5-uid" class="form-label">BGMI Character ID (Numeric)</label>
+                      <input type="text" id="p5-uid" name="p5Uid" class="form-control" placeholder="e.g. 5567890123" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 2 Navigation -->
+                <div class="step-nav-footer">
+                  <button type="button" class="btn-step-nav btn-prev" id="btn-prev-step-2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" aria-hidden="true">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>Previous Step</span>
+                  </button>
+                  <button type="button" class="btn-step-nav btn-next" id="btn-next-step-2">
+                    <span>Continue to Payment & Verify</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" aria-hidden="true">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ════════════ STEP 3: REVIEW, PAYMENT & SUBMIT ════════════ -->
+              <div class="form-step-panel" id="panel-step-3" data-panel="3">
+                
+                <!-- Squad Summary Card -->
+                <div class="reg-card summary-card">
+                  <div class="reg-card-header">
+                    <span class="member-tag">SUMMARY REVIEW</span>
+                    <h3 class="card-heading">Squad Roster Summary</h3>
+                  </div>
+                  <div class="reg-card-body">
+                    <div class="summary-meta-grid">
+                      <div class="summary-item"><span class="summary-lbl">TEAM:</span><strong id="sum-team-name" class="text-gold">—</strong></div>
+                      <div class="summary-item"><span class="summary-lbl">INSTITUTE:</span><strong id="sum-inst-name">—</strong></div>
+                      <div class="summary-item"><span class="summary-lbl">LEADER:</span><strong id="sum-leader-name">—</strong></div>
+                      <div class="summary-item"><span class="summary-lbl">LEADER IGN:</span><strong id="sum-leader-ign" class="text-cyan">—</strong></div>
+                    </div>
+                    <div class="summary-roster-list" id="sum-roster-list">
+                      <!-- Dynamically rendered roster items -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Payment Step Card (Crucial requirement from user) -->
+                <div class="reg-card payment-action-card">
+                  <div class="reg-card-header">
+                    <div class="card-icon-badge payment-badge-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+                        <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                        <line x1="2" y1="10" x2="22" y2="10"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="card-heading">Tournament Entry Fee Payment</h3>
+                      <span class="payment-step-tag">PAYMENT REQUIRED BEFORE FINAL SUBMISSION</span>
+                    </div>
+                  </div>
+                  <div class="reg-card-body">
+                    <p class="payment-card-desc">Click below to proceed to the official payment portal. Once your payment is complete, return here and verify payment to unlock squad submission.</p>
+
+                    <div class="payment-card-actions">
+                      <!-- Payment Button requested by user -->
+                      <button type="button" id="wizard-payment-btn" class="wizard-pay-btn" data-payment-url="" title="Pay Tournament Entry Fee">
+                        <span class="btn-slant-bg" aria-hidden="true"></span>
+                        <span class="btn-inner">
+                          <svg class="btn-pay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                          </svg>
+                          <span class="btn-label">PROCEED TO PAYMENT PORTAL</span>
+                          <span class="btn-flare" aria-hidden="true"></span>
+                        </span>
+                      </button>
+
+                      <!-- Payment Verification Status Box -->
+                      <div class="payment-status-badge" id="payment-status-box" data-verified="false">
+                        <span class="status-indicator-dot"></span>
+                        <span class="status-text" id="payment-status-text">STATUS: PAYMENT PENDING</span>
+                        <button type="button" class="btn-verify-check" id="btn-verify-payment">
+                          <span>Verify Payment</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <p class="payment-portal-note" id="payment-portal-note">
+                      <em>💡 Tip: If you have already paid on the payment portal, click "Verify Payment" above to activate the submit button.</em>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Fair Play & Rulebook Declaration -->
+                <div class="reg-card declaration-card">
+                  <label class="custom-checkbox-wrap">
+                    <input type="checkbox" id="rules-agree-check" name="rulesAgree" required />
+                    <span class="custom-checkbox" aria-hidden="true"></span>
+                    <span class="checkbox-label">
+                      I declare that all entered squad information and player IDs are genuine. Our 4 squad members will play strictly on <strong>mobile phones</strong> (no emulators/tablets), and we agree to all PRAXIS '26 BGMI Showdown tournament rules.
+                    </span>
+                  </label>
+                  <span class="field-error-msg" id="err-rules-agree">You must agree to tournament rules before submitting</span>
+                </div>
+
+                <!-- Step 3 Navigation -->
+                <div class="step-nav-footer">
+                  <button type="button" class="btn-step-nav btn-prev" id="btn-prev-step-3">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" aria-hidden="true">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>Previous Step</span>
+                  </button>
+                  <button type="submit" class="btn-submit-registration" id="btn-submit-reg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="20" height="20" aria-hidden="true">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>CONFIRM & SUBMIT REGISTRATION</span>
+                  </button>
+                </div>
+              </div>
+
+            </form>
+
+            <!-- Success Confirmation Screen -->
+            <div class="reg-success-card" id="reg-success-panel" hidden aria-hidden="true">
+              <div class="success-glow" aria-hidden="true"></div>
+              <div class="success-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="48" height="48" aria-hidden="true">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <span class="success-kicker">// SQUAD ENLISTED &bull; AIRDROP SECURED</span>
+              <h3 class="success-title">REGISTRATION CONFIRMED!</h3>
+              <p class="success-desc">Your squad has been officially enrolled for the <strong>BGMI SHOWDOWN — PRAXIS '26</strong>.</p>
+
+              <div class="success-slot-box">
+                <span class="slot-lbl">CONFIRMATION ID:</span>
+                <span class="slot-id" id="confirmed-reg-id">BGMI-PRX-8492</span>
+              </div>
+
+              <div class="success-instructions">
+                <p>• Tournament Custom Room ID & Password will be shared on your registered Leader WhatsApp number prior to Eliminator Match 1.</p>
+                <p>• Make sure all 4 players join the custom room strictly within the scheduled entry window.</p>
+              </div>
+
+              <button type="button" class="btn-reset-form" id="btn-register-another">
+                <span>REGISTER ANOTHER SQUAD</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="footer-line" aria-hidden="true"></div>
+        <p class="footer-text">&copy; 2026 PRAXIS — BGMI SHOWDOWN OFFICIAL TOURNAMENT</p>
+        <p class="footer-sub">SECURE CHANNEL — PLAY FAIR • PLAY CLEAN • RESPECT THE GAME</p>
+      </footer>
+    </section>
+
+  </div>
+
+  <!-- Payment Gateway Integration Modal Dialog -->
+  <div id="payment-modal" class="payment-modal" hidden aria-hidden="true" role="dialog" aria-labelledby="payment-modal-title">
+    <div class="payment-modal-backdrop" id="payment-modal-backdrop"></div>
+    <div class="payment-modal-card">
+      <button type="button" class="payment-modal-close" id="payment-modal-close" aria-label="Close modal">&times;</button>
+      <div class="payment-modal-header">
+        <div class="payment-modal-icon-wrap">
+          <svg class="payment-modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <line x1="2" y1="10" x2="22" y2="10" />
+          </svg>
+        </div>
+        <span class="payment-modal-kicker">// SECURE PAYMENT SYSTEM</span>
+        <h3 id="payment-modal-title" class="payment-modal-title">PAYMENT GATEWAY</h3>
+      </div>
+      <div class="payment-modal-body">
+        <p class="payment-modal-lead">The online payment and automated verification platform is currently being integrated.</p>
+        <div class="payment-steps-preview">
+          <div class="payment-step-item active">
+            <span class="step-badge">01</span>
+            <div class="step-info">
+              <strong>REGISTER SQUAD VIA GOOGLE FORM</strong>
+              <span>Fill roster, BGMI IDs, and contact info to reserve your slot.</span>
+            </div>
+          </div>
+          <div class="payment-step-item pending">
+            <span class="step-badge">02</span>
+            <div class="step-info">
+              <strong>PAYMENT REDIRECT & VERIFICATION</strong>
+              <span>Redirect to official payment platform, complete payment, and return verified. (Integrating soon)</span>
+            </div>
+          </div>
+        </div>
+        <p class="payment-modal-note">Please complete your registration via Google Form first. Direct payment will be activated shortly.</p>
+      </div>
+      <div class="payment-modal-actions">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQhDQ5vHf19jNoTkXC8qm14bEgfonRoMi00E5iHIvHvvREYg/viewform"
+          target="_blank" rel="noopener noreferrer" class="payment-modal-form-btn">
+          <span>FILL GOOGLE FORM</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <button type="button" class="payment-modal-dismiss" id="payment-modal-dismiss">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/bgmi/main.js"></script>
+</body>
+
+</html>

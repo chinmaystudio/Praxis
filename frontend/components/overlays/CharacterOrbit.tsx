@@ -3,83 +3,9 @@
 import { useRef, useState } from "react";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
+import { EVENTS, type EventConfig, formatPrice } from "@/lib/events";
+import RegistrationModal from "@/components/registration/RegistrationModal";
 import styles from "./orbit.module.css";
-
-/**
- * Section 2 — the six character cards.
- *
- * Real DOM <video> panels (autoplay · loop · muted · playsInline, object-fit
- * cover, no controls) orbit the central WebGL Doom model. As `signals.showcase`
- * scrubs, the ring rotates; each card eases to the front (large, bright, glowing)
- * then behind the model (small, dim, blurred). Depth is REAL: the wrapper creates
- * no stacking context, so each card's z-index straddles the transparent atmosphere
- * canvas (z3) — front cards (z4) over the model, back cards (z2) genuinely behind
- * it. Videos live in fixed DOM slots and only pause when the section is off-screen,
- * so they never restart, reload, or flicker while orbiting.
- */
-interface EventCard {
-  slug: string;
-  title: string;
-  theme: string;
-  desc: string;
-  image: string;
-  rulebook: string;
-  downloadName: string;
-  accent: string;
-}
-
-const EVENTS: EventCard[] = [
-  {
-    slug: "infinity-trials",
-    title: "Infinity Trials",
-    theme: "Infinity War",
-    desc: "Face a cosmic challenge where strategy, speed, and teamwork decide who is worthy of the stones.",
-    image: "/events/infinity-trials.png",
-    rulebook: "/rulebooks/infinity-trials-rulebook.pdf",
-    downloadName: "Infinity-Trials-Rulebook.pdf",
-    accent: "#f2b84b",
-  },
-  {
-    slug: "research-x",
-    title: "Research X",
-    theme: "Thor",
-    desc: "Channel thunderous ideas into a sharp research showcase built around insight, evidence, and impact.",
-    image: "/events/research-x.png",
-    rulebook: "/rulebooks/research-x-rulebook.pdf",
-    downloadName: "Research-X-Rulebook.pdf",
-    accent: "#65cfff",
-  },
-  {
-    slug: "bgmi-elite-showdown",
-    title: "BGMI Elite Showdown",
-    theme: "Captain America",
-    desc: "Enter the battleground with disciplined teamwork, tactical precision, and the resolve to hold the line.",
-    image: "/events/bgmi-elite-showdown.png",
-    rulebook: "/rulebooks/bgmi-elite-showdown-rulebook.pdf",
-    downloadName: "BGMI-Elite-Showdown-Rulebook.pdf",
-    accent: "#ff4458",
-  },
-  {
-    slug: "tech-roulette",
-    title: "Tech Roulette",
-    theme: "Iron Man",
-    desc: "A three-round technical showdown combining sustainability knowledge, rapid prototyping, and high-pressure solution pitching.",
-    image: "/events/tech-roulette.png",
-    rulebook: "/rulebooks/tech-roulette-rulebook.docx",
-    downloadName: "Tech-Roulette-Rulebook.docx",
-    accent: "#35d9ff",
-  },
-  {
-    slug: "storyverse",
-    title: "StoryVerse",
-    theme: "Doctor Strange Multiverse",
-    desc: "Transform an AI-generated story video into an interactive browser game across two connected creative rounds.",
-    image: "/events/storyverse.png",
-    rulebook: "/rulebooks/storyverse-rulebook.docx",
-    downloadName: "StoryVerse-Rulebook.docx",
-    accent: "#ff9f3f",
-  },
-];
 
 const TAU = Math.PI * 2;
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -91,8 +17,8 @@ const smoothstep = (a: number, b: number, x: number) => {
 
 export default function CharacterOrbit() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeEvent, setActiveEvent] = useState<EventCard | null>(null);
-  const [registrationMessage, setRegistrationMessage] = useState(false);
+  const [activeEvent, setActiveEvent] = useState<EventConfig | null>(null);
+  const [registeringEvent, setRegisteringEvent] = useState<EventConfig | null>(null);
 
   useRaf(() => {
     const s = signals.orbit;
@@ -176,39 +102,65 @@ export default function CharacterOrbit() {
 
   return (
     <div className={styles.layer}>
-      {EVENTS.map((event, i) => (
-        <div
-          key={event.slug}
-          className={styles.card}
-          ref={(el) => {
-            cardRefs.current[i] = el;
-          }}
-          tabIndex={0}
-          style={{ visibility: "hidden", "--accent": event.accent } as React.CSSProperties}
-        >
-          <img className={styles.poster} src={event.image} alt="" />
-          <div className={styles.grad} />
-          <div className={styles.frame} />
-          <div className={styles.namePlate}>
-            <div className={styles.name}>{event.title}</div>
-          </div>
-          <div className={styles.info}>
-            <div className={styles.name}>{event.title}</div>
-            <div className={styles.desc}>{event.desc}</div>
-            <div className={styles.actions}>
-              <button className={styles.exploreButton} type="button" onClick={() => { setActiveEvent(event); setRegistrationMessage(false); }}>
-                Explore <span aria-hidden="true">↗</span>
-              </button>
-              <a className={styles.rulebookButton} href={event.rulebook} download={event.downloadName}>
-                View Rulebook <span aria-hidden="true">↓</span>
-              </a>
+      {EVENTS.map((event, i) => {
+        const isBgmi = event.slug === "bgmi-elite-showdown";
+        return (
+          <div
+            key={event.slug}
+            className={`${styles.card} ${isBgmi ? styles.clickableCard : ""}`}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            tabIndex={0}
+            style={{ visibility: "hidden", "--accent": event.accent } as React.CSSProperties}
+            onClick={(e) => {
+              if (isBgmi) {
+                if ((e.target as HTMLElement).closest(`.${styles.rulebookButton}`)) {
+                  return;
+                }
+                window.location.href = "/events/bgmi-elite-showdown";
+              }
+            }}
+            onKeyDown={(e) => {
+              if (isBgmi && (e.key === "Enter" || e.key === " ")) {
+                if (!(e.target as HTMLElement).closest(`.${styles.rulebookButton}`)) {
+                  e.preventDefault();
+                  window.location.href = "/events/bgmi-elite-showdown";
+                }
+              }
+            }}
+          >
+            <img className={styles.poster} src={event.image} alt="" />
+            <div className={styles.grad} />
+            <div className={styles.frame} />
+            <div className={styles.namePlate}>
+              <div className={styles.name}>{event.title}</div>
+            </div>
+            <div className={styles.info}>
+              <div className={styles.name}>{event.title}</div>
+              <div className={styles.desc}>{event.desc}</div>
+              <div className={styles.actions}>
+                <button
+                  className={styles.exploreButton}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveEvent(event);
+                  }}
+                >
+                  Explore <span aria-hidden="true">↗</span>
+                </button>
+                <a className={styles.rulebookButton} href={event.rulebook} download={event.downloadName}>
+                  View Rulebook <span aria-hidden="true">↓</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       {activeEvent && (
-        <div className={styles.modalBackdrop} role="presentation" onClick={() => { setActiveEvent(null); setRegistrationMessage(false); }}>
+        <div className={styles.modalBackdrop} role="presentation" onClick={() => setActiveEvent(null)}>
           <section
             className={styles.modal}
             role="dialog"
@@ -219,23 +171,37 @@ export default function CharacterOrbit() {
           >
             <img className={styles.modalPoster} src={activeEvent.image} alt="" />
             <div className={styles.modalShade} />
-            <button className={styles.closeButton} type="button" aria-label="Close event details" onClick={() => { setActiveEvent(null); setRegistrationMessage(false); }}>×</button>
+            <button className={styles.closeButton} type="button" aria-label="Close event details" onClick={() => setActiveEvent(null)}>×</button>
             <div className={styles.modalContent}>
-              <div className={styles.modalTheme}>{activeEvent.theme}</div>
+              <div className={styles.modalTheme}>
+                {activeEvent.theme}
+                <span className={styles.modalPrice}>Entry: {formatPrice(activeEvent.price)}</span>
+              </div>
               <h2 id="event-dialog-title" className={styles.modalTitle}>{activeEvent.title}</h2>
               <p className={styles.modalDescription}>{activeEvent.desc}</p>
               <div className={styles.modalActions}>
-                <button className={styles.registerButton} type="button" onClick={() => setRegistrationMessage(true)}>
-                  Register <span aria-hidden="true">↗</span>
+                <button
+                  className={styles.registerButton}
+                  type="button"
+                  onClick={() => setRegisteringEvent(activeEvent)}
+                >
+                  Register · {formatPrice(activeEvent.price)} <span aria-hidden="true">↗</span>
                 </button>
                 <a className={styles.modalDownload} href={activeEvent.rulebook} download={activeEvent.downloadName}>
                   Download Rulebook <span aria-hidden="true">↓</span>
                 </a>
               </div>
-              {registrationMessage && <p className={styles.registrationMessage} role="status">Registration link coming soon.</p>}
             </div>
           </section>
         </div>
+      )}
+
+      {registeringEvent && (
+        <RegistrationModal
+          event={registeringEvent}
+          isOpen={Boolean(registeringEvent)}
+          onClose={() => setRegisteringEvent(null)}
+        />
       )}
     </div>
   );

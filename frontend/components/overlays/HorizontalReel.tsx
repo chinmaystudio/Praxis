@@ -94,48 +94,51 @@ export default function HorizontalReel() {
     <div className="reel-layer" ref={layerRef} style={{ opacity: 0, visibility: "hidden" }}>
       <div className={styles.stage} ref={stageRef}>
         <div className={styles.track} ref={trackRef}>
-          {EVENTS.map((event, i) => (
-            <a
-              key={event.n}
-              className={styles.frame}
-              ref={(el) => {
-                frameRefs.current[i] = el;
-              }}
-              href={event.rulebook}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Open the ${event.title} rulebook`}
-              style={{ "--accent": event.accent } as React.CSSProperties}
-            >
-              <div
-                className={styles.inner}
+          {EVENTS.map((event, i) => {
+            const isBgmi = event.title === "BGMI Elite Showdown";
+            return (
+              <a
+                key={event.n}
+                className={styles.frame}
                 ref={(el) => {
-                  innerRefs.current[i] = el;
+                  frameRefs.current[i] = el;
                 }}
+                href={isBgmi ? "/events/bgmi-elite-showdown" : event.rulebook}
+                target={isBgmi ? "_self" : "_blank"}
+                rel="noreferrer"
+                aria-label={isBgmi ? `Open ${event.title} experience` : `Open the ${event.title} rulebook`}
+                style={{ "--accent": event.accent } as React.CSSProperties}
               >
-                <article className={styles.screen}>
-                  <img className={styles.poster} src={event.image} alt="" />
-                  <span className={styles.scrim} />
-                  <span className={`${styles.bracket} ${styles.tl}`} />
-                  <span className={`${styles.bracket} ${styles.tr}`} />
-                  <span className={`${styles.bracket} ${styles.bl}`} />
-                  <span className={`${styles.bracket} ${styles.br}`} />
-                  <div className={styles.status}>
-                    <span className={styles.dot} />
-                    <span>Event {event.n}</span>
-                  </div>
-                  <div className={styles.theme}>{event.theme}</div>
-                  <div className={styles.caption}>
-                    <div className={styles.visual}>{event.visual}</div>
-                    <h2 className={styles.title}>{event.title}</h2>
-                    <div className={styles.openRulebook}>
-                      View rulebook <span aria-hidden="true">↗</span>
+                <div
+                  className={styles.inner}
+                  ref={(el) => {
+                    innerRefs.current[i] = el;
+                  }}
+                >
+                  <article className={styles.screen}>
+                    <img className={styles.poster} src={event.image} alt="" />
+                    <span className={styles.scrim} />
+                    <span className={`${styles.bracket} ${styles.tl}`} />
+                    <span className={`${styles.bracket} ${styles.tr}`} />
+                    <span className={`${styles.bracket} ${styles.bl}`} />
+                    <span className={`${styles.bracket} ${styles.br}`} />
+                    <div className={styles.status}>
+                      <span className={styles.dot} />
+                      <span>Event {event.n}</span>
                     </div>
-                  </div>
-                </article>
-              </div>
-            </a>
-          ))}
+                    <div className={styles.theme}>{event.theme}</div>
+                    <div className={styles.caption}>
+                      <div className={styles.visual}>{event.visual}</div>
+                      <h2 className={styles.title}>{event.title}</h2>
+                      <div className={styles.openRulebook}>
+                        {isBgmi ? "Enter Showdown" : "View rulebook"} <span aria-hidden="true">↗</span>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
 

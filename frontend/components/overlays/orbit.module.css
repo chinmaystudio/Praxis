@@ -37,6 +37,10 @@
   outline: none;
 }
 
+.clickableCard {
+  cursor: pointer;
+}
+
 /* the video fills the card completely — cover, centred, aspect preserved */
 .poster {
   position: absolute;
@@ -257,6 +261,23 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--accent) 80%, white 20%);
+}
+
+.modalPrice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.75rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  vertical-align: middle;
 }
 
 .modalTitle {

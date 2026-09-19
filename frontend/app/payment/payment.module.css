@@ -1,0 +1,224 @@
+/* ============================================================
+   PRAXIS — Payment Status Pages (Success & Failure)
+   ============================================================ */
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(0, 255, 156, 0.12), transparent 55%),
+    radial-gradient(circle at 50% 85%, rgba(4, 18, 12, 0.9), #000 70%);
+  position: relative;
+  overflow: hidden;
+}
+
+.container.failure {
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(255, 68, 88, 0.14), transparent 55%),
+    radial-gradient(circle at 50% 85%, rgba(24, 6, 8, 0.9), #000 70%);
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 580px;
+  background: rgba(3, 8, 14, 0.88);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 255, 156, 0.25);
+  border-radius: 24px;
+  box-shadow:
+    0 35px 110px -20px rgba(0, 0, 0, 0.95),
+    0 0 50px -15px rgba(0, 255, 156, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+  animation: cardFadeIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.container.failure .card {
+  border-color: rgba(255, 68, 88, 0.3);
+  box-shadow:
+    0 35px 110px -20px rgba(0, 0, 0, 0.95),
+    0 0 50px -15px rgba(255, 68, 88, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.iconWrapper {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 255, 156, 0.12);
+  border: 2px solid #00ff9c;
+  color: #00ff9c;
+  font-size: 2.2rem;
+  box-shadow: 0 0 30px rgba(0, 255, 156, 0.35);
+}
+
+.container.failure .iconWrapper {
+  background: rgba(255, 68, 88, 0.12);
+  border-color: #ff4458;
+  color: #ff4458;
+  box-shadow: 0 0 30px rgba(255, 68, 88, 0.35);
+}
+
+.kicker {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #00ff9c;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0, 255, 156, 0.5);
+}
+
+.container.failure .kicker {
+  color: #ff4458;
+  text-shadow: 0 0 10px rgba(255, 68, 88, 0.5);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  margin: 0 0 1rem;
+  line-height: 1.05;
+}
+
+.description {
+  font-family: var(--font-ui);
+  font-size: clamp(0.88rem, 1.3vw, 1rem);
+  line-height: 1.6;
+  color: rgba(235, 245, 255, 0.75);
+  margin-bottom: 2rem;
+}
+
+/* Details Breakdown Grid */
+.detailsBox {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detailLabel {
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.detailValue {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.registrationCodeBadge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: rgba(0, 255, 156, 0.15);
+  border: 1px solid #00ff9c;
+  border-radius: 6px;
+  color: #00ff9c;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 48px;
+  padding: 0 1.85rem;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.primaryBtn {
+  background: #00ff9c;
+  border: none;
+  color: #031008;
+  box-shadow: 0 0 25px rgba(0, 255, 156, 0.4);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(0, 255, 156, 0.65);
+}
+
+.container.failure .primaryBtn {
+  background: #ff4458;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 68, 88, 0.4);
+}
+
+.container.failure .primaryBtn:hover {
+  box-shadow: 0 0 35px rgba(255, 68, 88, 0.65);
+}
+
+.secondaryBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}

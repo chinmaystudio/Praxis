@@ -1,0 +1,390 @@
+/* ============================================================
+   PRAXIS — Cinematic Event Registration Modal
+   ============================================================ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 3vw, 24px);
+  background: rgba(0, 4, 8, 0.86);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  animation: backdropFadeIn 280ms ease forwards;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(175deg, rgba(8, 14, 22, 0.98), rgba(2, 6, 10, 0.98));
+  border: 1px solid color-mix(in srgb, var(--accent, #00ff9c) 35%, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  box-shadow:
+    0 30px 90px -20px rgba(0, 0, 0, 0.95),
+    0 0 45px -10px color-mix(in srgb, var(--accent, #00ff9c) 25%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  animation: modalScaleIn 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header */
+.header {
+  position: relative;
+  padding: 1.5rem 1.75rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.02), transparent);
+}
+
+.kickerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.themeBadge {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent, #00ff9c);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent, #00ff9c) 50%, transparent);
+}
+
+.priceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, #00ff9c) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #00ff9c) 50%, transparent);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* Scrollable Form Body */
+.body {
+  padding: 1.5rem 1.75rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem 1rem;
+}
+
+.fullWidth {
+  grid-column: span 2;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.label {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.required {
+  color: var(--accent, #00ff9c);
+  margin-left: 0.2rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  height: 42px;
+  padding: 0 0.85rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  color: #fff;
+  transition: all 200ms ease;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.26);
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--accent, #00ff9c);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--accent, #00ff9c) 35%, transparent);
+}
+
+.inputError {
+  border-color: #ff4d5a !important;
+  box-shadow: 0 0 10px rgba(255, 77, 90, 0.25) !important;
+}
+
+.errorMessage {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  color: #ff6b76;
+  letter-spacing: 0.02em;
+}
+
+/* Order Summary Box */
+.summaryBox {
+  margin-top: 1.25rem;
+  padding: 1rem 1.15rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.summaryRow.total {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.totalPrice {
+  color: var(--accent, #00ff9c);
+  font-size: 1.15rem;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent, #00ff9c) 40%, transparent);
+}
+
+.upiBadge {
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(0, 255, 156, 0.06);
+  border: 1px solid rgba(0, 255, 156, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  color: #a7f3d0;
+}
+
+.upiDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff9c;
+  box-shadow: 0 0 8px #00ff9c;
+  flex-shrink: 0;
+}
+
+/* General Error Banner */
+.generalError {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 50, 65, 0.12);
+  border: 1px solid rgba(255, 50, 65, 0.4);
+  border-radius: 8px;
+  color: #ff9da4;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Footer / Actions */
+.footer {
+  padding: 1.1rem 1.75rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+}
+
+.cancelBtn {
+  height: 42px;
+  padding: 0 1.25rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.submitBtn {
+  height: 44px;
+  padding: 0 1.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--accent, #00ff9c);
+  border: none;
+  border-radius: 999px;
+  color: #031008;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 24px -4px color-mix(in srgb, var(--accent, #00ff9c) 65%, transparent);
+  transition: all 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--accent, #00ff9c) 80%, transparent);
+  filter: brightness(1.08);
+}
+
+.submitBtn:disabled,
+.cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Rules */
+@media (max-width: 600px) {
+  .backdrop {
+    padding: 12px;
+  }
+
+  .modal {
+    width: calc(100% - 12px);
+    max-height: 94vh;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .fullWidth {
+    grid-column: span 1;
+  }
+
+  .header {
+    padding: 1.2rem 1.25rem 1rem;
+  }
+
+  .body {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .footer {
+    padding: 1rem 1.25rem;
+    flex-direction: column-reverse;
+  }
+
+  .cancelBtn,
+  .submitBtn {
+    width: 100%;
+  }
+}
