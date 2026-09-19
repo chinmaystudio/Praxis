@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResearchX — PRAXIS '26 | Where Research Meets Innovation</title>
+  <meta name="description" content="ResearchX is the flagship Marvel-themed national research competition at PRAXIS '26, presented by the Department of Information Technology & ITSA. ₹17,000 Prize Pool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/researchx/style.css">
+</head>
+<body class="theme-marvel">
+
+  <!-- Fixed Return to Praxis button -->
+  <a href="/events" class="praxis-return-pill" aria-label="Return to Praxis Events">
+    <span class="praxis-return-arrow" aria-hidden="true">←</span>
+    <span class="praxis-return-text">BACK TO PRAXIS</span>
+  </a>
+
+  <!-- MASTER AUDIO CONTROLLER (Fixed Top-Right) -->
+  <div id="master-audio-control" class="audio-control-btn" title="Toggle Sound">
+    <div class="audio-waves" id="audio-visualizer">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    <span id="audio-label">SOUND: ON</span>
+  </div>
+
+  <!-- PHASE 1: THOR CINEMATIC MONTAGE (RUNS FIRST ON EVENT OPEN) -->
+  <section id="phase-montage" class="fullscreen-overlay active">
+    <video id="montage-video" playsinline preload="auto" src="/videos/thor_epic.mp4"></video>
+    <!-- Montage HUD -->
+    <div class="montage-hud">
+      <button id="btn-skip-montage" class="btn-montage-skip">SKIP INTRO ⏭</button>
+    </div>
+  </section>
+
+  <!-- PHASE 2: PRAXIS '26 LOGO OPENING SPLASH (RUNS FOR 1-2 SEC BEFORE HERO) -->
+  <section id="phase-praxis-splash" class="praxis-splash-overlay">
+    <div class="praxis-splash-container">
+      <div class="praxis-emblem-wrapper">
+        <img src="/images/praxis_new_logo.png" alt="PRAXIS '26" class="praxis-splash-img">
+        <div class="praxis-reactor-glow"></div>
+      </div>
+      <div class="praxis-splash-meta">
+        <div class="praxis-subtext">DEPARTMENT OF INFORMATION TECHNOLOGY & ITSA PRESENTS</div>
+        <h1 class="praxis-splash-title">PRAXIS '26</h1>
+        <p class="praxis-splash-tag">IDEAS ASSEMBLE A BRIGHTER TOMORROW</p>
+      </div>
+      <div class="splash-action-row">
+        <button id="btn-enter-site" class="btn-enter-praxis">
+          <span>ENTER PORTAL</span>
+          <span class="enter-symbol">►</span>
+        </button>
+      </div>
+      <div class="splash-status-text">INITIALIZING EVENT PORTAL... <span id="splash-timer">2s</span></div>
+    </div>
+  </section>
+
+  <!-- MAIN EVENT PORTAL & WEBPAGE -->
+  <div id="main-portal" class="portal-container">
+    
+    <!-- STICKY GLOBAL NAVIGATION (MINIMAL TABS) -->
+    <header class="navbar" id="navbar">
+      <div class="nav-brand">
+        <img src="/images/praxis_new_logo.png" alt="PRAXIS '26" class="nav-logo">
+        <div class="nav-title-group">
+          <span class="nav-main">PRAXIS '26</span>
+          <span class="nav-sub">RESEARCHX</span>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="main-nav-links">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#prizes" class="nav-link">Prizes</a>
+        <a href="#rules" class="nav-link">Rulebook (PDF)</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Register button hidden initially; shown after exploring details -->
+      <div class="nav-actions">
+        <span class="status-pill"><span class="dot-live"></span> Registrations Open</span>
+        <button class="btn-nav-cta hidden" id="btn-header-register">Register Team</button>
+      </div>
+    </header>
+
+    <!-- PHASE 3: HERO SECTION (ASGARD & MJOLNIR BACKGROUND) -->
+    <section id="hero" class="hero-section">
+      <div class="hero-bg-wrapper">
+        <img src="/images/hero_asgard_mjolnir.jpg" alt="Asgard & Mjolnir — ResearchX" class="hero-bg-image" id="hero-poster">
+        <div class="hero-lightning-layer"></div>
+        <div class="hero-vignette"></div>
+      </div>
+
+      <div class="hero-content">
+        <!-- Top Tactical Badges -->
+        <div class="hero-protocol-tag">
+          <span class="bracket">▲</span> INFORMATION TECHNOLOGY STUDENTS ASSOCIATION | ITSA PROTOCOL
+        </div>
+
+        <div class="hero-badge-bar">
+          <span class="badge-flag">NATIONAL RESEARCH SYMPOSIUM</span>
+          <span class="badge-separator">|</span>
+          <span class="badge-theme">RESOURCE CONSERVATION</span>
+          <span class="badge-separator">|</span>
+          <span class="badge-bounty">BOUNTY: ₹17,000</span>
+        </div>
+
+        <!-- Sleek 3D Metallic PRAXIS Wordmark Logo Above ResearchX -->
+        <div class="hero-praxis-emblem-box">
+          <img src="/images/praxis_new_logo.png" alt="PRAXIS '26 Official Wordmark" class="hero-praxis-wordmark">
+        </div>
+
+        <!-- Balanced Title (Crisp, High-Impact, Not Overpowering Poster) -->
+        <h1 class="hero-main-title">
+          <span class="title-gold">RESEARCH</span><span class="title-accent">X</span>
+        </h1>
+
+        <h2 class="hero-tagline">WHERE RESEARCH MEETS INNOVATION</h2>
+        
+        <p class="hero-motto">
+          <span>IDEA</span> <span class="bullet">•</span> 
+          <span>ANALYZE</span> <span class="bullet">•</span> 
+          <span>INNOVATE</span>
+        </p>
+
+        <!-- ONLY ONE BUTTON ON HERO: EXPLORE EVENT -->
+        <div class="hero-cta-group">
+          <button id="btn-explore-event" class="btn-explore-hero">
+            <span class="btn-arrow">►</span>
+            <span class="btn-text">EXPLORE EVENT</span>
+            <div class="sheen-effect"></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator">
+        <span class="scroll-mouse"></span>
+        <span class="scroll-text">SCROLL TO EXPLORE DOSSIER</span>
+      </div>
+    </section>
+
+    <!-- PHASE 5: EVENT DETAILS DOSSIER -->
+    <main id="dossier" class="dossier-wrapper">
+
+      <!-- SECTION: OVERVIEW & KEY PARAMETERS -->
+      <section id="overview" class="dossier-section overview-section">
+        <div class="quick-specs-grid">
+          <div class="quick-spec-card">
+            <div class="quick-spec-icon">📍</div>
+            <div class="quick-spec-info">
+              <span class="quick-spec-label">Venue & Campus</span>
+              <span class="quick-spec-value">PCCOE Pune • PRAXIS '26</span>
+            </div>
+          </div>
+
+          <div class="quick-spec-card">
+            <div class="quick-spec-icon">👥</div>
+            <div class="quick-spec-info">
+              <span class="quick-spec-label">Team Capacity</span>
+              <span class="quick-spec-value">2 to 4 Members / Squad</span>
+            </div>
+          </div>
+
+          <div class="quick-spec-card">
+            <div class="quick-spec-icon">⚔️</div>
+            <div class="quick-spec-info">
+              <span class="quick-spec-label">Competition Format</span>
+              <span class="quick-spec-value">3 Tournament Rounds</span>
+            </div>
+          </div>
+
+          <div class="quick-spec-card">
+            <div class="quick-spec-icon">🌱</div>
+            <div class="quick-spec-info">
+              <span class="quick-spec-label">Grand Theme</span>
+              <span class="quick-spec-value">Resource Conservation</span>
+            </div>
+          </div>
+
+          <div class="quick-spec-card highlight">
+            <div class="quick-spec-icon">💳</div>
+            <div class="quick-spec-info">
+              <span class="quick-spec-label">Registration Fee</span>
+              <span class="quick-spec-value">FREE (PCCOE) / ₹200 (Other)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUTHENTIC & CRISP SYMPOSIUM BRIEF -->
+        <div class="event-brief-card">
+          <div class="brief-tag">Flagship Technical Symposium</div>
+          <h3 class="brief-title">Bridging Pure Research With Actionable Technology</h3>
+          <p class="brief-text">
+            Organized by the <strong>Department of Information Technology & ITSA</strong> at PCCOE Pune, <strong>ResearchX</strong> is a national-level technical competition tailored for undergraduate engineering students. The event guides teams from fundamental aptitude and strategic AI auctions to defending original, technology-driven solutions for global resource conservation before an expert evaluation panel.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 1: PRIZE POOL PODIUM -->
+      <section id="prizes" class="dossier-section">
+        <div class="section-header">
+          <div class="section-tag">Cash Awards & Honors</div>
+          <h2 class="section-title">Prize Pool & Perks</h2>
+          <p class="section-subtitle">Total cash prize pool of ₹17,000 proudly awarded to the top research teams at PRAXIS '26.</p>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="podium-container">
+          <!-- 1st Runner Up (Rank 2) -->
+          <div class="podium-card rank-2">
+            <div class="podium-rank-badge">Runner-Up • Rank 02</div>
+            <div class="podium-medal">🥈</div>
+            <h3 class="podium-tier">1st Runner-Up</h3>
+            <div class="podium-prize">₹6,000</div>
+            <ul class="podium-perks">
+              <li>✓ Cash Honorarium: ₹6,000</li>
+              <li>✓ Official Certificate of Merit</li>
+              <li>✓ PRAXIS Silver Medallion</li>
+              <li>✓ Department Recommendation</li>
+            </ul>
+          </div>
+
+          <!-- Champion (Rank 1) -->
+          <div class="podium-card rank-1">
+            <div class="podium-crown">👑</div>
+            <div class="podium-rank-badge gold">Winner • Rank 01</div>
+            <div class="podium-medal">🥇</div>
+            <h3 class="podium-tier gold">Grand Champion</h3>
+            <div class="podium-prize gold">₹8,000</div>
+            <ul class="podium-perks">
+              <li>✓ Cash Honorarium: ₹8,000</li>
+              <li>✓ ResearchX Championship Trophy</li>
+              <li>✓ Official Certificate of Excellence</li>
+              <li>✓ Direct Feature in PRAXIS Chronicle</li>
+            </ul>
+          </div>
+
+          <!-- 2nd Runner Up (Rank 3) -->
+          <div class="podium-card rank-3">
+            <div class="podium-rank-badge">2nd Runner-Up • Rank 03</div>
+            <div class="podium-medal">🥉</div>
+            <h3 class="podium-tier">2nd Runner-Up</h3>
+            <div class="podium-prize">₹3,000</div>
+            <ul class="podium-perks">
+              <li>✓ Cash Honorarium: ₹3,000</li>
+              <li>✓ Official Certificate of Merit</li>
+              <li>✓ PRAXIS Bronze Medallion</li>
+              <li>✓ Department Commendation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="perks-row">
+          <!-- IEEE Goodies Banner from Rulebook Page 4 -->
+          <div class="ieee-goodies-card">
+            <div class="ieee-icon">🎁</div>
+            <div class="ieee-text">
+              <strong>IEEE Goodies for Top 6 Finalists:</strong> All 6 teams qualifying from Round 1 into Round 2 receive official IEEE goodies as a special token of recognition.
+            </div>
+          </div>
+
+          <!-- Participation Certificate Banner -->
+          <div class="participation-banner">
+            <div class="cert-icon">📜</div>
+            <div class="cert-text">
+              <strong>Certificate of Participation:</strong> Awarded to all valid participating teams by the Department of Information Technology & ITSA, PCCOE.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: OFFICIAL RULEBOOK & GUIDELINES (ALL ROUNDS & RUBRIC SPECIFIED IN PDF) -->
+      <section id="rules" class="dossier-section">
+        <div class="section-header">
+          <div class="section-tag">Official Documentation</div>
+          <h2 class="section-title">Rulebook & Guidelines</h2>
+          <p class="section-subtitle">Download the official event rulebook containing the complete three-stage tournament syllabus, AI tool auction budget, and 5-pillar evaluation rubric.</p>
+          <div class="section-divider"></div>
+        </div>
+
+        <!-- PROMINENT OFFICIAL RULEBOOK PDF CARD -->
+        <div class="rulebook-dossier-card">
+          <div class="rulebook-card-left">
+            <div class="rulebook-badge">Official Handbook • ITSA Directive</div>
+            <h3 class="rulebook-card-title">ResearchX '26 Rulebook & Syllabus</h3>
+            <p class="rulebook-card-desc">
+              Download the authoritative briefing document containing complete event specifications, the AI tool auction credit budget, 6-theme wheel draw details, and the 5-pillar judging rubric.
+            </p>
+            <div class="rulebook-specs-tags">
+              <span>⚡ 3 Tournament Stages</span>
+              <span>⚖️ 5-Pillar Evaluation Rubric</span>
+              <span>💰 ₹17,000 Prize Pool</span>
+              <span>📜 Official ITSA Document</span>
+            </div>
+          </div>
+          <div class="rulebook-card-right">
+            <a href="/PRAXIS_ResearchX_Enhanced_Creative_Rulebook.pdf" target="_blank" class="btn-pdf-action">
+              <span class="pdf-icon">📄</span>
+              <span class="pdf-text">View / Download Rulebook (PDF)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- GENERAL DIRECTIVES (FROM RULEBOOK PAGE 2) -->
+        <div class="rules-grid">
+          <div class="rule-card">
+            <div class="rule-number">01</div>
+            <h3>Team Composition</h3>
+            <p>Each team must consist of 2 to 4 registered students. Solo entries and 5+ member teams are strictly not permitted. Interdisciplinary squads are welcomed.</p>
+          </div>
+
+          <div class="rule-card">
+            <div class="rule-number">02</div>
+            <h3>Academic Integrity</h3>
+            <p>Plagiarism, fabricated data, or presenting uncredited AI content as original will result in immediate disqualification. Play fair, research honestly, present with integrity.</p>
+          </div>
+
+          <div class="rule-card">
+            <div class="rule-number">03</div>
+            <h3>Active Participation</h3>
+            <p>All registered members must be present and actively participate throughout each qualified round and jury Q&A sessions.</p>
+          </div>
+
+          <div class="rule-card">
+            <div class="rule-number">04</div>
+            <h3>Coordinators & Jury Authority</h3>
+            <p>The decisions of the organizing student coordinators and faculty judging panel are final and binding in all technical and procedural matters.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: EVENT LEADS & CONTACTS -->
+      <section id="contact" class="dossier-section">
+        <div class="section-header">
+          <div class="section-tag">Event Coordinators & Assistance</div>
+          <h2 class="section-title">Student Coordinators</h2>
+          <p class="section-subtitle">Reach out to the student leads for any queries regarding ResearchX registrations, round rules, or schedule.</p>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Uday Lingayat -->
+          <div class="contact-card">
+            <div class="contact-avatar">UL</div>
+            <h3 class="contact-name">Uday Lingayat</h3>
+            <div class="contact-role">Event Lead Coordinator</div>
+            <div class="contact-phone">+91 78060 43233</div>
+            <div class="contact-actions">
+              <a href="tel:+917806043233" class="btn-contact call">📞 Call</a>
+              <a href="https://wa.me/917806043233?text=Hi%20Uday,%20I%20have%20a%20query%20regarding%20ResearchX%20PRAXIS%2026" target="_blank" rel="noreferrer" class="btn-contact wa">💬 WhatsApp</a>
+            </div>
+          </div>
+
+          <!-- Ojas Barhate -->
+          <div class="contact-card">
+            <div class="contact-avatar">OB</div>
+            <h3 class="contact-name">Ojas Barhate</h3>
+            <div class="contact-role">Technical Coordinator</div>
+            <div class="contact-phone">+91 78273 12166</div>
+            <div class="contact-actions">
+              <a href="tel:+917827312166" class="btn-contact call">📞 Call</a>
+              <a href="https://wa.me/917827312166?text=Hi%20Ojas,%20I%20have%20a%20query%20regarding%20ResearchX%20PRAXIS%2026" target="_blank" rel="noreferrer" class="btn-contact wa">💬 WhatsApp</a>
+            </div>
+          </div>
+
+          <!-- Aastha Chaudhari -->
+          <div class="contact-card">
+            <div class="contact-avatar">AC</div>
+            <h3 class="contact-name">Aastha Chaudhari</h3>
+            <div class="contact-role">Public Relations & Operations</div>
+            <div class="contact-phone">+91 82650 14846</div>
+            <div class="contact-actions">
+              <a href="tel:+918265014846" class="btn-contact call">📞 Call</a>
+              <a href="https://wa.me/918265014846?text=Hi%20Aastha,%20I%20have%20a%20query%20regarding%20ResearchX%20PRAXIS%2026" target="_blank" rel="noreferrer" class="btn-contact wa">💬 WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: FINAL REGISTRATION BANNER -->
+      <section class="final-cta-section" id="register-section">
+        <div class="final-cta-box">
+          <div class="cta-shield-tag">Online Registration</div>
+          <h2 class="cta-heading">Register Your Team</h2>
+          <p class="cta-text">Registrations are limited and accepted on a first-come, first-served basis. Free for PCCOE students • ₹200 per team for other engineering colleges.</p>
+          
+          <div class="cta-btn-row">
+            <button id="btn-footer-register" class="btn-explore-glow large">
+              <span>Register Your Team 🚀</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="/images/praxis_new_logo.png" alt="PRAXIS '26" class="footer-logo">
+          <div>
+            <h4>PRAXIS '26</h4>
+            <p>Department of Information Technology & ITSA, PCCOE Pune</p>
+          </div>
+        </div>
+
+        <div class="footer-copy">
+          <p>Organized by Department of Information Technology & Information Technology Students Association (ITSA).</p>
+          <p class="legal">© 2026 ResearchX. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- REGISTRATION MODAL -->
+  <div id="registration-modal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-header">
+        <span class="modal-tag">Department of IT & ITSA</span>
+        <h3 class="modal-title">Register Your Team for ResearchX</h3>
+        <p class="modal-subtitle">Official enrollment form for ResearchX — PRAXIS '26</p>
+      </div>
+      
+      <form id="reg-form" class="modal-form">
+        <!-- 👥 Team & Leader Basic Details -->
+        <div class="modal-section-divider">
+          <span>1. Team & Leader Information</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="teamName">Team Name *</label>
+            <input type="text" id="teamName" required placeholder="e.g. EcoInnovators">
+          </div>
+          <div class="form-group">
+            <label for="teamSize">Number of Members * (2 to 4)</label>
+            <select id="teamSize" required>
+              <option value="2">2 Members (Leader + 1 Member)</option>
+              <option value="3">3 Members (Leader + 2 Members)</option>
+              <option value="4" selected>4 Members (Leader + 3 Members)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="leaderName">Team Leader Name *</label>
+            <input type="text" id="leaderName" required placeholder="Full Name">
+          </div>
+          <div class="form-group">
+            <label for="leaderPhone">Team Leader Phone Number *</label>
+            <input type="tel" id="leaderPhone" required placeholder="+91 XXXXX XXXXX">
+          </div>
+        </div>
+
+        <!-- 🏫 College Selection for Leader -->
+        <div class="modal-section-divider">
+          <span>2. Leader College Information</span>
+        </div>
+
+        <div class="form-group">
+          <label for="leaderCollegeType">Select College Type *</label>
+          <select id="leaderCollegeType" required>
+            <option value="pccoe" selected>PCCOE (Pimpri Chinchwad College of Engineering)</option>
+            <option value="other">Another College</option>
+          </select>
+        </div>
+
+        <!-- If Leader is PCCOE -->
+        <div id="leader-pccoe-fields">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leaderPRN">PRN (Permanent Registration Number) *</label>
+              <input type="text" id="leaderPRN" placeholder="e.g. 121B1B..." required>
+            </div>
+            <div class="form-group">
+              <label for="leaderPCCOEEmail">PCCOE Email ID *</label>
+              <input type="email" id="leaderPCCOEEmail" placeholder="first.last@pccoepune.org" required>
+            </div>
+          </div>
+
+          <!-- OTP Verification Box -->
+          <div class="otp-verification-box" id="otp-box">
+            <div class="otp-row">
+              <button type="button" id="btn-send-otp" class="btn-otp">SEND OTP</button>
+              <input type="text" id="otpInput" maxlength="6" placeholder="Enter OTP received" class="otp-input">
+              <button type="button" id="btn-verify-otp" class="btn-otp verify">VERIFY OTP</button>
+            </div>
+            <span id="otpStatus" class="otp-status-badge">⚡ Email verification required for PCCOE leaders</span>
+          </div>
+
+          <div class="form-row" style="margin-top: 12px;">
+            <div class="form-group">
+              <label for="leaderYearPCCOE">Year *</label>
+              <select id="leaderYearPCCOE">
+                <option value="FE">First Year (FE)</option>
+                <option value="SE">Second Year (SE)</option>
+                <option value="TE" selected>Third Year (TE)</option>
+                <option value="BE">Final Year (BE)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="leaderBranchPCCOE">Branch *</label>
+              <input type="text" id="leaderBranchPCCOE" placeholder="e.g. Information Technology">
+            </div>
+          </div>
+        </div>
+
+        <!-- If Leader is from Another College -->
+        <div id="leader-other-fields" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leaderOtherCollegeName">College Name *</label>
+              <input type="text" id="leaderOtherCollegeName" placeholder="Full College / University Name">
+            </div>
+            <div class="form-group">
+              <label for="leaderOtherEmail">Team Leader Email ID *</label>
+              <input type="email" id="leaderOtherEmail" placeholder="leader.personal@example.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leaderYearOther">Year *</label>
+              <select id="leaderYearOther">
+                <option value="FE">First Year (FE)</option>
+                <option value="SE">Second Year (SE)</option>
+                <option value="TE" selected>Third Year (TE)</option>
+                <option value="BE">Final Year (BE)</option>
+                <option value="Other">Postgraduate / Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="leaderBranchOther">Branch *</label>
+              <input type="text" id="leaderBranchOther" placeholder="e.g. Computer Engineering / AI">
+            </div>
+          </div>
+        </div>
+
+        <!-- 👨‍👩‍👧‍👦 Team Members Section (Leader + up to 3 additional members) -->
+        <div class="modal-section-divider">
+          <span>3. Team Members (2 to 4 Members Total)</span>
+        </div>
+
+        <!-- Member 1 (Always present for 2 to 4 member teams) -->
+        <div class="member-card-block" id="block-member-1">
+          <div class="member-card-title">Member 1</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m1Name">Name *</label>
+              <input type="text" id="m1Name" required placeholder="Member 1 Full Name">
+            </div>
+            <div class="form-group">
+              <label for="m1Email">Email ID *</label>
+              <input type="email" id="m1Email" required placeholder="m1.email@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m1CollegeType">College *</label>
+              <select id="m1CollegeType" class="member-college-select" data-member="1" required>
+                <option value="pccoe" selected>PCCOE</option>
+                <option value="other">Another College</option>
+              </select>
+            </div>
+            <div class="form-group" id="m1-prn-group">
+              <label for="m1PRN">PRN * (Required for PCCOE)</label>
+              <input type="text" id="m1PRN" required placeholder="PRN Number">
+            </div>
+            <div class="form-group" id="m1-college-group" style="display: none;">
+              <label for="m1CollegeName">College Name *</label>
+              <input type="text" id="m1CollegeName" placeholder="College Name">
+            </div>
+          </div>
+        </div>
+
+        <!-- Member 2 (Shown if team size >= 3) -->
+        <div class="member-card-block" id="block-member-2">
+          <div class="member-card-title">Member 2</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m2Name">Name *</label>
+              <input type="text" id="m2Name" placeholder="Member 2 Full Name">
+            </div>
+            <div class="form-group">
+              <label for="m2Email">Email ID *</label>
+              <input type="email" id="m2Email" placeholder="m2.email@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m2CollegeType">College *</label>
+              <select id="m2CollegeType" class="member-college-select" data-member="2">
+                <option value="pccoe" selected>PCCOE</option>
+                <option value="other">Another College</option>
+              </select>
+            </div>
+            <div class="form-group" id="m2-prn-group">
+              <label for="m2PRN">PRN * (Required for PCCOE)</label>
+              <input type="text" id="m2PRN" placeholder="PRN Number">
+            </div>
+            <div class="form-group" id="m2-college-group" style="display: none;">
+              <label for="m2CollegeName">College Name *</label>
+              <input type="text" id="m2CollegeName" placeholder="College Name">
+            </div>
+          </div>
+        </div>
+
+        <!-- Member 3 (Shown if team size == 4) -->
+        <div class="member-card-block" id="block-member-3">
+          <div class="member-card-title">Member 3</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m3Name">Name *</label>
+              <input type="text" id="m3Name" placeholder="Member 3 Full Name">
+            </div>
+            <div class="form-group">
+              <label for="m3Email">Email ID *</label>
+              <input type="email" id="m3Email" placeholder="m3.email@example.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="m3CollegeType">College *</label>
+              <select id="m3CollegeType" class="member-college-select" data-member="3">
+                <option value="pccoe" selected>PCCOE</option>
+                <option value="other">Another College</option>
+              </select>
+            </div>
+            <div class="form-group" id="m3-prn-group">
+              <label for="m3PRN">PRN * (Required for PCCOE)</label>
+              <input type="text" id="m3PRN" placeholder="PRN Number">
+            </div>
+            <div class="form-group" id="m3-college-group" style="display: none;">
+              <label for="m3CollegeName">College Name *</label>
+              <input type="text" id="m3CollegeName" placeholder="College Name">
+            </div>
+          </div>
+        </div>
+
+        <!-- 💰 Payment Rules & Gateway Section -->
+        <div class="modal-section-divider">
+          <span>4. Registration Fee Status</span>
+        </div>
+
+        <!-- Free for all PCCOE -->
+        <div id="payment-free-box" class="payment-card-box free">
+          <div class="payment-badge">🎉 Registration Fee: ₹0 (FREE)</div>
+          <p>All squad participants are from PCCOE. No registration fee required!</p>
+        </div>
+
+        <!-- Paid if non-PCCOE participant exists -->
+        <div id="payment-paid-box" class="payment-card-box paid" style="display: none;">
+          <div class="payment-badge">💳 External Participant Fee: ₹200 Per Team</div>
+          <p>As per PRAXIS '26 rules, teams with participants from other colleges pay ₹200 per team.</p>
+          <div class="upi-box">
+            <span>Scan & Pay via UPI ID: <strong>praxis26.itsa@upi</strong></span>
+          </div>
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="paymentUTR">UPI Transaction / UTR ID *</label>
+            <input type="text" id="paymentUTR" placeholder="Enter 12-digit UTR / UPI Reference No.">
+          </div>
+        </div>
+
+        <div class="modal-alert">
+          ℹ️ An automated confirmation email with registration details, reference ID, and the official WhatsApp group link will be dispatched to the Team Leader's registered email upon submission.
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-explore-glow full">Complete Team Registration 🚀</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/researchx/main.js"></script>
+</body>
+</html>

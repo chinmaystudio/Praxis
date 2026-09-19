@@ -96,6 +96,8 @@ export default function HorizontalReel() {
         <div className={styles.track} ref={trackRef}>
           {EVENTS.map((event, i) => {
             const isBgmi = event.title === "BGMI Elite Showdown";
+            const isResearchX = event.title === "Research X";
+            const isInteractive = isBgmi || isResearchX;
             return (
               <a
                 key={event.n}
@@ -103,10 +105,22 @@ export default function HorizontalReel() {
                 ref={(el) => {
                   frameRefs.current[i] = el;
                 }}
-                href={isBgmi ? "/events/bgmi-elite-showdown" : event.rulebook}
-                target={isBgmi ? "_self" : "_blank"}
+                href={
+                  isBgmi
+                    ? "/events/bgmi-elite-showdown"
+                    : isResearchX
+                    ? "/events/research-x"
+                    : event.rulebook
+                }
+                target={isInteractive ? "_self" : "_blank"}
                 rel="noreferrer"
-                aria-label={isBgmi ? `Open ${event.title} experience` : `Open the ${event.title} rulebook`}
+                aria-label={
+                  isBgmi
+                    ? `Open ${event.title} experience`
+                    : isResearchX
+                    ? `Open ${event.title} portal`
+                    : `Open the ${event.title} rulebook`
+                }
                 style={{ "--accent": event.accent } as React.CSSProperties}
               >
                 <div
@@ -131,7 +145,7 @@ export default function HorizontalReel() {
                       <div className={styles.visual}>{event.visual}</div>
                       <h2 className={styles.title}>{event.title}</h2>
                       <div className={styles.openRulebook}>
-                        {isBgmi ? "Enter Showdown" : "View rulebook"} <span aria-hidden="true">↗</span>
+                        {isBgmi ? "Enter Showdown" : isResearchX ? "Enter ResearchX" : "View rulebook"} <span aria-hidden="true">↗</span>
                       </div>
                     </div>
                   </article>

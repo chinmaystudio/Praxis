@@ -19,7 +19,6 @@ export default function ScrollCue() {
 
   return (
     <div ref={ref} className={`${styles.corner} ${styles.scrollCue}`} aria-hidden>
-      <span className={styles.label}>Scroll to begin</span>
       <div className={styles.mouse} />
     </div>
   );

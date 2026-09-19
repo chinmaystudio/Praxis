@@ -105,28 +105,36 @@ export default function CharacterOrbit() {
     <div className={styles.layer}>
       {EVENTS.map((event, i) => {
         const isBgmi = event.slug === "bgmi-elite-showdown";
+        const isResearchX = event.slug === "research-x";
+        const isInteractiveCard = isBgmi || isResearchX;
         return (
           <div
             key={event.slug}
-            className={`${styles.card} ${isBgmi ? styles.clickableCard : ""}`}
+            className={`${styles.card} ${isInteractiveCard ? styles.clickableCard : ""}`}
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
             tabIndex={0}
             style={{ visibility: "hidden", "--accent": event.accent } as React.CSSProperties}
             onClick={(e) => {
+              if ((e.target as HTMLElement).closest(`.${styles.rulebookButton}`) || (e.target as HTMLElement).closest(`.${styles.exploreButton}`)) {
+                return;
+              }
               if (isBgmi) {
-                if ((e.target as HTMLElement).closest(`.${styles.rulebookButton}`)) {
-                  return;
-                }
                 window.location.href = "/events/bgmi-elite-showdown";
+              } else if (isResearchX) {
+                window.location.href = "/events/research-x";
               }
             }}
             onKeyDown={(e) => {
-              if (isBgmi && (e.key === "Enter" || e.key === " ")) {
-                if (!(e.target as HTMLElement).closest(`.${styles.rulebookButton}`)) {
+              if (isInteractiveCard && (e.key === "Enter" || e.key === " ")) {
+                if (!(e.target as HTMLElement).closest(`.${styles.rulebookButton}`) && !(e.target as HTMLElement).closest(`.${styles.exploreButton}`)) {
                   e.preventDefault();
-                  window.location.href = "/events/bgmi-elite-showdown";
+                  if (isBgmi) {
+                    window.location.href = "/events/bgmi-elite-showdown";
+                  } else if (isResearchX) {
+                    window.location.href = "/events/research-x";
+                  }
                 }
               }
             }}
@@ -181,7 +189,21 @@ export default function CharacterOrbit() {
               <h2 id="event-dialog-title" className={styles.modalTitle}>{activeEvent.title}</h2>
               <p className={styles.modalDescription}>{activeEvent.desc}</p>
               <div className={styles.modalActions}>
-<<<<<<< HEAD
+                {activeEvent.slug === "infinity-trials" && (
+                  <Link className={styles.exploreButton} href="/events/infinity-trials?intro=1">
+                    Explore <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {activeEvent.slug === "research-x" && (
+                  <Link className={styles.exploreButton} href="/events/research-x">
+                    Enter ResearchX <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {activeEvent.slug === "bgmi-elite-showdown" && (
+                  <Link className={styles.exploreButton} href="/events/bgmi-elite-showdown">
+                    Enter Showdown <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
                 <button
                   className={styles.registerButton}
                   type="button"
@@ -189,16 +211,6 @@ export default function CharacterOrbit() {
                 >
                   Register · {formatPrice(activeEvent.price)} <span aria-hidden="true">↗</span>
                 </button>
-=======
-                {activeEvent.slug === "infinity-trials" && (
-                  <Link className={styles.exploreButton} href="/events/infinity-trials?intro=1">
-                    Explore <span aria-hidden="true">↗</span>
-                  </Link>
-                )}
-                {activeEvent.slug === "infinity-trials" ? <Link className={styles.registerButton} href="/events/infinity-trials/register">Register <span aria-hidden="true">↗</span></Link> : <button className={styles.registerButton} type="button" onClick={() => setRegistrationMessage(true)}>
-                  Register <span aria-hidden="true">↗</span>
-                </button>}
->>>>>>> aa28447cde6cc8447a122fcf592f8a82ba1546e3
                 <a className={styles.modalDownload} href={activeEvent.rulebook} download={activeEvent.downloadName}>
                   Download Rulebook <span aria-hidden="true">↓</span>
                 </a>

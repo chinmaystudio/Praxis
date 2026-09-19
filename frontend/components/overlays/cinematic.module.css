@@ -1,12 +1,93 @@
+/* ══════════════════════════════════════════════════════════════
+   CINEMATIC OVERLAYS & SCROLL STORY STREAM
+   1. Initial Hero atmospheric text (Beats I, II, III) before video
+   2. Alternating Left/Right story stream (Beats 01 to 10) during video
+   ══════════════════════════════════════════════════════════════ */
+
 .wrap {
   position: absolute;
   inset: 0;
-  z-index: 8;
+  z-index: 10;
   pointer-events: none;
   overflow: hidden;
 }
 
-.beat {
+/* ──────────────────────────────────────────────────────────────
+   0. OPENING CENTERPIECE (Visible immediately on landing at scroll = 0)
+   ────────────────────────────────────────────────────────────── */
+.openingHero {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(94vw, 1100px);
+  text-align: center;
+  pointer-events: none;
+  z-index: 15;
+  will-change: transform, opacity, filter;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.openingTitle {
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(3.2rem, 10.5vw, 9.2rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #eafff6;
+  margin: 0;
+  text-shadow:
+    0 0 16px rgba(0, 255, 156, 0.85),
+    0 0 35px rgba(0, 255, 156, 0.6),
+    0 0 75px rgba(0, 255, 156, 0.35);
+}
+
+.openingSub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(0.9rem, 2vw, 1.6rem);
+  font-family: var(--font-ui, sans-serif);
+  font-size: clamp(0.72rem, 1.4vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.38em;
+  text-indent: 0.38em;
+  text-transform: uppercase;
+  color: #9dffd6;
+  opacity: 0.85;
+  text-shadow: 0 0 12px rgba(0, 255, 156, 0.5);
+  animation: pulseSub 2.2s ease-in-out infinite;
+}
+
+.subDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00ff9c;
+  box-shadow: 0 0 8px #00ff9c;
+  flex-shrink: 0;
+}
+
+@keyframes pulseSub {
+  0%, 100% { opacity: 0.88; transform: translateY(0); }
+  50% { opacity: 0.55; transform: translateY(2px); }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   1. INITIAL CINEMATIC TEXT (Beats I, II, III before video)
+   ────────────────────────────────────────────────────────────── */
+.initialWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.initialBeat {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -18,19 +99,19 @@
 
 .kicker {
   display: block;
-  font-family: var(--font-ui);
+  font-family: var(--font-ui, sans-serif);
   font-weight: 600;
   letter-spacing: 0.6em;
   text-indent: 0.6em;
   font-size: clamp(0.6rem, 1.4vw, 0.95rem);
-  color: var(--mint);
+  color: var(--mint, #9dffd6);
   opacity: 0.85;
   margin-bottom: clamp(0.6rem, 1.6vw, 1.3rem);
 }
 
-.line {
+.initialLine {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-display, sans-serif);
   text-transform: uppercase;
   line-height: 0.92;
   letter-spacing: 0.035em;
@@ -38,18 +119,19 @@
   color: #eafff6;
   margin: 0;
 }
+
 .small {
   font-size: clamp(1.9rem, 6.4vw, 6.2rem);
 }
 
 .glow {
   text-shadow:
-    0 0 12px rgba(0, 255, 156, 0.55),
+    0 0 14px rgba(0, 255, 156, 0.6),
     0 0 42px rgba(0, 255, 156, 0.35),
     0 0 90px rgba(0, 200, 130, 0.25);
 }
 
-/* metallic sheen — "ONLY LEGENDS REMAIN" */
+/* Metallic sheen — "ONLY LEGENDS REMAIN" */
 .metallic {
   background: linear-gradient(
     100deg,
@@ -68,41 +150,316 @@
   animation: sheen 3.2s linear infinite;
   filter: drop-shadow(0 0 22px rgba(0, 255, 156, 0.35));
 }
+
 @keyframes sheen {
   0% { background-position: 120% 0; }
   100% { background-position: -120% 0; }
 }
 
-/* chromatic split — "THE MULTIVERSE IS BREAKING" / "THE RIFT OPENS" */
-.chroma {
-  position: relative;
-  color: #eafff6;
-}
-.chroma::before,
-.chroma::after {
-  content: attr(data-text);
+/* ──────────────────────────────────────────────────────────────
+   2. ALTERNATING STORY STREAM (Beats 01 to 10 during video section)
+   Arranged one below the other in vertical flow (NO overlapping)
+   ────────────────────────────────────────────────────────────── */
+.streamContainer {
   position: absolute;
-  inset: 0;
-  mix-blend-mode: screen;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 12;
+}
+
+.streamInner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 70px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(80px, 14vh, 160px); /* Generous vertical gap: strictly one below another */
   pointer-events: none;
 }
-.chroma::before {
-  color: #ff2d55;
-  transform: translate(-3px, 0);
-  opacity: 0.6;
-  animation: chromaA 1.6s steps(2) infinite;
+
+/* Card item in column */
+.cardItem {
+  position: relative;
+  width: clamp(340px, 42vw, 540px);
+  pointer-events: auto;
+  will-change: transform, opacity;
 }
-.chroma::after {
-  color: #00fff2;
-  transform: translate(3px, 0);
-  opacity: 0.6;
-  animation: chromaB 1.9s steps(2) infinite;
+
+/* Alternating horizontal alignment */
+.leftCard {
+  align-self: flex-start;
 }
-@keyframes chromaA {
-  0%, 100% { transform: translate(-3px, 0); }
-  50% { transform: translate(-6px, 1px); }
+
+.rightCard {
+  align-self: flex-end;
 }
-@keyframes chromaB {
-  0%, 100% { transform: translate(3px, 0); }
-  50% { transform: translate(6px, -1px); }
+
+/* Luminous green ambient glow aura behind the card */
+.greenBackdrop {
+  position: absolute;
+  inset: -32px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 255, 156, 0.24) 0%,
+    rgba(0, 255, 156, 0.06) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(28px);
+  border-radius: 30px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+/* Tactical black card block */
+.card {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    rgba(8, 14, 11, 0.96) 0%,
+    rgba(3, 7, 5, 0.98) 100%
+  );
+  border: 1px solid rgba(0, 255, 156, 0.28);
+  border-radius: 16px;
+  padding: clamp(1.4rem, 2.6vw, 2.25rem) clamp(1.4rem, 2.8vw, 2.4rem);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.92),
+    0 0 45px rgba(0, 255, 156, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  overflow: hidden;
+}
+
+/* Cyber accent strip by side */
+.leftCard .card {
+  border-left: 3px solid #00ff9c;
+}
+
+.rightCard .card {
+  border-right: 3px solid #00ff9c;
+}
+
+/* Top beam light */
+.cardTopBeam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 156, 0.75) 50%,
+    transparent 100%
+  );
+}
+
+/* Cyber corner brackets */
+.cornerBracket {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(0, 255, 156, 0.55);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.cornerTL {
+  top: 8px;
+  left: 8px;
+  border-width: 1px 0 0 1px;
+}
+
+.cornerTR {
+  top: 8px;
+  right: 8px;
+  border-width: 1px 1px 0 0;
+}
+
+.cornerBL {
+  bottom: 8px;
+  left: 8px;
+  border-width: 0 0 1px 1px;
+}
+
+.cornerBR {
+  bottom: 8px;
+  right: 8px;
+  border-width: 0 1px 1px 0;
+}
+
+/* Badge row */
+.badgeRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.32rem 0.85rem;
+  background: rgba(0, 255, 156, 0.1);
+  border: 1px solid rgba(0, 255, 156, 0.35);
+  border-radius: 999px;
+  font-family: var(--font-ui, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #00ff9c;
+  text-transform: uppercase;
+  margin-bottom: 0.95rem;
+  box-shadow: 0 0 14px rgba(0, 255, 156, 0.18);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff9c;
+  box-shadow: 0 0 8px #00ff9c;
+}
+
+/* Bold title */
+.cardTitle {
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(1.85rem, 3.4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  color: #00ff9c;
+  margin: 0 0 0.85rem 0;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 20px rgba(0, 255, 156, 0.45),
+    0 0 45px rgba(0, 255, 156, 0.2);
+}
+
+/* Subtitle / Callout */
+.cardSubtitle {
+  font-family: var(--font-ui, sans-serif);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9dffd6;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 12px rgba(157, 255, 214, 0.3);
+}
+
+/* Body lines */
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.bodyLine {
+  margin: 0;
+  font-family: var(--font-ui, sans-serif);
+  font-size: clamp(0.92rem, 1.3vw, 1.14rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #e2e8f0;
+  letter-spacing: 0.015em;
+}
+
+.bodyLineHighlight {
+  font-weight: 700;
+  color: #00ff9c;
+  font-size: 1.15em;
+  margin-top: 0.35rem;
+}
+
+/* Beat 10 Call to Action */
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  padding: 0.85rem 2rem;
+  background: var(--accent, #00ff9c);
+  color: #031008;
+  font-family: var(--font-ui, sans-serif);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 0 32px rgba(0, 255, 156, 0.65);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 45px rgba(0, 255, 156, 0.9);
+  background: #3bfbb3;
+  color: #010804;
+}
+
+.ctaArrow {
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.ctaButton:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS (Screens <= 768px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .streamInner {
+    padding: 0 16px;
+    gap: 70px; /* Clean vertical spacing on mobile */
+  }
+
+  .cardItem {
+    width: 100% !important;
+    max-width: 100% !important;
+    align-self: center !important;
+  }
+
+  .card {
+    padding: 1.25rem 1.15rem;
+    border-radius: 12px;
+  }
+
+  .greenBackdrop {
+    inset: -18px;
+    filter: blur(20px);
+  }
+
+  .cardTitle {
+    font-size: clamp(1.6rem, 6.2vw, 2.2rem);
+    margin-bottom: 0.65rem;
+  }
+
+  .cardSubtitle {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .bodyLine {
+    font-size: 0.88rem;
+    line-height: 1.48;
+  }
+
+  .badgeRow {
+    font-size: 0.68rem;
+    padding: 0.28rem 0.72rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ctaButton {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem 1.4rem;
+    font-size: 0.8rem;
+  }
 }

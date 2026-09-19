@@ -17,6 +17,14 @@ const nextConfig: NextConfig = {
         destination: "/bgmi/index.html",
       },
       {
+        source: "/events/research-x",
+        destination: "/researchx/index.html",
+      },
+      {
+        source: "/researchx",
+        destination: "/researchx/index.html",
+      },
+      {
         source: "/api/payments/:path*",
         destination: `${backendUrl}/api/payments/:path*`,
       },
