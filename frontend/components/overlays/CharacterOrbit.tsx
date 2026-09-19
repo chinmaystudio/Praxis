@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { signals } from "@/lib/signals";
 import { useRaf } from "@/lib/useRaf";
 import styles from "./orbit.module.css";
@@ -225,9 +226,14 @@ export default function CharacterOrbit() {
               <h2 id="event-dialog-title" className={styles.modalTitle}>{activeEvent.title}</h2>
               <p className={styles.modalDescription}>{activeEvent.desc}</p>
               <div className={styles.modalActions}>
-                <button className={styles.registerButton} type="button" onClick={() => setRegistrationMessage(true)}>
+                {activeEvent.slug === "infinity-trials" && (
+                  <Link className={styles.exploreButton} href="/events/infinity-trials?intro=1">
+                    Explore <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {activeEvent.slug === "infinity-trials" ? <Link className={styles.registerButton} href="/events/infinity-trials/register">Register <span aria-hidden="true">↗</span></Link> : <button className={styles.registerButton} type="button" onClick={() => setRegistrationMessage(true)}>
                   Register <span aria-hidden="true">↗</span>
-                </button>
+                </button>}
                 <a className={styles.modalDownload} href={activeEvent.rulebook} download={activeEvent.downloadName}>
                   Download Rulebook <span aria-hidden="true">↓</span>
                 </a>
