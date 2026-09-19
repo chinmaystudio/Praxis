@@ -71,7 +71,7 @@ export default function VideoLayer() {
       />
       <video
         ref={heroRef}
-        className="cover-video"
+        className="cover-video hero-grade"
         src={ASSETS.heroVideo}
         poster={ASSETS.heroPoster}
         preload="auto"

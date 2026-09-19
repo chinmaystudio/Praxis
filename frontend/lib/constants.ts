@@ -65,7 +65,7 @@ export const SCROLL = {
   marvelScrub: 240, // Section 1 — Marvel intro scrubs
   transition: 140, // continuous portal dive into the Hero
   heroText: 260, // Hero — cinematic text sequence (video hidden)
-  heroScrub: 340, // Hero — Doom video appears fullscreen + scrubs
+  heroScrub: 720, // Hero — slower 30 fps frame-by-frame scrub
   heroOutro: 80, // Hero settle
   // ── Phase 2 · Section 2 (character showcase) ──
   showcaseRise: 160, // Hero fades / Section 2 rises from the bottom, model appears

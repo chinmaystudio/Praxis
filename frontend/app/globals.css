@@ -105,6 +105,10 @@ a {
 /* The Hero (portrait) trailer: shown WHOLE (object-fit: contain), centered, at
    full height — the green atmosphere fills the sides instead of black bars.
    A gentle cinematic grade keeps the dark footage rich rather than flat black. */
+.hero-grade {
+  filter: brightness(1.04) contrast(1.03) saturate(1.04);
+}
+
 .hero-video {
   position: absolute;
   inset: 0;

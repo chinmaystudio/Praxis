@@ -97,19 +97,12 @@ export default function EventsExperience() {
           <span className={styles.backArrow} aria-hidden>←</span>
           Back
         </Link>
-        <div className={styles.title}>
-          <span className={styles.titleMark} aria-hidden />
-          <span className={styles.titleText}>
-            MARVEL<b>STUDIOS</b>
-          </span>
-        </div>
-        <span className={styles.label}>Avengers · Doomsday</span>
       </header>
 
       {/* Bottom kicker */}
       <div className={styles.kicker} aria-hidden>
         <span className={styles.kickerDot} />
-        <span>Character Showcase</span>
+        <span>Praxis Events</span>
         <span className={styles.kickerSep}>·</span>
         <span className={styles.kickerSub}>Scroll to rotate</span>
       </div>

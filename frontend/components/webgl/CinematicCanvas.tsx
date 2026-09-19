@@ -74,7 +74,7 @@ export default function CinematicCanvas() {
       {/* Phase 2 · Section 2 — character showcase (self-gates on signals.showcase) */}
       <Showcase />
 
-      <AdaptiveDpr pixelated />
+      <AdaptiveDpr />
     </Canvas>
   );
 }

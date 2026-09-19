@@ -68,14 +68,14 @@ export default function Experience() {
 
     // ── Timeline positions (units; 100vh = 1 unit) — hero only ──
     const heroText  = SCROLL.heroText  / 100; // 2.6
-    const heroScrub = SCROLL.heroScrub / 100; // 3.4
+    const heroScrub = SCROLL.heroScrub / 100; // 7.2
     const heroOutro = SCROLL.heroOutro / 100; // 0.8
-    const TOTAL = heroText + heroScrub + heroOutro; // 6.8
+    const TOTAL = heroText + heroScrub + heroOutro; // 10.6
 
     const T = {
       videoStart: heroText,             // 2.6 — trailer appears
-      videoEnd:   heroText + heroScrub, // 6.0 — trailer fully scrubbed
-      total:      TOTAL,                // 6.8
+      videoEnd:   heroText + heroScrub, // 9.8 — trailer fully scrubbed
+      total:      TOTAL,                // 10.6
     };
 
     // Initialise signals cleanly.
@@ -84,6 +84,18 @@ export default function Experience() {
     signals.heroOp  = 0;
     signals.heroT   = 0;
     signals.footer  = 0;
+
+    // Follow the eased timeline even after scroll events stop. Retry on the next
+    // tick while the decoder is busy so the final requested frame is not lost.
+    const renderHero = () => {
+      const hero = getVideoEl("hero");
+      if (!hero) return;
+      hero.style.opacity = signals.heroOp.toFixed(3);
+      if (signals.heroOp > 0.002) {
+        const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
+        scrubEl(hero, (signals.heroT / VIDEO.heroDur) * duration);
+      }
+    };
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
@@ -95,13 +107,6 @@ export default function Experience() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           signals.scroll = self.progress;
-          // Drive the hero trailer synchronously on the scroll event —
-          // never rAF-throttled: fade + frame-accurate seek.
-          const hero = getVideoEl("hero");
-          if (hero) {
-            hero.style.opacity = signals.heroOp.toFixed(3);
-            if (signals.heroOp > 0.002) scrubEl(hero, signals.heroT);
-          }
         },
       },
     });
@@ -117,19 +122,21 @@ export default function Experience() {
     tl.to(signals, { energy: 0.15, duration: 0.6 }, T.videoStart);
     tl.to(signals, { heroT: VIDEO.heroDur, duration: T.videoEnd - T.videoStart }, T.videoStart);
     tl.to(signals, { energy: 0.13, duration: 0.8 }, T.videoEnd);
+    gsap.ticker.add(renderHero);
 
     if (process.env.NODE_ENV !== "production") {
       (window as unknown as Record<string, unknown>).__doom = { signals, tl };
     }
 
     return () => {
+      gsap.ticker.remove(renderHero);
       tl.scrollTrigger?.kill();
       tl.kill();
       builtRef.current = false;
     };
   }, [mounted]);
 
-  // Scroll track spans only the hero section (680vh).
+  // Scroll track spans only the hero section (1060vh).
   const heroVh = SCROLL.heroText + SCROLL.heroScrub + SCROLL.heroOutro;
 
   return (
