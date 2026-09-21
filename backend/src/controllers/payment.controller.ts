@@ -11,8 +11,10 @@ import {
   verifiedGoogleLeader,
   receiptWasSent,
   markReceiptSent,
+  getPaymentByOrder,
 } from "../services/db.service.js";
 import { sendRegistrationConfirmationEmail } from "../services/email.service.js";
+import { TEAM_EVENT_POLICIES } from "../config/team-events.js";
 import {
   CreateOrderRequest,
   CreateOrderResponse,
@@ -211,6 +213,28 @@ export async function verifyPayment(
       });
       return;
     }
+    if (TEAM_EVENT_POLICIES[event.slug]) {
+      res.status(400).json({ success: false, error: "Use the verified team registration flow for this event." });
+      return;
+    }
+
+    // A valid callback signature proves authenticity, but live fulfilment must
+    // also match the server-side order and a captured Razorpay payment.
+    const storedPayment = await getPaymentByOrder(razorpay_order_id);
+    if (!storedPayment) {
+      res.status(404).json({ success: false, error: "Payment order was not found." });
+      return;
+    }
+    const gatewayPayment = await razorpay.payments.fetch(razorpay_payment_id);
+    const gatewayAmount = Number(gatewayPayment.amount);
+    if (gatewayPayment.order_id !== razorpay_order_id || gatewayPayment.status !== "captured" ||
+        gatewayPayment.currency !== storedPayment.currency || gatewayAmount !== Math.round(storedPayment.amount * 100)) {
+      console.error("[Backend Payment Verification] Gateway payment does not match the stored order", {
+        orderId: razorpay_order_id, paymentId: razorpay_payment_id, status: gatewayPayment.status,
+      });
+      res.status(409).json({ success: false, error: "Payment is not captured or does not match this registration." });
+      return;
+    }
 
     // 2. Mark payment = PAID and registration = CONFIRMED atomically in database
     const confirmed = await confirmPaymentAndRegistration(
@@ -289,11 +313,13 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
       const orderId = paymentEntity?.order_id;
       const paymentId = paymentEntity?.id;
 
-      if (orderId && paymentId) {
+      const stored = orderId ? await getPaymentByOrder(orderId) : null;
+      const amountMatches = stored && Number(paymentEntity?.amount) === Math.round(stored.amount * 100) && paymentEntity?.currency === stored.currency;
+      if (orderId && paymentId && amountMatches) {
         const confirmed = await confirmPaymentAndRegistration(orderId, paymentId, signature);
         if (confirmed) await sendReceiptIfNeeded(confirmed.registration, confirmed.payment);
         console.log(`[Backend Razorpay Webhook] Confirmed payment ${paymentId} for order ${orderId}`);
-      }
+      } else if (orderId && paymentId) console.error(`[Backend Razorpay Webhook] Rejected amount/currency mismatch for ${paymentId}`);
     } else if (eventType === "payment.failed") {
       const paymentEntity = eventData.payload?.payment?.entity;
       const orderId = paymentEntity?.order_id;

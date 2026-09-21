@@ -76,6 +76,13 @@ export async function createPayment(registrationId: string, eventSlug: string, o
   return payment(row);
 }
 
+export async function getPaymentByOrder(orderId: string): Promise<PaymentRecord | null> {
+  const { data, error } = await db.from("payments").select("*")
+    .eq("razorpay_order_id", orderId).maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ? payment(data) : null;
+}
+
 export async function confirmPaymentAndRegistration(orderId: string, paymentId: string, signature: string): Promise<{ registration: RegistrationRecord; payment: PaymentRecord; alreadyPaid: boolean } | null> {
   const { data, error } = await db.rpc("confirm_paid_registration", {
     p_order_id: orderId, p_payment_id: paymentId, p_signature: signature

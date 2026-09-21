@@ -4,6 +4,7 @@ import { createRegistration, createPayment, markReceiptSent } from "./db.service
 import { sendRegistrationConfirmationEmail } from "./email.service.js";
 import { razorpay } from "../config/razorpay.js";
 import { memberProofsValid } from "./member-verification.service.js";
+import { isPccoeEmail } from "../config/team-events.js";
 
 const db = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!,
   { auth: { persistSession: false, autoRefreshToken: false } });
@@ -20,8 +21,12 @@ export async function validateTeam(draft: TeamDraft, leaderId: string, proofs: P
   if (draft.participants.some(p => !p.name?.trim() || !["pccoe", "other"].includes(p.collegeType) || !p.college?.trim())) throw new Error("Complete every participant’s name and college.");
   if (!draft.participants[0].year?.trim() || !draft.participants[0].branch?.trim()) throw new Error("Complete the leader’s year and branch.");
   if (draft.participants.some(p => p.collegeType === "pccoe" && !p.prn?.trim())) throw new Error("PCCOE participants need a PRN.");
+  if (draft.participants.some((p, index) => {
+    const pccoe = isPccoeEmail(emails[index]);
+    return (p.collegeType === "pccoe" && !pccoe) || (p.collegeType === "other" && pccoe);
+  })) throw new Error("PCCOE status must match each participant's verified @pccoepune.org email.");
   if (!(await memberProofsValid(leaderId, emails.slice(1), proofs))) throw new Error("Verify all three member email addresses before registration.");
-  return draft.participants.some(p => p.collegeType === "other") ? 200 : 0;
+  return emails.some(email => !isPccoeEmail(email)) ? 200 : 0;
 }
 
 async function saveTeam(draft: TeamDraft, leaderId: string) {

@@ -184,7 +184,7 @@ export default function CharacterOrbit() {
             <div className={styles.modalContent}>
               <div className={styles.modalTheme}>
                 {activeEvent.theme}
-                <span className={styles.modalPrice}>Entry: {formatPrice(activeEvent.price)}</span>
+                <span className={styles.modalPrice}>Entry: {activeEvent.feeLabel || formatPrice(activeEvent.price)}</span>
               </div>
               <h2 id="event-dialog-title" className={styles.modalTitle}>{activeEvent.title}</h2>
               <p className={styles.modalDescription}>{activeEvent.desc}</p>
@@ -204,13 +204,15 @@ export default function CharacterOrbit() {
                     Enter Showdown <span aria-hidden="true">↗</span>
                   </Link>
                 )}
-                <button
-                  className={styles.registerButton}
-                  type="button"
-                  onClick={() => setRegisteringEvent(activeEvent)}
-                >
-                  Register · {formatPrice(activeEvent.price)} <span aria-hidden="true">↗</span>
-                </button>
+                {["infinity-trials", "research-x", "bgmi-elite-showdown"].includes(activeEvent.slug) ? (
+                  <Link className={styles.registerButton} href={activeEvent.slug === "infinity-trials" ? "/events/infinity-trials/register" : `/events/${activeEvent.slug}`}>
+                    Register <span aria-hidden="true">↗</span>
+                  </Link>
+                ) : (
+                  <button className={styles.registerButton} type="button" onClick={() => setRegisteringEvent(activeEvent)}>
+                    Register · {formatPrice(activeEvent.price)} <span aria-hidden="true">↗</span>
+                  </button>
+                )}
                 <a className={styles.modalDownload} href={activeEvent.rulebook} download={activeEvent.downloadName}>
                   Download Rulebook <span aria-hidden="true">↓</span>
                 </a>

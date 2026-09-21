@@ -19,9 +19,9 @@ export const blankDraft = (): RegistrationDraft => ({ teamName: "", leaderEmail:
 export const normalizeEmail = (value: string) => value.trim().toLowerCase();
 export const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 // Fill this public setting with organizer-approved email domains before launch.
-const collegeDomains = (process.env.NEXT_PUBLIC_PCCOE_EMAIL_DOMAINS ?? "").split(",").map(d => d.trim().toLowerCase()).filter(Boolean);
-export const validCollegeEmail = (value: string) => validEmail(value) && (!collegeDomains.length || collegeDomains.includes(normalizeEmail(value).split("@")[1]));
-export const teamFee = (draft: RegistrationDraft) => draft.participants.some(p => p.collegeType === "other") ? 200 : 0;
+const collegeDomains = (process.env.NEXT_PUBLIC_PCCOE_EMAIL_DOMAINS ?? "pccoepune.org").split(",").map(d => d.trim().toLowerCase()).filter(Boolean);
+export const validCollegeEmail = (value: string) => validEmail(value) && collegeDomains.includes(normalizeEmail(value).split("@")[1]);
+export const teamFee = (draft: RegistrationDraft) => draft.participants.some((p, index) => !validCollegeEmail(participantEmail(draft, index))) ? 200 : 0;
 export const participantEmail = (draft: RegistrationDraft, index: number) => index === 0 && draft.participants[0].collegeType !== "pccoe" ? draft.leaderEmail : draft.participants[index].email;
 export function cleanDraft(draft: RegistrationDraft): RegistrationDraft {
   return { ...draft, teamName: draft.teamName.trim(), leaderEmail: normalizeEmail(draft.leaderEmail), phone: draft.phone.replace(/[\s()-]/g, ""), participants: draft.participants.map((p, i) => ({ ...p, name: p.name.trim(), college: p.collegeType === "pccoe" ? "PCCOE" : p.college.trim(), prn: p.collegeType === "pccoe" ? p.prn.trim() : "", email: normalizeEmail(participantEmail(draft, i)), year: p.year.trim(), branch: p.branch.trim() })) as RegistrationDraft["participants"] };

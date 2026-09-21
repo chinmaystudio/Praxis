@@ -17,6 +17,7 @@ export interface EventConfig {
   downloadName: string;
   accent: string;
   price: number; // in INR
+  feeLabel?: string;
   currency: "INR";
   registrationOpen: boolean;
   isTeamEvent?: boolean;
@@ -33,7 +34,8 @@ export const EVENTS: EventConfig[] = [
     rulebook: "/rulebooks/infinity-trials-rulebook.pdf",
     downloadName: "Infinity-Trials-Rulebook.pdf",
     accent: "#f2b84b",
-    price: 99,
+    price: 0,
+    feeLabel: "Free for PCCOE · ₹200 with any external member",
     currency: "INR",
     registrationOpen: true,
     isTeamEvent: true,
@@ -48,10 +50,12 @@ export const EVENTS: EventConfig[] = [
     rulebook: "/rulebooks/research-x-rulebook.pdf",
     downloadName: "Research-X-Rulebook.pdf",
     accent: "#65cfff",
-    price: 149,
+    price: 0,
+    feeLabel: "Free for PCCOE · ₹50 per external member",
     currency: "INR",
     registrationOpen: true,
-    isTeamEvent: false,
+    isTeamEvent: true,
+    maxTeamSize: 4,
   },
   {
     slug: "bgmi-elite-showdown",
@@ -62,7 +66,8 @@ export const EVENTS: EventConfig[] = [
     rulebook: "/rulebooks/bgmi-elite-showdown-rulebook.pdf",
     downloadName: "BGMI-Elite-Showdown-Rulebook.pdf",
     accent: "#ff4458",
-    price: 199,
+    price: 0,
+    feeLabel: "Free for PCCOE · ₹50 per external member",
     currency: "INR",
     registrationOpen: true,
     isTeamEvent: true,

@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import TeamRegistrationForm from "@/components/registration/TeamRegistrationForm";
+import { TEAM_EVENTS } from "@/lib/team-events";
 
 export default function ResearchXPage() {
-  redirect("/researchx/");
+  return <TeamRegistrationForm policy={TEAM_EVENTS["research-x"]} />;
 }
