@@ -6,6 +6,16 @@
     "nodejs_compat"
   ],
   "main": "vinext/server/fetch-handler",
+  "routes": [
+    {
+      "pattern": "praxis26.in",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.praxis26.in",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "dist/client",
     "not_found_handling": "none",
