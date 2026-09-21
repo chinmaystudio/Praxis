@@ -1,6 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "avengers-doomsday",
+  "workers_dev": true,
+  "preview_urls": true,
   "compatibility_date": "2026-09-21",
   "compatibility_flags": [
     "nodejs_compat"
