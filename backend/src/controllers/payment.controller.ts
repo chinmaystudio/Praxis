@@ -8,6 +8,9 @@ import {
   confirmPaymentAndRegistration,
   getRegistrationDetails,
   markPaymentFailed,
+  verifiedGoogleLeader,
+  receiptWasSent,
+  markReceiptSent,
 } from "../services/db.service.js";
 import { sendRegistrationConfirmationEmail } from "../services/email.service.js";
 import {
@@ -22,6 +25,19 @@ import {
  */
 function getEventBySlug(slug: string) {
   return EVENTS.find((e) => e.slug.toLowerCase() === slug.toLowerCase());
+}
+
+async function sendReceiptIfNeeded(registration: Awaited<ReturnType<typeof createRegistration>>, payment: Awaited<ReturnType<typeof createPayment>>): Promise<void> {
+  if (await receiptWasSent(registration.id)) return;
+  const event = getEventBySlug(registration.eventSlug);
+  const sent = await sendRegistrationConfirmationEmail({
+    participantName: registration.name, email: registration.email,
+    eventTitle: event?.title || registration.eventSlug, eventSlug: registration.eventSlug,
+    registrationCode: registration.registrationCode, college: registration.college,
+    amountPaid: payment.amount, paymentId: payment.razorpayPaymentId || "",
+  });
+  if (!sent.success) throw new Error(sent.error || "Receipt email failed");
+  await markReceiptSent(registration.id);
 }
 
 /**
@@ -69,6 +85,13 @@ export async function createOrder(
       return;
     }
 
+    const accessToken = req.headers.authorization?.replace(/^Bearer\s+/i, "") || "";
+    const leaderId = await verifiedGoogleLeader(accessToken, email);
+    if (!leaderId) {
+      res.status(401).json({ success: false, error: "Team leader must sign in with Google using the registration email." });
+      return;
+    }
+
     // Indian phone number validation (10 digits)
     const cleanPhone = phone.replace(/^(\+91|0)/, "").replace(/[\s-]/g, "");
     if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
@@ -110,7 +133,6 @@ export async function createOrder(
 
     // 5. Create Razorpay order
     let orderId = "";
-    try {
       const order = await razorpay.orders.create({
         amount: amountInPaise,
         currency: "INR",
@@ -123,11 +145,6 @@ export async function createOrder(
         },
       });
       orderId = order.id;
-    } catch (rzpErr: unknown) {
-      console.warn("[Backend Razorpay Order] API order creation notice:", rzpErr);
-      // If running with mock/test placeholder credentials in local dev, provide safe mock order ID
-      orderId = `order_mock_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    }
 
     // 6. Record registration and payment in database
     const regRecord = await createRegistration(event.slug, {
@@ -172,7 +189,7 @@ export async function verifyPayment(
   res: Response<VerifyPaymentResponse>
 ): Promise<void> {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, registrationId } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id) {
       res.status(400).json({ success: false, error: "Invalid payment parameters provided." });
@@ -180,16 +197,11 @@ export async function verifyPayment(
     }
 
     // 1. Verify Razorpay signature using HMAC SHA-256
-    let isValid = false;
-    if (razorpay_order_id.startsWith("order_mock_")) {
-      isValid = true;
-    } else {
-      isValid = verifyRazorpaySignature(
+    const isValid = verifyRazorpaySignature(
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature || ""
       );
-    }
 
     if (!isValid) {
       console.error("[Backend Payment Verification] Invalid signature for order:", razorpay_order_id);
@@ -204,8 +216,7 @@ export async function verifyPayment(
     const confirmed = await confirmPaymentAndRegistration(
       razorpay_order_id,
       razorpay_payment_id,
-      razorpay_signature || "verified_mock_sig",
-      registrationId
+      razorpay_signature || ""
     );
 
     if (!confirmed) {
@@ -220,19 +231,9 @@ export async function verifyPayment(
     const event = getEventBySlug(registration.eventSlug);
     const eventTitle = event?.title || registration.eventSlug;
 
-    // 3. Dispatch non-blocking confirmation email
-    sendRegistrationConfirmationEmail({
-      participantName: registration.name,
-      email: registration.email,
-      eventTitle,
-      eventSlug: registration.eventSlug,
-      registrationCode: registration.registrationCode,
-      college: registration.college,
-      amountPaid: payment.amount,
-      paymentId: razorpay_payment_id,
-    }).catch((emailErr) => {
-      console.warn("[Backend Email Service] Non-blocking dispatch notice:", emailErr);
-    });
+    // The payment remains confirmed if SMTP is temporarily unavailable; a signed webhook can retry.
+    try { await sendReceiptIfNeeded(registration, payment); }
+    catch (emailErr) { console.error("[Backend Email Service] Receipt delivery failed:", emailErr); }
 
     // 4. Return success confirmation
     res.json({
@@ -273,9 +274,8 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
         return;
       }
     } else {
-      console.warn(
-        "[Backend Razorpay Webhook] RAZORPAY_WEBHOOK_SECRET not configured, skipping validation in dev"
-      );
+      res.status(503).json({ error: "Webhook secret not configured" });
+      return;
     }
 
     const eventData = typeof req.body === "object" ? req.body : JSON.parse(rawBody);
@@ -288,7 +288,8 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
       const paymentId = paymentEntity?.id;
 
       if (orderId && paymentId) {
-        await confirmPaymentAndRegistration(orderId, paymentId, signature || "webhook_verified");
+        const confirmed = await confirmPaymentAndRegistration(orderId, paymentId, signature);
+        if (confirmed) await sendReceiptIfNeeded(confirmed.registration, confirmed.payment);
         console.log(`[Backend Razorpay Webhook] Confirmed payment ${paymentId} for order ${orderId}`);
       }
     } else if (eventType === "payment.failed") {

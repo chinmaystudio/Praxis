@@ -1,6 +1,4 @@
 import nodemailer, { Transporter } from "nodemailer";
-import fs from "fs";
-import path from "path";
 
 export interface RegistrationEmailPayload {
   participantName: string;
@@ -13,13 +11,6 @@ export interface RegistrationEmailPayload {
   paymentId: string;
 }
 
-const EMAILS_DIR = path.join(process.cwd(), "data", "emails");
-
-function ensureEmailsDir(): void {
-  if (!fs.existsSync(EMAILS_DIR)) {
-    fs.mkdirSync(EMAILS_DIR, { recursive: true });
-  }
-}
 
 /**
  * Creates a nodemailer transport.
@@ -28,14 +19,13 @@ function ensureEmailsDir(): void {
 async function getEmailTransporter(): Promise<{
   transporter: Transporter;
   fromAddress: string;
-  isTestInbox: boolean;
 }> {
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || "587", 10);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
-  const from = process.env.SMTP_FROM || `"Praxis 2026" <registrations@praxis.in>`;
+  const from = process.env.SMTP_FROM || `"Praxis 2026" <${user}>`;
 
   if (host && user && pass) {
     const transporter = nodemailer.createTransport({
@@ -44,34 +34,9 @@ async function getEmailTransporter(): Promise<{
       secure,
       auth: { user, pass },
     });
-    return { transporter, fromAddress: from, isTestInbox: false };
+    return { transporter, fromAddress: from };
   }
-
-  // Fallback to ethereal test account for realistic email testing without SMTP configuration
-  try {
-    const testAccount = await nodemailer.createTestAccount();
-    const transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-    return {
-      transporter,
-      fromAddress: `"Praxis 2026 Test Team" <${testAccount.user}>`,
-      isTestInbox: true,
-    };
-  } catch (etherealErr) {
-    console.warn("[Email Service] Ethereal test account creation fallback:", etherealErr);
-    // Return mock transport if offline
-    const transporter = nodemailer.createTransport({
-      jsonTransport: true,
-    });
-    return { transporter, fromAddress: from, isTestInbox: true };
-  }
+  throw new Error("SMTP_HOST, SMTP_USER and SMTP_PASS are required to send receipts");
 }
 
 /**
@@ -272,38 +237,15 @@ export async function sendRegistrationConfirmationEmail(
   payload: RegistrationEmailPayload
 ): Promise<{ success: boolean; messageId?: string; previewUrl?: string; error?: string }> {
   try {
-    ensureEmailsDir();
     const htmlContent = buildHtmlEmail(payload);
 
-    // Always save a local HTML copy for immediate inspection
-    const localEmailFile = path.join(
-      EMAILS_DIR,
-      `registration_${payload.registrationCode}_${Date.now()}.html`
-    );
-    try {
-      fs.writeFileSync(localEmailFile, htmlContent, "utf-8");
-    } catch (saveErr) {
-      console.warn("[Email Service] Could not write local email file:", saveErr);
-    }
-
-    console.log(`[Backend Email] Preparing confirmation email for ${payload.email}...`);
-    console.log(`=======================================================
-PRAXIS 2026 — REGISTRATION CONFIRMED
-Event:           ${payload.eventTitle}
-Registration ID: ${payload.registrationCode}
-Participant:     ${payload.participantName}
-Email:           ${payload.email}
-College:         ${payload.college}
-Amount Paid:     ₹${payload.amountPaid}
-Payment ID:      ${payload.paymentId}
-=======================================================`);
-
     // Obtain transporter
-    const { transporter, fromAddress, isTestInbox } = await getEmailTransporter();
+    const { transporter, fromAddress } = await getEmailTransporter();
 
     const mailOptions = {
       from: fromAddress,
       to: payload.email,
+      bcc: process.env.RECEIPT_COPY_EMAIL || "joshichinmay848@gmail.com",
       subject: `[CONFIRMED] Praxis 2026 Registration — ${payload.eventTitle} (${payload.registrationCode})`,
       text: `Hello ${payload.participantName},\n\nYour registration for ${payload.eventTitle} at Praxis 2026 has been successfully confirmed!\n\nRegistration Code: ${payload.registrationCode}\nAmount Paid: ₹${payload.amountPaid}\nPayment ID: ${payload.paymentId}\nCollege: ${payload.college}\n\nPlease present this code at the registration desk on the event day.\n\nBest regards,\nPraxis 2026 Team`,
       html: htmlContent,
@@ -312,18 +254,9 @@ Payment ID:      ${payload.paymentId}
     const info = await transporter.sendMail(mailOptions);
     console.log(`[Backend Email] Dispatched successfully! Message ID: ${info.messageId}`);
 
-    let previewUrl: string | undefined;
-    if (isTestInbox) {
-      previewUrl = nodemailer.getTestMessageUrl(info) || undefined;
-      if (previewUrl) {
-        console.log(`[Backend Email] Ethereal Preview URL: ${previewUrl}`);
-      }
-    }
-
     return {
       success: true,
       messageId: info.messageId,
-      previewUrl,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);

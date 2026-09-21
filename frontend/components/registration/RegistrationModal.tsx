@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { EventConfig, formatPrice } from "@/lib/events";
 import { RegistrationFormData, CreateOrderResponse, VerifyPaymentResponse } from "@/lib/types/payment";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 import styles from "./registration.module.css";
 
 interface RegistrationModalProps {
@@ -72,6 +73,23 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "initializing" | "checkout" | "verifying">("idle");
+  const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const auth = supabaseBrowser().auth;
+      void auth.getUser().then(({ data }) => setSignedInEmail(data.user?.email || null));
+      const { data: listener } = auth.onAuthStateChange((_event, session) => setSignedInEmail(session?.user.email || null));
+      return () => listener.subscription.unsubscribe();
+    } catch { return; }
+  }, []);
+
+  async function signInLeader() {
+    try {
+      const { error } = await supabaseBrowser().auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.href } });
+      if (error) throw error;
+    } catch (error) { setGeneralError(error instanceof Error ? error.message : "Google sign-in failed."); }
+  }
 
   // Load Razorpay Checkout Script safely
   useEffect(() => {
@@ -154,6 +172,13 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
     e.preventDefault();
     if (!validate()) return;
 
+    const { data: sessionData } = await supabaseBrowser().auth.getSession();
+    const session = sessionData.session;
+    if (!session || session.user.email?.toLowerCase() !== formData.email.trim().toLowerCase()) {
+      setGeneralError("Sign in with Google using the team leader email before paying.");
+      return;
+    }
+
     setGeneralError(null);
     setStatus("initializing");
 
@@ -161,7 +186,7 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
       // 1. Create order on server (Frontend NEVER sends amount)
       const res = await fetch("/api/payments/create-order", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({
           eventSlug: event.slug,
           registration: formData,
@@ -176,11 +201,15 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
         return;
       }
 
-      // Use dynamic key returned by backend, or environment fallback
+      // Use the key for the same Razorpay account that created the order.
       const rzpKey =
         data.keyId ||
-        process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-        "rzp_test_TdrJgIUwLBS8tO";
+        process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      if (!rzpKey) {
+        setGeneralError("Payment is not configured yet. Please contact the organizer.");
+        setStatus("idle");
+        return;
+      }
 
       // If Razorpay SDK is available, open checkout modal
       if (typeof window !== "undefined" && window.Razorpay) {
@@ -281,33 +310,8 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
         const rzp = new window.Razorpay(options);
         rzp.open();
       } else {
-        // Fallback for environments where checkout script is blocked / simulated
-        console.warn("Razorpay script not loaded, running simulated verification");
-        setStatus("verifying");
-        const verifyRes = await fetch("/api/payments/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpay_order_id: data.orderId,
-            razorpay_payment_id: `pay_mock_${Date.now()}`,
-            razorpay_signature: "mock_verified_sig",
-            registrationId: data.registrationId,
-          }),
-        });
-        const verifyData = (await verifyRes.json()) as VerifyPaymentResponse;
-        if (verifyRes.ok && verifyData.success) {
-          onClose();
-          router.push(
-            `/payment/success?reg=${encodeURIComponent(
-              verifyData.registrationCode || ""
-            )}&event=${encodeURIComponent(event.slug)}&pay=${encodeURIComponent(
-              verifyData.paymentId || ""
-            )}`
-          );
-        } else {
-          setGeneralError(verifyData.error || "Simulation error");
-          setStatus("idle");
-        }
+        setGeneralError("Razorpay checkout could not load. Please check your connection and try again.");
+        setStatus("idle");
       }
     } catch (err) {
       console.error("Payment initialization error:", err);
@@ -505,6 +509,11 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
 
           {/* General Error Banner */}
           {generalError && <div className={styles.generalError}>{generalError}</div>}
+
+          <div>
+            {signedInEmail ? <p>Google account: {signedInEmail}</p> : <p>Team leader Google sign-in is required.</p>}
+            <button type="button" onClick={() => void signInLeader()}>Sign in with Google</button>
+          </div>
 
           {/* Footer Actions */}
           <div className={styles.footer}>
