@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import paymentRoutes from "./routes/payment.routes.js";
+import infinityRoutes from "./controllers/infinity.controller.js";
 
 // Load environment variables
 dotenv.config();
@@ -52,6 +53,7 @@ app.get("/health", (_req: Request, res: Response) => {
 
 // Mount payment API routes
 app.use("/api/payments", paymentRoutes);
+app.use("/api/infinity", infinityRoutes);
 
 // Fallback 404 handler
 app.use((_req: Request, res: Response) => {

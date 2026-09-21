@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { INFINITY_TRIALS as event } from "@/lib/infinity-trials";
-import { blankDraft, cleanDraft, normalizeEmail, participantEmail, previewGateway, teamFee, validCollegeEmail, validateRegistration, type EmailProof, type OtpChallenge, type Participant, type PaymentReceipt, type RegistrationDraft, type RegistrationGateway, type RegistrationResult } from "@/lib/infinity-registration";
+import { blankDraft, cleanDraft, normalizeEmail, participantEmail, teamFee, validCollegeEmail, validEmail, validateRegistration, type EmailProof, type OtpChallenge, type Participant, type PaymentReceipt, type RegistrationDraft, type RegistrationGateway, type RegistrationResult } from "@/lib/infinity-registration";
+import { liveGateway } from "@/lib/infinity-live-gateway";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 import styles from "./registration.module.css";
 
 function Field({ id, label, error, hint, children }: { id: string; label: string; error?: string; hint?: string; children: ReactNode }) {
@@ -34,27 +36,40 @@ function EmailVerification({ email, index, proof, gateway, onVerify, error }: { 
     finally { setBusy(false); }
   }
   return <div className={`${styles.otp} ${verified ? styles.verified : ""}`} id={`p${index}.verification`} tabIndex={-1} aria-invalid={!!error}>
-    {verified ? <p role="status">✓ {gateway.mode === "preview" ? "Email verification simulated" : "PCCOE email verified"}</p> : <>
-      <div className={styles.otpHeading}><span>Verify this PCCOE email <b>*</b></span><button type="button" className={styles.smallButton} disabled={busy || !validCollegeEmail(email) || cooldown > 0} onClick={send}>{busy ? "Please wait…" : cooldown > 0 ? `Resend in ${cooldown}s` : challenge ? "Resend code" : gateway.mode === "preview" ? "Get preview code" : "Send OTP"}</button></div>
+    {verified ? <p role="status">✓ {gateway.mode === "preview" ? "Email verification simulated" : "Member email verified"}</p> : <>
+      <div className={styles.otpHeading}><span>Verify this member email <b>*</b></span><button type="button" className={styles.smallButton} disabled={busy || !validEmail(email) || cooldown > 0} onClick={send}>{busy ? "Please wait…" : cooldown > 0 ? `Resend in ${cooldown}s` : challenge ? "Resend code" : gateway.mode === "preview" ? "Get preview code" : "Send OTP"}</button></div>
       {challenge && <><p className={styles.hint}>{gateway.mode === "preview" ? <>No email sent. Preview code: <strong>123456</strong>. Expires in 5 minutes.</> : `A six-digit code was sent to ${challenge.email}.`}</p><div className={styles.otpInputs}><label className={styles.srOnly} htmlFor={`otp-${index}`}>Verification code for participant {index + 1}</label><input id={`otp-${index}`} value={code} inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder="6-digit code" onChange={e => setCode(e.target.value.replace(/\D/g, ""))} aria-invalid={!!message || expired} /><button type="button" className={styles.smallButton} disabled={busy || code.length !== 6 || expired} onClick={verify}>Verify code</button></div></>}
       {(message || expired || error) && <p className={styles.error} role="alert">{message || (expired ? "Code expired. Request a new code." : error)}</p>}
     </>}
   </div>;
 }
 
-export default function RegistrationForm({ gateway = previewGateway }: { gateway?: RegistrationGateway }) {
+export default function RegistrationForm({ gateway = liveGateway }: { gateway?: RegistrationGateway }) {
   const [draft, setDraft] = useState<RegistrationDraft>(blankDraft);
   const [proofs, setProofs] = useState<Record<number, EmailProof>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [signedInEmail, setSignedInEmail] = useState<string | null>(null);
   const [payment, setPayment] = useState<PaymentReceipt | null>(null);
   const [result, setResult] = useState<RegistrationResult | null>(null);
   const key = useRef("");
   const heading = useRef<HTMLHeadingElement>(null);
   const fee = teamFee(draft);
   const preview = gateway.mode === "preview";
+  useEffect(() => {
+    const auth = supabaseBrowser().auth;
+    void auth.getUser().then(({ data }) => setSignedInEmail(data.user?.email || null));
+    const { data: listener } = auth.onAuthStateChange((_event, session) => setSignedInEmail(session?.user.email || null));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+  async function signIn() {
+    try {
+      const { error } = await supabaseBrowser().auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.href } });
+      if (error) throw error;
+    } catch (error) { setNotice(error instanceof Error ? error.message : "Google sign-in failed."); }
+  }
   const steps = ["Team & leader", "Team members", "Review", ...(fee ? ["Payment"] : [])];
   useEffect(() => { if (step || result) heading.current?.focus({ preventScroll: true }); }, [step, result]);
   function go(next: number) { setStep(next); setNotice(""); setErrors({}); requestAnimationFrame(() => heading.current?.scrollIntoView({ block: "start", behavior: "instant" })); }
@@ -84,7 +99,7 @@ export default function RegistrationForm({ gateway = previewGateway }: { gateway
   async function pay() {
     if (busy || !check("all")) return;
     setBusy(true); setNotice("");
-    try { const receipt = await gateway.createPayment(cleanDraft(draft)); if (receipt.status !== "paid" || receipt.amount !== fee || receipt.currency !== "INR") throw new Error("Payment has not been confirmed. Please retry."); setPayment(receipt); }
+    try { const receipt = await gateway.createPayment(cleanDraft(draft), Object.values(proofs)); if (receipt.status !== "paid" || receipt.amount !== fee || receipt.currency !== "INR") throw new Error("Payment has not been confirmed. Please retry."); setPayment(receipt); }
     catch (e) { setNotice(e instanceof Error ? e.message : "Payment was not completed. You can retry."); }
     finally { setBusy(false); }
   }
@@ -105,7 +120,7 @@ export default function RegistrationForm({ gateway = previewGateway }: { gateway
         {(index > 0 || p.collegeType === "pccoe") && input(`${prefix}.email`, p.collegeType === "pccoe" ? "PCCOE email ID" : "Email ID", p.email, v => changePerson(index, "email", v), "email", p.collegeType === "pccoe" ? "Use this participant’s college-issued email address." : "Use this participant’s own email address.")}
         {index === 0 && <><Field id={`${prefix}.year`} label="Year" error={errors[`${prefix}.year`]}><select id={`${prefix}.year`} required value={p.year} onChange={e => changePerson(index, "year", e.target.value)} aria-invalid={!!errors[`${prefix}.year`]} aria-describedby={errors[`${prefix}.year`] ? `${prefix}.year-hint` : undefined}><option value="">Select academic year</option>{["First year", "Second year", "Third year", "Fourth year", "Postgraduate", "Other"].map(year => <option key={year}>{year}</option>)}</select></Field>{input(`${prefix}.branch`, "Branch / department", p.branch, v => changePerson(index, "branch", v))}</>}
       </div>
-      {p.collegeType === "pccoe" && <EmailVerification key={normalizeEmail(p.email)} email={p.email} index={index} proof={proofs[index]} gateway={gateway} onVerify={proof => { setProofs(prev => ({ ...prev, [index]: proof })); setErrors(prev => { const next = { ...prev }; delete next[`${prefix}.verification`]; return next; }); }} error={errors[`${prefix}.verification`]} />}
+      {index > 0 && <EmailVerification key={normalizeEmail(p.email)} email={p.email} index={index} proof={proofs[index]} gateway={gateway} onVerify={proof => { setProofs(prev => ({ ...prev, [index]: proof })); setErrors(prev => { const next = { ...prev }; delete next[`${prefix}.verification`]; return next; }); }} error={errors[`${prefix}.verification`]} />}
     </fieldset>;
   }
   const cleaned = cleanDraft(draft);
@@ -113,8 +128,12 @@ export default function RegistrationForm({ gateway = previewGateway }: { gateway
 
   return <main className={styles.page}>
     <header className={styles.header}><Link href="/" className={styles.brand}>PRAXIS <span>2026</span></Link><Link href="/events/infinity-trials">← Back to Infinity Trials</Link></header>
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "1rem" }}>
+      <p>{signedInEmail ? `Team leader Google account: ${signedInEmail}` : "Team leader: sign in with Google before verifying members or registering."}</p>
+      <button type="button" onClick={() => void signIn()}>Sign in with Google</button>
+    </div>
     <div className={styles.layout}>
-      <aside className={styles.aside}><span className={styles.kicker}>THE INFINITY TRIALS</span><h1>Four players.<br /><em>One alliance.</em></h1><p>Your journey to the Endgame starts with your team.</p><div className={styles.miniStones} aria-hidden="true">{["#45b7ff", "#ae6bff", "#ff5773", "#ffd251", "#54dba0", "#ffa65d"].map(color => <i key={color} style={{ background: color, boxShadow: `0 0 18px ${color}44` }} />)}</div><dl><div><dt>EVENT DATES</dt><dd>{event.date}</dd></div><div><dt>LOCATION</dt><dd>{event.venue}</dd></div><div><dt>TEAM SIZE</dt><dd>1 leader + 3 members</dd></div></dl><div className={styles.feeCard}><span>YOUR TEAM’S ENTRY</span><strong>{draft.participants.some(p => !p.collegeType) ? "From free" : fee ? "₹200" : "Free"}</strong><p>All four from PCCOE: free.<br />Any non-PCCOE participant: ₹200 per team.</p></div><p className={styles.privateNote}>Details stay in this browser’s memory during the preview. No registration, email, or payment is sent.</p></aside>
+      <aside className={styles.aside}><span className={styles.kicker}>THE INFINITY TRIALS</span><h1>Four players.<br /><em>One alliance.</em></h1><p>Your journey to the Endgame starts with your team.</p><div className={styles.miniStones} aria-hidden="true">{["#45b7ff", "#ae6bff", "#ff5773", "#ffd251", "#54dba0", "#ffa65d"].map(color => <i key={color} style={{ background: color, boxShadow: `0 0 18px ${color}44` }} />)}</div><dl><div><dt>EVENT DATES</dt><dd>{event.date}</dd></div><div><dt>LOCATION</dt><dd>{event.venue}</dd></div><div><dt>TEAM SIZE</dt><dd>1 leader + 3 members</dd></div></dl><div className={styles.feeCard}><span>YOUR TEAM’S ENTRY</span><strong>{draft.participants.some(p => !p.collegeType) ? "From free" : fee ? "₹200" : "Free"}</strong><p>All four from PCCOE: free.<br />Any non-PCCOE participant: ₹200 per team.</p></div><p className={styles.privateNote}>{preview ? "Details stay in this browser during the preview. No registration, email, or payment is sent." : "Member emails receive verification codes. The leader receives registration and payment confirmation."}</p></aside>
       <section className={styles.formCard} aria-label="Team registration">
         {preview && <div className={styles.previewBanner}><span>FRONTEND PREVIEW</span><p>Try the complete form. OTP, payment and confirmation are simulated; no real registration is created.</p></div>}
         {result ? <div className={styles.completion}><span className={styles.completeIcon}>✓</span><p className={styles.kicker}>{result.mode === "preview" ? "PREVIEW COMPLETE" : "REGISTRATION CONFIRMED"}</p><h2 ref={heading} tabIndex={-1}>{result.mode === "preview" ? "Your team is ready for review." : "Your alliance is registered."}</h2><p>{result.mode === "preview" ? "This is a registration preview. No place has been booked, no money charged, and no email sent." : `Your registration has been recorded. Confirmation email status: ${result.emailStatus}.`}</p><div className={styles.reference}><small>{preview ? "PREVIEW REFERENCE" : "REGISTRATION ID"}</small><strong>{result.reference}</strong></div><h3>{draft.teamName}</h3>{teamReview}<div className={styles.emailPreview}><h3>{preview ? "Confirmation email preview" : "Confirmation details"}</h3><p><b>To:</b> {cleaned.leaderEmail}</p><p><b>Subject:</b> Infinity Trials — {preview ? "registration preview" : "registration confirmed"}</p><p>Team: {cleaned.teamName} · Reference: {result.reference}</p><p>The confirmation includes all four participant records shown above, college details, PRNs where applicable, and the team’s entry status ({fee ? `₹200 — ${preview ? "payment simulated" : "paid"}` : "free"}).</p>{result.communityUrl ? <a href={result.communityUrl} target="_blank" rel="noreferrer">Join the event community ↗</a> : <p>Community joining link: to be provided by the organizers when the live service is connected.</p>}<p>Report at {event.venue} before the announced reporting time on {event.date}. Carry valid college ID when required. Read the official rulebook before attending.</p></div><Link className={styles.primary} href="/events/infinity-trials">Return to the Infinity Trail ↗</Link></div> : <>

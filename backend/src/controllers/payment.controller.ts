@@ -232,8 +232,9 @@ export async function verifyPayment(
     const eventTitle = event?.title || registration.eventSlug;
 
     // The payment remains confirmed if SMTP is temporarily unavailable; a signed webhook can retry.
+    let emailStatus: "sent" | "pending" = "sent";
     try { await sendReceiptIfNeeded(registration, payment); }
-    catch (emailErr) { console.error("[Backend Email Service] Receipt delivery failed:", emailErr); }
+    catch (emailErr) { emailStatus = "pending"; console.error("[Backend Email Service] Receipt delivery failed:", emailErr); }
 
     // 4. Return success confirmation
     res.json({
@@ -244,6 +245,7 @@ export async function verifyPayment(
       eventTitle,
       participantName: registration.name,
       amountPaid: payment.amount,
+      emailStatus,
     });
   } catch (err: unknown) {
     console.error("[Backend Verify API Error]", err);

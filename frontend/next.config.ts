@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
         source: "/api/payments/:path*",
         destination: `${backendUrl}/api/payments/:path*`,
       },
+      {
+        source: "/api/infinity/:path*",
+        destination: `${backendUrl}/api/infinity/:path*`,
+      },
     ];
   },
 };

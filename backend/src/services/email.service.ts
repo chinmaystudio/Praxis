@@ -42,7 +42,12 @@ async function getEmailTransporter(): Promise<{
 /**
  * Generates an aesthetic, responsive HTML email template for Praxis event confirmations.
  */
-function buildHtmlEmail(payload: RegistrationEmailPayload): string {
+function buildHtmlEmail(input: RegistrationEmailPayload): string {
+  const escape = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  const payload = { ...input, participantName: escape(input.participantName),
+    registrationCode: escape(input.registrationCode), eventTitle: escape(input.eventTitle),
+    college: escape(input.college), email: escape(input.email), paymentId: escape(input.paymentId) };
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,4 +268,15 @@ export async function sendRegistrationConfirmationEmail(
     console.error("[Backend Email] Error during email dispatch:", message);
     return { success: false, error: message };
   }
+}
+
+export async function sendMemberVerificationEmail(email: string, code: string): Promise<void> {
+  const { transporter, fromAddress } = await getEmailTransporter();
+  await transporter.sendMail({
+    from: fromAddress,
+    to: email,
+    bcc: process.env.RECEIPT_COPY_EMAIL || "joshichinmay848@gmail.com",
+    subject: "Praxis 2026 — verify your team email",
+    text: `Your Praxis team verification code is ${code}. It expires in 10 minutes. If you did not request this, ignore this email.`,
+  });
 }

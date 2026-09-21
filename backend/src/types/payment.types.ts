@@ -47,6 +47,7 @@ export interface VerifyPaymentResponse {
   eventTitle?: string;
   participantName?: string;
   amountPaid?: number; // in INR
+  emailStatus?: "sent" | "pending";
   error?: string;
 }
 

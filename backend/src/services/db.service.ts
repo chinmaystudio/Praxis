@@ -1,3 +1,4 @@
+import "dotenv/config";
 import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
 import { RegistrationRecord, PaymentRecord, RegistrationFormData } from "../types/payment.types.js";

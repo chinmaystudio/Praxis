@@ -13,13 +13,9 @@ interface RegistrationModalProps {
   onClose: () => void;
 }
 
-declare global {
-  interface Window {
-    Razorpay?: new (options: RazorpayOptions) => {
-      open: () => void;
-      on: (event: string, handler: (response: unknown) => void) => void;
-    };
-  }
+type RazorpayConstructor = new (options: RazorpayOptions) => { open: () => void };
+function checkoutConstructor(): RazorpayConstructor | undefined {
+  return (window as unknown as { Razorpay?: RazorpayConstructor }).Razorpay;
 }
 
 interface RazorpayOptions {
@@ -93,7 +89,7 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
 
   // Load Razorpay Checkout Script safely
   useEffect(() => {
-    if (typeof window === "undefined" || window.Razorpay) return;
+    if (typeof window === "undefined" || checkoutConstructor()) return;
 
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -212,7 +208,8 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
       }
 
       // If Razorpay SDK is available, open checkout modal
-      if (typeof window !== "undefined" && window.Razorpay) {
+      const RazorpayCheckout = checkoutConstructor();
+      if (RazorpayCheckout) {
         setStatus("checkout");
 
         const options: RazorpayOptions = {
@@ -307,7 +304,7 @@ export default function RegistrationModal({ event, isOpen, onClose }: Registrati
           },
         };
 
-        const rzp = new window.Razorpay(options);
+        const rzp = new RazorpayCheckout(options);
         rzp.open();
       } else {
         setGeneralError("Razorpay checkout could not load. Please check your connection and try again.");

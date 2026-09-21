@@ -4,13 +4,13 @@ export type Participant = { name: string; collegeType: CollegeType; college: str
 export type RegistrationDraft = { teamName: string; leaderEmail: string; phone: string; participants: [Participant, Participant, Participant, Participant]; accepted: boolean };
 export type OtpChallenge = { id: string; email: string; expiresAt: number; resendAt: number };
 export type EmailProof = { email: string; token: string };
-export type PaymentReceipt = { id: string; status: "paid"; amount: number; currency: "INR" };
+export type PaymentReceipt = { id: string; status: "paid"; amount: number; currency: "INR"; reference?: string; emailStatus?: "sent" | "pending" };
 export type RegistrationResult = { reference: string; mode: "preview" | "live"; emailStatus: "preview" | "sent" | "pending"; communityUrl: string | null };
 export interface RegistrationGateway {
   mode: "preview" | "live";
   requestOtp(email: string): Promise<OtpChallenge>;
   verifyOtp(challenge: OtpChallenge, code: string): Promise<EmailProof>;
-  createPayment(draft: RegistrationDraft): Promise<PaymentReceipt>;
+  createPayment(draft: RegistrationDraft, proofs: EmailProof[]): Promise<PaymentReceipt>;
   submit(input: { draft: RegistrationDraft; proofs: EmailProof[]; payment: PaymentReceipt | null; idempotencyKey: string }): Promise<RegistrationResult>;
 }
 
@@ -50,8 +50,8 @@ export function validateRegistration(draft: RegistrationDraft, proofs: Record<nu
     if (p.collegeType === "pccoe") {
       if (!p.prn.trim()) errors[`${key}.prn`] = "Enter your PCCOE PRN.";
       if (!validCollegeEmail(email)) errors[`${key}.email`] = "Use an approved PCCOE email address.";
-      if (!proofs[i] || proofs[i].email !== normalizeEmail(email)) errors[`${key}.verification`] = "Verify this PCCOE email with an OTP.";
     }
+    if (i > 0 && (!proofs[i] || proofs[i].email !== normalizeEmail(email))) errors[`${key}.verification`] = "Verify this member email with an OTP.";
     const emails = draft.participants.map((person, j) => [normalizeEmail(participantEmail(draft, j)), ...(j === 0 ? [normalizeEmail(draft.leaderEmail)] : [])]);
     if (validEmail(email) && emails.some((list, j) => j !== i && list.includes(normalizeEmail(email)))) errors[`${key}.email`] = "Each participant must use a different email address.";
     if (p.collegeType === "pccoe" && p.prn.trim() && draft.participants.some((other, j) => j !== i && other.collegeType === "pccoe" && other.prn.trim().toLowerCase() === p.prn.trim().toLowerCase())) errors[`${key}.prn`] = "Each PCCOE participant needs a unique PRN.";
