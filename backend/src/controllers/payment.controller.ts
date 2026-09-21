@@ -119,6 +119,11 @@ export async function createOrder(
       return;
     }
 
+    if (TEAM_EVENT_POLICIES[event.slug]) {
+      res.status(400).json({ success: false, error: "Use the verified team registration flow for this event." });
+      return;
+    }
+
     // 3. Prevent duplicate registrations for same email + event
     const existingConfirmed = await findConfirmedRegistration(email, event.slug);
     if (existingConfirmed) {
@@ -213,11 +218,6 @@ export async function verifyPayment(
       });
       return;
     }
-    if (TEAM_EVENT_POLICIES[event.slug]) {
-      res.status(400).json({ success: false, error: "Use the verified team registration flow for this event." });
-      return;
-    }
-
     // A valid callback signature proves authenticity, but live fulfilment must
     // also match the server-side order and a captured Razorpay payment.
     const storedPayment = await getPaymentByOrder(razorpay_order_id);
