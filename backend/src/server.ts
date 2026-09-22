@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import paymentRoutes from "./routes/payment.routes.js";
 import infinityRoutes from "./controllers/infinity.controller.js";
 import teamRoutes from "./controllers/team.controller.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 // Load environment variables
 dotenv.config();
@@ -56,6 +57,7 @@ app.get("/health", (_req: Request, res: Response) => {
 app.use("/api/payments", paymentRoutes);
 app.use("/api/infinity", infinityRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Fallback 404 handler
 app.use((_req: Request, res: Response) => {
