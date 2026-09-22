@@ -73,7 +73,7 @@ async function saveTeam(draft: TeamDraft, leaderId: string, amount: number) {
   return record;
 }
 
-async function sendConfirmation(record: Awaited<ReturnType<typeof saveTeam>>, title: string, amount: number) {
+async function sendConfirmation(record: Awaited<ReturnType<typeof saveTeam>>, draft: TeamDraft, title: string, amount: number) {
   const sent = await sendRegistrationConfirmationEmail({
     participantName: record.name,
     email: record.email,
@@ -83,6 +83,9 @@ async function sendConfirmation(record: Awaited<ReturnType<typeof saveTeam>>, ti
     college: record.college,
     amountPaid: amount,
     paymentId: amount ? "PENDING" : "FREE",
+    recipients: draft.participants,
+    teamName: draft.teamName,
+    communityUrl: TEAM_EVENT_POLICIES[record.eventSlug]?.whatsappUrl,
   });
   if (sent.success) await markReceiptSent(record.id);
   return sent.success ? "sent" as const : "pending" as const;
@@ -94,7 +97,7 @@ export async function registerFreeTeam(draft: TeamDraft, leaderId: string, proof
   const record = await saveTeam(draft, leaderId, amount);
   const { error } = await db.from("registrations").update({ status: "confirmed" }).eq("id", record.id);
   if (error) throw new Error(error.message);
-  return { reference: record.registrationCode, amount, emailStatus: await sendConfirmation(record, policy.title, amount) };
+  return { reference: record.registrationCode, amount, emailStatus: await sendConfirmation(record, draft, policy.title, amount), communityUrl: policy.whatsappUrl };
 }
 
 export async function createTeamOrder(draft: TeamDraft, leaderId: string, proofs: Proof[]) {

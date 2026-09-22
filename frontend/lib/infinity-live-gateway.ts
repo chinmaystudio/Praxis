@@ -74,9 +74,9 @@ export const liveGateway: RegistrationGateway = {
     if (auth.email !== draft.leaderEmail.toLowerCase()) throw new Error("Use the Google account matching the team leader email.");
     if (payment) {
       if (!payment.reference) throw new Error("A confirmed payment reference is required.");
-      return { reference: payment.reference, mode: "live", emailStatus: payment.emailStatus || "pending", communityUrl: null };
+      return { reference: payment.reference, mode: "live", emailStatus: payment.emailStatus || "pending", communityUrl: "https://chat.whatsapp.com/CRBxGduw0U8GG3x591hz8Q?s=qt&p=i&mlu=4&ilr=4" };
     }
     const body = await post("free", { draft, proofs });
-    return { reference: body.reference, mode: "live", emailStatus: body.emailStatus, communityUrl: null };
+    return { reference: body.reference, mode: "live", emailStatus: body.emailStatus, communityUrl: body.communityUrl || "https://chat.whatsapp.com/CRBxGduw0U8GG3x591hz8Q?s=qt&p=i&mlu=4&ilr=4" };
   },
 };

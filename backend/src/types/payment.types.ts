@@ -65,6 +65,7 @@ export interface RegistrationRecord {
   teamName?: string;
   teamSize?: number;
   teamMembers?: string[];
+  participants?: Array<{ name: string; email: string; college?: string }>;
   status: RegistrationStatus;
   createdAt: string;
   updatedAt: string;

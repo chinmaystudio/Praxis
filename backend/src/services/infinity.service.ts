@@ -17,6 +17,7 @@ export async function validateTeam(draft: TeamDraft, leaderId: string, proofs: P
   if (!draft || !draft.accepted || !draft.teamName?.trim() || !emailValid(draft.leaderEmail) || !/^(?:\+91)?[6-9]\d{9}$/.test(draft.phone)) throw new Error("Invalid team details.");
   if (!Array.isArray(draft.participants) || draft.participants.length !== 4) throw new Error("Exactly four participants are required.");
   const emails = draft.participants.map(p => p.email?.trim().toLowerCase());
+  if (emails[0] !== draft.leaderEmail.trim().toLowerCase()) throw new Error("The first participant must use the signed-in leader email.");
   if (new Set(emails).size !== 4 || emails.some(email => !emailValid(email))) throw new Error("Every participant needs a unique valid email.");
   if (draft.participants.some(p => !p.name?.trim() || !["pccoe", "other"].includes(p.collegeType) || !p.college?.trim())) throw new Error("Complete every participant’s name and college.");
   if (!draft.participants[0].year?.trim() || !draft.participants[0].branch?.trim()) throw new Error("Complete the leader’s year and branch.");
@@ -56,6 +57,9 @@ export async function registerFreeTeam(draft: TeamDraft, leaderId: string, proof
     participantName: record.name, email: record.email, eventTitle: "Infinity Trials",
     eventSlug: "infinity-trials", registrationCode: record.registrationCode,
     college: record.college, amountPaid: 0, paymentId: "FREE",
+    recipients: draft.participants.map(participant => ({ name: participant.name, email: participant.email, college: participant.college })),
+    teamName: draft.teamName,
+    communityUrl: "https://chat.whatsapp.com/CRBxGduw0U8GG3x591hz8Q?s=qt&p=i&mlu=4&ilr=4",
   });
   if (sent.success) await markReceiptSent(record.id);
   return { reference: record.registrationCode, emailStatus: sent.success ? "sent" : "pending" };

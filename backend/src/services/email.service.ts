@@ -9,6 +9,9 @@ export interface RegistrationEmailPayload {
   college: string;
   amountPaid: number;
   paymentId: string;
+  recipients?: Array<{ name: string; email: string; college?: string }>;
+  teamName?: string;
+  communityUrl?: string;
 }
 
 
@@ -47,7 +50,12 @@ function buildHtmlEmail(input: RegistrationEmailPayload): string {
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   const payload = { ...input, participantName: escape(input.participantName),
     registrationCode: escape(input.registrationCode), eventTitle: escape(input.eventTitle),
-    college: escape(input.college), email: escape(input.email), paymentId: escape(input.paymentId) };
+    college: escape(input.college), email: escape(input.email), paymentId: escape(input.paymentId),
+    teamName: input.teamName ? escape(input.teamName) : "", communityUrl: input.communityUrl ? escape(input.communityUrl) : "" };
+  const participantRows = (input.recipients || []).map((recipient, index) => `<tr>
+    <td class="row-label">${index === 0 ? "Team Leader" : `Member ${index + 1}`}</td>
+    <td class="row-value">${escape(recipient.name)}<br><span style="font-size:11px;color:#94a3b8">${escape(recipient.email)}</span></td>
+  </tr>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,15 +193,22 @@ function buildHtmlEmail(input: RegistrationEmailPayload): string {
           <div class="code">${payload.registrationCode}</div>
         </div>
 
+        <div class="notes-box" style="border-left-color:#00ff9c">
+          <strong>Invoice / Payment Receipt</strong><br>
+          Invoice: ${payload.registrationCode} · Amount: ₹${payload.amountPaid} · Payment: ${payload.paymentId}
+        </div>
+
         <table class="detail-table">
           <tr>
             <td class="row-label">Event Name</td>
             <td class="row-value">${payload.eventTitle}</td>
           </tr>
-          <tr>
+          ${payload.teamName ? `<tr><td class="row-label">Team Name</td><td class="row-value">${payload.teamName}</td></tr>` : ""}
+          ${participantRows}
+          ${input.recipients?.length ? "" : `<tr>
             <td class="row-label">Participant</td>
             <td class="row-value">${payload.participantName}</td>
-          </tr>
+          </tr>`}
           <tr>
             <td class="row-label">College / Institute</td>
             <td class="row-value">${payload.college}</td>
@@ -222,11 +237,12 @@ function buildHtmlEmail(input: RegistrationEmailPayload): string {
           • Quote your Registration ID <strong>${payload.registrationCode}</strong> at the reporting desk.<br>
           • Check your event rulebook for timing schedules and reporting venue details.
         </div>
+        ${payload.communityUrl ? `<div style="text-align:center;margin:26px 0"><a href="${payload.communityUrl}" style="display:inline-block;background:#25D366;color:#06120a;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:8px">Join the ${payload.eventTitle} WhatsApp Group</a><p style="font-size:11px;color:#94a3b8;overflow-wrap:anywhere">${payload.communityUrl}</p></div>` : ""}
       </div>
 
       <div class="footer">
         <p style="margin: 0 0 6px 0;">Praxis 2026 Annual National Technology Symposium</p>
-        <p style="margin: 0;">For queries or assistance, contact support@praxis.in</p>
+        <p style="margin: 0;">For queries or assistance, contact joshichinmay848@gmail.com</p>
       </div>
     </div>
   </div>
@@ -247,12 +263,15 @@ export async function sendRegistrationConfirmationEmail(
     // Obtain transporter
     const { transporter, fromAddress } = await getEmailTransporter();
 
+    const memberEmails = (payload.recipients || []).map(recipient => recipient.email.trim().toLowerCase())
+      .filter(email => email && email !== payload.email.trim().toLowerCase());
+    const copyEmail = process.env.RECEIPT_COPY_EMAIL || "joshichinmay848@gmail.com";
     const mailOptions = {
       from: fromAddress,
       to: payload.email,
-      bcc: process.env.RECEIPT_COPY_EMAIL || "joshichinmay848@gmail.com",
+      bcc: [...new Set([...memberEmails, copyEmail])],
       subject: `[CONFIRMED] Praxis 2026 Registration — ${payload.eventTitle} (${payload.registrationCode})`,
-      text: `Hello ${payload.participantName},\n\nYour registration for ${payload.eventTitle} at Praxis 2026 has been successfully confirmed!\n\nRegistration Code: ${payload.registrationCode}\nAmount Paid: ₹${payload.amountPaid}\nPayment ID: ${payload.paymentId}\nCollege: ${payload.college}\n\nPlease present this code at the registration desk on the event day.\n\nBest regards,\nPraxis 2026 Team`,
+      text: `Hello ${payload.participantName} and team,\n\nYour registration for ${payload.eventTitle} at Praxis 2026 has been confirmed.\n\nRegistration Code / Invoice: ${payload.registrationCode}\nTeam: ${payload.teamName || "Individual registration"}\nAmount Paid: ₹${payload.amountPaid}\nPayment ID: ${payload.paymentId}\nCollege: ${payload.college}${payload.recipients?.length ? `\nParticipants: ${payload.recipients.map(person => `${person.name} <${person.email}>`).join(", ")}` : ""}${payload.communityUrl ? `\nWhatsApp Group: ${payload.communityUrl}` : ""}\n\nPlease present this confirmation at the registration desk.\n\nBest regards,\nPraxis 2026 Team`,
       html: htmlContent,
     };
 

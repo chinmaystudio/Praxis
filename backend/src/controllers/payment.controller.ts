@@ -37,6 +37,9 @@ async function sendReceiptIfNeeded(registration: Awaited<ReturnType<typeof creat
     eventTitle: event?.title || registration.eventSlug, eventSlug: registration.eventSlug,
     registrationCode: registration.registrationCode, college: registration.college,
     amountPaid: payment.amount, paymentId: payment.razorpayPaymentId || "",
+    recipients: registration.participants,
+    teamName: registration.teamName,
+    communityUrl: TEAM_EVENT_POLICIES[registration.eventSlug]?.whatsappUrl,
   });
   if (!sent.success) throw new Error(sent.error || "Receipt email failed");
   await markReceiptSent(registration.id);

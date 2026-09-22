@@ -29,7 +29,7 @@ function registration(row: any): RegistrationRecord {
     eventSlug: row.event_slug, name: row.lead_name, email: row.lead_email,
     phone: row.lead_phone, college: row.college, year: row.year_of_study,
     branch: row.department, teamName: row.team_name ?? undefined, teamSize: row.team_size,
-    teamMembers: row.custom_fields?.teamMembers ?? [], status: row.status,
+    teamMembers: row.custom_fields?.teamMembers ?? [], participants: row.custom_fields?.participants ?? [], status: row.status,
     createdAt: row.created_at, updatedAt: row.updated_at };
 }
 

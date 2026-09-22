@@ -8,6 +8,7 @@ export type TeamEventPolicy = {
   minMembers: number;
   maxMembers: number;
   pricing: TeamPricing;
+  whatsappUrl: string;
 };
 
 export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
@@ -17,6 +18,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     minMembers: 4,
     maxMembers: 4,
     pricing: { kind: "external-team", amount: 200 },
+    whatsappUrl: "https://chat.whatsapp.com/CRBxGduw0U8GG3x591hz8Q?s=qt&p=i&mlu=4&ilr=4",
   },
   "bgmi-elite-showdown": {
     slug: "bgmi-elite-showdown",
@@ -24,6 +26,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     minMembers: 2,
     maxMembers: 4,
     pricing: { kind: "external-member", amount: 50 },
+    whatsappUrl: "https://chat.whatsapp.com/IClctDsmKyaEHnaE3E1WXk?s=cl&p=a&mlu=0&ilr=4",
   },
   "research-x": {
     slug: "research-x",
@@ -31,6 +34,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     minMembers: 2,
     maxMembers: 4,
     pricing: { kind: "external-member", amount: 50 },
+    whatsappUrl: "https://chat.whatsapp.com/GJtulaML6tx24r9JKpQ1MC",
   },
 };
 
