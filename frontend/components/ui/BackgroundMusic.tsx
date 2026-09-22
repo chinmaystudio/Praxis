@@ -40,6 +40,7 @@ export default function BackgroundMusic() {
     window.addEventListener("keydown", startFromScrollKey);
 
     return () => {
+      audio.pause();
       audio.removeEventListener("play", syncPlayingState);
       audio.removeEventListener("pause", syncPlayingState);
       window.removeEventListener("wheel", startFromScroll);
@@ -47,7 +48,7 @@ export default function BackgroundMusic() {
       window.removeEventListener("touchstart", startFromScroll);
       window.removeEventListener("keydown", startFromScrollKey);
     };
-  }, []);
+  }, [pathname]);
 
   const toggleMusic = () => {
     const audio = audioRef.current;

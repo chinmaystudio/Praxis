@@ -183,9 +183,13 @@ export default function CinematicText() {
   const initialRefs = useRef<(HTMLDivElement | null)[]>([]);
   const streamRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lastLayout = useRef("");
 
   useRaf(() => {
     const s = signals.scroll;
+    const layout = `${s}:${window.innerWidth}:${window.innerHeight}`;
+    if (lastLayout.current === layout) return;
+    lastLayout.current = layout;
 
     // ── 0. Opening Centerpiece ("THIS IS PRAXIS / scroll to explore") ──
     // Visible immediately on landing at s = 0, gracefully fades out as scrolling begins

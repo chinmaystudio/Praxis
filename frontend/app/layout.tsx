@@ -30,7 +30,15 @@ export const metadata: Metadata = {
   title: "PRAXIS 2026 — PCCOE Pune",
   description,
   keywords: ["Praxis 2026", "PCCOE Pune", "Infinity Trials", "BGMI", "Research X"],
-  icons: { icon: "/praxis-icon.png", apple: "/praxis-icon.png" },
+  icons: {
+    icon: [
+      { url: "/praxis-icon-v3-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/praxis-icon-v3-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/praxis-icon-v3-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/praxis-icon-v3-32.png",
+    apple: { url: "/praxis-apple-v3.png", sizes: "180x180", type: "image/png" },
+  },
   openGraph: {
     title: "PRAXIS 2026 — PCCOE Pune",
     description,

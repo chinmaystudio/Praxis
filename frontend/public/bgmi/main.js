@@ -1,3 +1,5 @@
+import { initEventIntro } from '/event-intro.js';
+
 function initStageTabs() {
   const stageButtons = document.querySelectorAll('.stage-tab-btn');
   const roundCards = document.querySelectorAll('.round-card[data-stage-card]');
@@ -42,7 +44,7 @@ function initStickyNav() {
       const targetEl = document.getElementById(targetId);
       if (targetEl) {
         e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth' });
+        targetEl.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         navTabs.forEach((t) => t.classList.remove('active'));
         tab.classList.add('active');
       }
@@ -82,3 +84,4 @@ function initStickyNav() {
 
 initStageTabs();
 initStickyNav();
+initEventIntro();

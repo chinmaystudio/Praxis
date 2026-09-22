@@ -9,10 +9,31 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/researchx/style.css">
-  <link rel="icon" type="image/png" href="/praxis-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/praxis-icon-v3-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/praxis-apple-v3.png">
   <link rel="stylesheet" href="/event-mobile.css">
+  <link rel="stylesheet" href="/event-intro.css">
 </head>
 <body class="theme-marvel">
+  <dialog class="event-intro" data-event-intro aria-labelledby="researchx-film-title"
+    data-intro="/videos/thor_epic.mp4" data-intro-mobile="/videos/researchx-intro-mobile.mp4"
+    data-intro-title="ResearchX — Opening film">
+    <div class="event-intro__header">
+      <img class="event-intro__brand" src="/images/praxis_new_logo.png" alt="Praxis 2026" width="120" height="48">
+      <h2 class="event-intro__title" id="researchx-film-title" data-intro-title>ResearchX — Opening film</h2>
+    </div>
+    <div class="event-intro__media">
+      <video class="event-intro__video" muted playsinline preload="none" aria-label="ResearchX opening film"></video>
+      <button type="button" class="event-intro__button event-intro__play" data-intro-play hidden>Play film</button>
+    </div>
+    <div>
+      <div class="event-intro__controls">
+        <button type="button" class="event-intro__button" data-intro-sound aria-pressed="false">Sound off — enable</button>
+        <button type="button" class="event-intro__button" data-intro-skip autofocus>Skip to event →</button>
+      </div>
+      <p class="event-intro__status" data-intro-status role="status"></p>
+    </div>
+  </dialog>
 
   <!-- Fixed Return to Praxis button -->
   <a href="/events" class="praxis-return-pill" aria-label="Return to Praxis Events">
@@ -94,6 +115,9 @@
             <span class="btn-text">EXPLORE EVENT</span>
             <div class="sheen-effect"></div>
           </button>
+        </div>
+        <div class="event-film-actions">
+          <button type="button" class="event-film-link" data-event-film="intro" hidden>Watch opening film</button>
         </div>
       </div>
 

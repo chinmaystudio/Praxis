@@ -40,8 +40,9 @@ export default function Experience() {
   useEffect(() => {
     if (!mounted || builtRef.current || !trackRef.current) return;
     builtRef.current = true;
-    const mobileScrub = window.matchMedia("(max-width: 820px), (pointer: coarse)").matches;
-    let mobileTarget = Math.min(1, Math.max(0, window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let scrollStarted = window.scrollY > 2;
+    signals.scroll = 0;
 
     // ── Timeline positions (units; 100vh = 1 unit) — hero only ──
     const heroText  = SCROLL.heroText  / 100; // 2.6
@@ -62,42 +63,40 @@ export default function Experience() {
     signals.heroT   = 0;
     signals.footer  = 0;
 
-    // Follow the eased timeline even after scroll events stop. Retry on the next
-    // tick while the decoder is busy so the final requested frame is not lost.
+    // Autoplay until the first scroll. After that, the scroll track owns the
+    // playhead in both directions, including when returning to the first frame.
     const renderHero = () => {
       const hero = getVideoEl("hero");
       if (!hero || document.hidden) return;
-      hero.style.opacity = signals.heroOp.toFixed(3);
-      if (mobileScrub) {
-        hero.pause();
-        if (hero.readyState < 2 || hero.seeking) return;
-        const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
-        const target = Math.min(Math.max(0, duration - 0.04), mobileTarget * duration);
-        if (Math.abs(hero.currentTime - target) >= 1 / 30) hero.currentTime = target;
-        return;
-      }
-      if (window.scrollY > 10) {
+      const opacity = signals.heroOp.toFixed(3);
+      if (hero.style.opacity !== opacity) hero.style.opacity = opacity;
+      scrollStarted ||= window.scrollY > 2;
+      if (scrollStarted) {
+        hero.dataset.playbackMode = "scroll";
         hero.pause();
         const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
-        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) scrubEl(hero, (signals.scroll * duration));
+        if (!reducedMotion.matches) scrubEl(hero, signals.scroll * duration);
       }
     };
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
+      onUpdate: renderHero,
       scrollTrigger: {
         trigger: trackRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: mobileScrub ? true : 0.25,
+        scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           signals.scroll = self.progress;
-          if (mobileScrub) {
-            mobileTarget = self.progress;
-            signals.heroT = self.progress * VIDEO.heroDur;
-            renderHero();
-          }
+          signals.heroT = self.progress * VIDEO.heroDur;
+          renderHero();
+        },
+        onRefresh: (self) => {
+          signals.scroll = self.progress;
+          signals.heroT = self.progress * VIDEO.heroDur;
+          renderHero();
         },
       },
     });
@@ -111,16 +110,24 @@ export default function Experience() {
     // ── Doom trailer appears + scrubs ─────────────────────────────
     tl.to(signals, { heroOp: 1, duration: 0.3, ease: "power2.out" }, T.videoStart);
     tl.to(signals, { energy: 0.15, duration: 0.6 }, T.videoStart);
-    tl.to(signals, { heroT: VIDEO.heroDur, duration: T.videoEnd - T.videoStart }, T.videoStart);
     tl.to(signals, { energy: 0.13, duration: 0.8 }, T.videoEnd);
-    gsap.ticker.add(renderHero);
+    const hero = getVideoEl("hero");
+    // A completed seek retries the latest target after a fast swipe; nothing
+    // needs to run on every animation frame while the page is stationary.
+    hero?.addEventListener("seeked", renderHero);
+    hero?.addEventListener("loadeddata", renderHero);
+    window.addEventListener("scroll", renderHero, { passive: true });
+    document.addEventListener("visibilitychange", renderHero);
 
     if (process.env.NODE_ENV !== "production") {
       (window as unknown as Record<string, unknown>).__doom = { signals, tl };
     }
 
     return () => {
-      gsap.ticker.remove(renderHero);
+      hero?.removeEventListener("seeked", renderHero);
+      hero?.removeEventListener("loadeddata", renderHero);
+      window.removeEventListener("scroll", renderHero);
+      document.removeEventListener("visibilitychange", renderHero);
       tl.scrollTrigger?.kill();
       tl.kill();
       builtRef.current = false;
