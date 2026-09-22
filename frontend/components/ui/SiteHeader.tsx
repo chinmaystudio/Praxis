@@ -30,9 +30,9 @@ export default function SiteHeader() {
   };
 
   return (
-    <header ref={ref} className={styles.header} style={{ opacity: 0, visibility: "hidden" }}>
+    <header ref={ref} className={styles.header} style={{ opacity: 1 }}>
       {/* Left: Pure Praxis Banner Logo (Large, no extra text) */}
-      <div
+      <button type="button"
           className={styles.brand}
           onClick={handleLogoClick}
           role="button"
@@ -45,7 +45,7 @@ export default function SiteHeader() {
             alt="PRAXIS"
             className={styles.brandLogo}
         />
-      </div>
+      </button>
 
       {/* Right: Unique, Attractive Cyber Sci-Fi Register Button */}
       <Link

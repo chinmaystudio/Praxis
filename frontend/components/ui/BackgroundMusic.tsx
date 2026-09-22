@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import styles from "./ui.module.css";
 
 const MUSIC_SRC = "/audio/avengers-theme.mp3";
 const SCROLL_KEYS = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "]);
 
 export default function BackgroundMusic() {
+  const pathname = usePathname();
   const audioRef = useRef<HTMLAudioElement>(null);
-  const wantsMusicRef = useRef(true);
+  const wantsMusicRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -60,9 +62,11 @@ export default function BackgroundMusic() {
     }
   };
 
+  if (pathname !== "/") return null;
+
   return (
     <>
-      <audio ref={audioRef} src={MUSIC_SRC} loop preload="auto" aria-hidden />
+      <audio ref={audioRef} src={MUSIC_SRC} loop preload="none" aria-hidden />
       <button
         type="button"
         className={`${styles.corner} ${styles.btn} ${styles.sound}`}

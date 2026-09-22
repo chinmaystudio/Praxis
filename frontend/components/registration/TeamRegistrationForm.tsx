@@ -31,6 +31,7 @@ export default function TeamRegistrationForm({ policy }: { policy: TeamEventPoli
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const emails = participants.map((person, index) => index === 0 ? leaderEmail.trim().toLowerCase() : person.email.trim().toLowerCase());
+  const hasAllEmails = emails.every(validEmail);
   const amount = useMemo(() => payableAmount(policy, emails), [policy, emails.join("|")]);
 
   useEffect(() => {
@@ -132,9 +133,9 @@ export default function TeamRegistrationForm({ policy }: { policy: TeamEventPoli
           <label className={styles.field}>Full name *<input value={person.name} onChange={(e) => changeParticipant(index, "name", e.target.value)} required /></label>
           {index === 0 ? <label className={styles.field}>Verified through Google<input value={leaderEmail} readOnly /></label> : <label className={styles.field}>Member email *<input type="email" value={person.email} onChange={(e) => changeParticipant(index, "email", e.target.value)} required /></label>}
         </div>{index > 0 && <div className={`${styles.otp} ${proofs[index]?.email === emails[index] ? styles.verified : ""}`}>{proofs[index]?.email === emails[index] ? <p>✓ Email verified · {isPccoeEmail(emails[index]) ? "PCCOE member" : "External member"}</p> : <><button type="button" className={styles.smallButton} onClick={() => void sendOtp(index)}>Send OTP</button>{challenges[index] && <><input value={codes[index] || ""} onChange={(e) => setCodes((current) => ({ ...current, [index]: e.target.value.replace(/\D/g, "").slice(0, 6) }))} placeholder="6-digit code" /><button type="button" className={styles.smallButton} onClick={() => void verifyOtp(index)}>Verify</button></>}</>}</div>}</fieldset>)}
-        <div className={styles.total}><span>{amount ? "Registration fee" : "All members use PCCOE email"}</span><strong>{amount ? `₹${amount}` : "Free"}</strong><p>{policy.externalPricing === "team" ? `₹${policy.externalAmount} for the team if any verified member email is outside PCCOE.` : `₹${policy.externalAmount} for each verified member email outside PCCOE.`}</p></div>
+        <div className={styles.total}><span>{!hasAllEmails ? "Registration fee" : amount ? "Registration fee" : "All members use PCCOE email"}</span><strong>{!hasAllEmails ? "—" : amount ? `₹${amount}` : "Free"}</strong><p>{!hasAllEmails ? "Enter every member email to calculate the fee." : policy.externalPricing === "team" ? `₹${policy.externalAmount} for the team if any verified member email is outside PCCOE.` : `₹${policy.externalAmount} for each verified member email outside PCCOE.`}</p></div>
         <label className={styles.consent}><input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} /><span>I confirm the participant details are correct and accept the <a href={policy.rulebook} target="_blank" rel="noreferrer">event rules</a>.</span></label>
-        <div className={styles.formActions}><button className={styles.primary} type="submit">{busy ? "Please wait…" : amount ? `Pay ₹${amount} and register` : "Confirm free registration"}</button></div>
+        <div className={styles.formActions}><button className={styles.primary} type="submit">{busy ? "Please wait…" : !hasAllEmails ? "Complete team details" : amount ? `Pay ₹${amount} and register` : "Confirm free registration"}</button></div>
       </fieldset></form>
     </section></div>
   </main>;

@@ -29,13 +29,13 @@ export default function HeroOverlay() {
   });
 
   return (
-    <div ref={wrapRef} className={styles.heroUi} style={{ opacity: 0 }} aria-hidden>
+    <div ref={wrapRef} className={styles.heroUi} style={{ opacity: 0.65 }}>
       <div className={styles.heroText}>
-        <span className={styles.heroKicker}>Phase 01 · Marvel Studios</span>
+        <span className={styles.heroKicker}>PRAXIS 2026 · PCCOE Pune</span>
       </div>
 
       <div className={styles.heroScrub}>
-        <span className={styles.heroScrubLabel}>Scroll to play the trailer</span>
+        <span className={styles.heroScrubLabel}>Scroll to explore</span>
         <span className={styles.scrubTrack}>
           <span ref={barRef} className={styles.scrubFill} />
         </span>

@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/researchx/style.css">
+  <link rel="icon" type="image/png" href="/praxis-icon.png">
+  <link rel="stylesheet" href="/event-mobile.css">
 </head>
 <body class="theme-marvel">
 
@@ -18,50 +20,8 @@
     <span class="praxis-return-text">BACK TO PRAXIS</span>
   </a>
 
-  <!-- MASTER AUDIO CONTROLLER (Fixed Top-Right) -->
-  <div id="master-audio-control" class="audio-control-btn" title="Toggle Sound">
-    <div class="audio-waves" id="audio-visualizer">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
-    <span id="audio-label">SOUND: ON</span>
-  </div>
-
-  <!-- PHASE 1: THOR CINEMATIC MONTAGE (RUNS FIRST ON EVENT OPEN) -->
-  <section id="phase-montage" class="fullscreen-overlay active">
-    <video id="montage-video" playsinline preload="auto" src="/videos/thor_epic.mp4"></video>
-    <!-- Montage HUD -->
-    <div class="montage-hud">
-      <button id="btn-skip-montage" class="btn-montage-skip">SKIP INTRO ⏭</button>
-    </div>
-  </section>
-
-  <!-- PHASE 2: PRAXIS '26 LOGO OPENING SPLASH (RUNS FOR 1-2 SEC BEFORE HERO) -->
-  <section id="phase-praxis-splash" class="praxis-splash-overlay">
-    <div class="praxis-splash-container">
-      <div class="praxis-emblem-wrapper">
-        <img src="/images/praxis_new_logo.png" alt="PRAXIS '26" class="praxis-splash-img">
-        <div class="praxis-reactor-glow"></div>
-      </div>
-      <div class="praxis-splash-meta">
-        <div class="praxis-subtext">DEPARTMENT OF INFORMATION TECHNOLOGY & ITSA PRESENTS</div>
-        <h1 class="praxis-splash-title">PRAXIS '26</h1>
-        <p class="praxis-splash-tag">IDEAS ASSEMBLE A BRIGHTER TOMORROW</p>
-      </div>
-      <div class="splash-action-row">
-        <button id="btn-enter-site" class="btn-enter-praxis">
-          <span>ENTER PORTAL</span>
-          <span class="enter-symbol">►</span>
-        </button>
-      </div>
-      <div class="splash-status-text">INITIALIZING EVENT PORTAL... <span id="splash-timer">2s</span></div>
-    </div>
-  </section>
-
   <!-- MAIN EVENT PORTAL & WEBPAGE -->
-  <div id="main-portal" class="portal-container">
+  <div id="main-portal" class="portal-container portal-ready">
     
     <!-- STICKY GLOBAL NAVIGATION (MINIMAL TABS) -->
     <header class="navbar" id="navbar">
@@ -83,12 +43,12 @@
       <!-- Register button hidden initially; shown after exploring details -->
       <div class="nav-actions">
         <span class="status-pill"><span class="dot-live"></span> Registrations Open</span>
-        <button class="btn-nav-cta hidden" id="btn-header-register">Register Team</button>
+        <a class="btn-nav-cta" id="btn-header-register" href="/events/research-x/register">Register Team</a>
       </div>
     </header>
 
     <!-- PHASE 3: HERO SECTION (ASGARD & MJOLNIR BACKGROUND) -->
-    <section id="hero" class="hero-section">
+    <section id="hero" class="hero-section hero-revealed">
       <div class="hero-bg-wrapper">
         <img src="/images/hero_asgard_mjolnir.jpg" alt="Asgard & Mjolnir — ResearchX" class="hero-bg-image" id="hero-poster">
         <div class="hero-lightning-layer"></div>
@@ -185,7 +145,7 @@
             <div class="quick-spec-icon">💳</div>
             <div class="quick-spec-info">
               <span class="quick-spec-label">Registration Fee</span>
-              <span class="quick-spec-value">FREE (PCCOE) / ₹200 (Other)</span>
+              <span class="quick-spec-value">PCCOE free / ₹50 per external member</span>
             </div>
           </div>
         </div>
@@ -298,7 +258,7 @@
             </div>
           </div>
           <div class="rulebook-card-right">
-            <a href="/PRAXIS_ResearchX_Enhanced_Creative_Rulebook.pdf" target="_blank" class="btn-pdf-action">
+            <a href="/researchx/PRAXIS_ResearchX_Enhanced_Creative_Rulebook.pdf" target="_blank" class="btn-pdf-action">
               <span class="pdf-icon">📄</span>
               <span class="pdf-text">View / Download Rulebook (PDF)</span>
             </a>
@@ -386,12 +346,12 @@
         <div class="final-cta-box">
           <div class="cta-shield-tag">Online Registration</div>
           <h2 class="cta-heading">Register Your Team</h2>
-          <p class="cta-text">Registrations are limited and accepted on a first-come, first-served basis. Free for PCCOE students • ₹200 per team for other engineering colleges.</p>
+          <p class="cta-text">Registrations are limited and accepted on a first-come, first-served basis. Verified PCCOE members enter free • ₹50 per external team member.</p>
           
           <div class="cta-btn-row">
-            <button id="btn-footer-register" class="btn-explore-glow large">
+            <a id="btn-footer-register" class="btn-explore-glow large" href="/events/research-x/register">
               <span>Register Your Team 🚀</span>
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -414,268 +374,6 @@
         </div>
       </div>
     </footer>
-  </div>
-
-  <!-- REGISTRATION MODAL -->
-  <div id="registration-modal" class="modal-backdrop">
-    <div class="modal-dialog">
-      <button class="modal-close" id="modal-close">&times;</button>
-      <div class="modal-header">
-        <span class="modal-tag">Department of IT & ITSA</span>
-        <h3 class="modal-title">Register Your Team for ResearchX</h3>
-        <p class="modal-subtitle">Official enrollment form for ResearchX — PRAXIS '26</p>
-      </div>
-      
-      <form id="reg-form" class="modal-form">
-        <!-- 👥 Team & Leader Basic Details -->
-        <div class="modal-section-divider">
-          <span>1. Team & Leader Information</span>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="teamName">Team Name *</label>
-            <input type="text" id="teamName" required placeholder="e.g. EcoInnovators">
-          </div>
-          <div class="form-group">
-            <label for="teamSize">Number of Members * (2 to 4)</label>
-            <select id="teamSize" required>
-              <option value="2">2 Members (Leader + 1 Member)</option>
-              <option value="3">3 Members (Leader + 2 Members)</option>
-              <option value="4" selected>4 Members (Leader + 3 Members)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="leaderName">Team Leader Name *</label>
-            <input type="text" id="leaderName" required placeholder="Full Name">
-          </div>
-          <div class="form-group">
-            <label for="leaderPhone">Team Leader Phone Number *</label>
-            <input type="tel" id="leaderPhone" required placeholder="+91 XXXXX XXXXX">
-          </div>
-        </div>
-
-        <!-- 🏫 College Selection for Leader -->
-        <div class="modal-section-divider">
-          <span>2. Leader College Information</span>
-        </div>
-
-        <div class="form-group">
-          <label for="leaderCollegeType">Select College Type *</label>
-          <select id="leaderCollegeType" required>
-            <option value="pccoe" selected>PCCOE (Pimpri Chinchwad College of Engineering)</option>
-            <option value="other">Another College</option>
-          </select>
-        </div>
-
-        <!-- If Leader is PCCOE -->
-        <div id="leader-pccoe-fields">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="leaderPRN">PRN (Permanent Registration Number) *</label>
-              <input type="text" id="leaderPRN" placeholder="e.g. 121B1B..." required>
-            </div>
-            <div class="form-group">
-              <label for="leaderPCCOEEmail">PCCOE Email ID *</label>
-              <input type="email" id="leaderPCCOEEmail" placeholder="first.last@pccoepune.org" required>
-            </div>
-          </div>
-
-          <!-- OTP Verification Box -->
-          <div class="otp-verification-box" id="otp-box">
-            <div class="otp-row">
-              <button type="button" id="btn-send-otp" class="btn-otp">SEND OTP</button>
-              <input type="text" id="otpInput" maxlength="6" placeholder="Enter OTP received" class="otp-input">
-              <button type="button" id="btn-verify-otp" class="btn-otp verify">VERIFY OTP</button>
-            </div>
-            <span id="otpStatus" class="otp-status-badge">⚡ Email verification required for PCCOE leaders</span>
-          </div>
-
-          <div class="form-row" style="margin-top: 12px;">
-            <div class="form-group">
-              <label for="leaderYearPCCOE">Year *</label>
-              <select id="leaderYearPCCOE">
-                <option value="FE">First Year (FE)</option>
-                <option value="SE">Second Year (SE)</option>
-                <option value="TE" selected>Third Year (TE)</option>
-                <option value="BE">Final Year (BE)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="leaderBranchPCCOE">Branch *</label>
-              <input type="text" id="leaderBranchPCCOE" placeholder="e.g. Information Technology">
-            </div>
-          </div>
-        </div>
-
-        <!-- If Leader is from Another College -->
-        <div id="leader-other-fields" style="display: none;">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="leaderOtherCollegeName">College Name *</label>
-              <input type="text" id="leaderOtherCollegeName" placeholder="Full College / University Name">
-            </div>
-            <div class="form-group">
-              <label for="leaderOtherEmail">Team Leader Email ID *</label>
-              <input type="email" id="leaderOtherEmail" placeholder="leader.personal@example.com">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="leaderYearOther">Year *</label>
-              <select id="leaderYearOther">
-                <option value="FE">First Year (FE)</option>
-                <option value="SE">Second Year (SE)</option>
-                <option value="TE" selected>Third Year (TE)</option>
-                <option value="BE">Final Year (BE)</option>
-                <option value="Other">Postgraduate / Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="leaderBranchOther">Branch *</label>
-              <input type="text" id="leaderBranchOther" placeholder="e.g. Computer Engineering / AI">
-            </div>
-          </div>
-        </div>
-
-        <!-- 👨‍👩‍👧‍👦 Team Members Section (Leader + up to 3 additional members) -->
-        <div class="modal-section-divider">
-          <span>3. Team Members (2 to 4 Members Total)</span>
-        </div>
-
-        <!-- Member 1 (Always present for 2 to 4 member teams) -->
-        <div class="member-card-block" id="block-member-1">
-          <div class="member-card-title">Member 1</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m1Name">Name *</label>
-              <input type="text" id="m1Name" required placeholder="Member 1 Full Name">
-            </div>
-            <div class="form-group">
-              <label for="m1Email">Email ID *</label>
-              <input type="email" id="m1Email" required placeholder="m1.email@example.com">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m1CollegeType">College *</label>
-              <select id="m1CollegeType" class="member-college-select" data-member="1" required>
-                <option value="pccoe" selected>PCCOE</option>
-                <option value="other">Another College</option>
-              </select>
-            </div>
-            <div class="form-group" id="m1-prn-group">
-              <label for="m1PRN">PRN * (Required for PCCOE)</label>
-              <input type="text" id="m1PRN" required placeholder="PRN Number">
-            </div>
-            <div class="form-group" id="m1-college-group" style="display: none;">
-              <label for="m1CollegeName">College Name *</label>
-              <input type="text" id="m1CollegeName" placeholder="College Name">
-            </div>
-          </div>
-        </div>
-
-        <!-- Member 2 (Shown if team size >= 3) -->
-        <div class="member-card-block" id="block-member-2">
-          <div class="member-card-title">Member 2</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m2Name">Name *</label>
-              <input type="text" id="m2Name" placeholder="Member 2 Full Name">
-            </div>
-            <div class="form-group">
-              <label for="m2Email">Email ID *</label>
-              <input type="email" id="m2Email" placeholder="m2.email@example.com">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m2CollegeType">College *</label>
-              <select id="m2CollegeType" class="member-college-select" data-member="2">
-                <option value="pccoe" selected>PCCOE</option>
-                <option value="other">Another College</option>
-              </select>
-            </div>
-            <div class="form-group" id="m2-prn-group">
-              <label for="m2PRN">PRN * (Required for PCCOE)</label>
-              <input type="text" id="m2PRN" placeholder="PRN Number">
-            </div>
-            <div class="form-group" id="m2-college-group" style="display: none;">
-              <label for="m2CollegeName">College Name *</label>
-              <input type="text" id="m2CollegeName" placeholder="College Name">
-            </div>
-          </div>
-        </div>
-
-        <!-- Member 3 (Shown if team size == 4) -->
-        <div class="member-card-block" id="block-member-3">
-          <div class="member-card-title">Member 3</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m3Name">Name *</label>
-              <input type="text" id="m3Name" placeholder="Member 3 Full Name">
-            </div>
-            <div class="form-group">
-              <label for="m3Email">Email ID *</label>
-              <input type="email" id="m3Email" placeholder="m3.email@example.com">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="m3CollegeType">College *</label>
-              <select id="m3CollegeType" class="member-college-select" data-member="3">
-                <option value="pccoe" selected>PCCOE</option>
-                <option value="other">Another College</option>
-              </select>
-            </div>
-            <div class="form-group" id="m3-prn-group">
-              <label for="m3PRN">PRN * (Required for PCCOE)</label>
-              <input type="text" id="m3PRN" placeholder="PRN Number">
-            </div>
-            <div class="form-group" id="m3-college-group" style="display: none;">
-              <label for="m3CollegeName">College Name *</label>
-              <input type="text" id="m3CollegeName" placeholder="College Name">
-            </div>
-          </div>
-        </div>
-
-        <!-- 💰 Payment Rules & Gateway Section -->
-        <div class="modal-section-divider">
-          <span>4. Registration Fee Status</span>
-        </div>
-
-        <!-- Free for all PCCOE -->
-        <div id="payment-free-box" class="payment-card-box free">
-          <div class="payment-badge">🎉 Registration Fee: ₹0 (FREE)</div>
-          <p>All squad participants are from PCCOE. No registration fee required!</p>
-        </div>
-
-        <!-- Paid if non-PCCOE participant exists -->
-        <div id="payment-paid-box" class="payment-card-box paid" style="display: none;">
-          <div class="payment-badge">💳 External Participant Fee: ₹200 Per Team</div>
-          <p>As per PRAXIS '26 rules, teams with participants from other colleges pay ₹200 per team.</p>
-          <div class="upi-box">
-            <span>Scan & Pay via UPI ID: <strong>praxis26.itsa@upi</strong></span>
-          </div>
-          <div class="form-group" style="margin-top: 10px;">
-            <label for="paymentUTR">UPI Transaction / UTR ID *</label>
-            <input type="text" id="paymentUTR" placeholder="Enter 12-digit UTR / UPI Reference No.">
-          </div>
-        </div>
-
-        <div class="modal-alert">
-          ℹ️ An automated confirmation email with registration details, reference ID, and the official WhatsApp group link will be dispatched to the Team Leader's registered email upon submission.
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn-explore-glow full">Complete Team Registration 🚀</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <script type="module" src="/researchx/main.js"></script>

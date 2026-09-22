@@ -1,94 +1,43 @@
 "use client";
-
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ASSETS } from "@/lib/constants";
-import { primeElement, setVideoEl } from "@/lib/videos";
+import { setVideoEl } from "@/lib/videos";
 
-/**
- * The trailers, rendered as REAL fullscreen `<video>` elements (object-fit:cover)
- * — guaranteed to display. They never autoplay. Opacity + `currentTime` are set
- * directly by the scroll handler (see Experience's ScrollTrigger onUpdate), so
- * the footage responds to scroll synchronously. The green atmosphere (WebGL)
- * sits on top as a transparent layer.
- */
+/** One decoder: muted playback on arrival, frame seeking after scrolling. */
 export default function VideoLayer() {
-  const marvelRef = useRef<HTMLVideoElement>(null);
-  const heroRef = useRef<HTMLVideoElement>(null);
-  const finaleRef = useRef<HTMLVideoElement>(null);
-
+  const ref = useRef<HTMLVideoElement>(null);
+  const [blocked, setBlocked] = useState(false);
   useEffect(() => {
-    const m = marvelRef.current;
-    const h = heroRef.current;
-    const f = finaleRef.current;
-    if (m) m.muted = true;
-    if (h) h.muted = true;
-    if (f) f.muted = true;
-    setVideoEl("marvel", m);
-    setVideoEl("hero", h);
-    setVideoEl("finale", f);
-
-    const primeM = () => primeElement(m);
-    const primeH = () => primeElement(h);
-    const primeF = () => primeElement(f);
-    m?.addEventListener("loadeddata", primeM, { once: true });
-    h?.addEventListener("loadeddata", primeH, { once: true });
-    f?.addEventListener("loadeddata", primeF, { once: true });
-
-    // safety re-prime on the first gesture
-    let primed = false;
-    const onGesture = () => {
-      if (primed) return;
-      primed = true;
-      primeElement(m);
-      primeElement(h);
-      primeElement(f);
+    const video = ref.current;
+    if (!video) return;
+    setVideoEl("hero", video);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const play = () => {
+      if (reduced || window.scrollY > 10 || document.hidden) return;
+      video.muted = true;
+      void video.play().then(() => setBlocked(false)).catch(() => setBlocked(true));
     };
-    const evs = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"] as const;
-    evs.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
-
+    const visibility = () => { if (document.hidden) video.pause(); else play(); };
+    video.addEventListener("canplay", play);
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pointerdown", play, { passive: true });
+    if (video.readyState >= 2) play();
     return () => {
-      m?.removeEventListener("loadeddata", primeM);
-      h?.removeEventListener("loadeddata", primeH);
-      f?.removeEventListener("loadeddata", primeF);
-      evs.forEach((e) => window.removeEventListener(e, onGesture));
-      setVideoEl("marvel", null);
+      video.pause();
+      video.removeEventListener("canplay", play);
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pointerdown", play);
       setVideoEl("hero", null);
-      setVideoEl("finale", null);
     };
   }, []);
-
-  return (
-    <div className="video-layer" aria-hidden>
-      <video
-        ref={marvelRef}
-        className="cover-video"
-        src={ASSETS.marvelVideo}
-        poster={ASSETS.marvelPoster}
-        preload="auto"
-        muted
-        playsInline
-        style={{ opacity: 0 }}
-      />
-      <video
-        ref={heroRef}
-        className="cover-video hero-grade"
-        src={ASSETS.heroVideo}
-        poster={ASSETS.heroPoster}
-        preload="auto"
-        muted
-        playsInline
-        style={{ opacity: 0 }}
-      />
-      <video
-        ref={finaleRef}
-        className="cover-video"
-        src={ASSETS.finaleVideo}
-        poster={ASSETS.finalePoster}
-        preload="auto"
-        muted
-        playsInline
-        style={{ opacity: 0 }}
-      />
+  return <>
+    <div className="video-layer" aria-hidden="true">
+      <video ref={ref} className="cover-video" src={ASSETS.heroVideo}
+        poster={ASSETS.heroPoster} preload="auto" muted playsInline loop
+        style={{ opacity: 0.65 }} />
     </div>
-  );
+    {blocked && <button className="video-play-fallback" onClick={() => {
+      void ref.current?.play().then(() => setBlocked(false)).catch(() => {});
+    }}>Play background video</button>}
+  </>;
 }

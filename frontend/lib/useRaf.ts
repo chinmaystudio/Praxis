@@ -13,7 +13,7 @@ let raf = 0;
 let running = false;
 
 function tick(t: number) {
-  callbacks.forEach((cb) => cb(t));
+  if (!document.hidden) callbacks.forEach((cb) => cb(t));
   raf = requestAnimationFrame(tick);
 }
 function ensure() {

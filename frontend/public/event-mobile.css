@@ -1,0 +1,59 @@
+
+/* Shared touch and motion fixes for the original event artwork. */
+html { scroll-behavior:smooth; scroll-padding-top:150px; }
+body { overflow-x:clip; }
+img,video { max-width:100%; }
+[hidden] { display:none !important; }
+a,button { touch-action:manipulation; }
+:focus-visible { outline:2px solid #79e1b6; outline-offset:4px; }
+.praxis-return-pill { position:relative !important; top:auto !important; left:auto !important; display:inline-flex; margin:16px; z-index:60; }
+.navbar { position:sticky; top:0; }
+.showdown-section { opacity:1; }
+.portal-container { opacity:1; visibility:visible; }
+#master-audio-control { display:none; }
+.showdown-hero,.spec-card,.prize-card,.round-card,.contact-card { opacity:1 !important; transform:none !important; }
+.hero-content>* { opacity:1; }
+.showdown-container,.dossier-wrapper { max-width:1200px; margin-inline:auto; }
+.registration-wizard-section { padding:32px 20px; text-align:center; }
+.registration-wizard-section p { margin:18px auto; line-height:1.7; }
+.btn-nav-cta { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
+@media(max-width:820px) {
+ * { min-width:0; }
+ .showdown-sticky-bar,.navbar { flex-wrap:wrap; gap:12px; padding:12px 16px; backdrop-filter:none; }
+ .sticky-bar-left { display:none; }
+ .sticky-nav-tabs,.nav-links { display:flex !important; width:100%; overflow-x:auto; gap:18px; order:3; justify-content:flex-start; padding-bottom:8px; }
+ .sticky-nav-tab,.nav-link { flex:0 0 auto; min-height:36px; display:inline-flex; align-items:center; }
+ .sticky-register-btn { width:100%; min-height:44px; justify-content:center; }
+ .showdown-container,.dossier-wrapper { padding-inline:16px; }
+ .showdown-main-title .title-core { font-size:clamp(36px,10vw,70px); overflow-wrap:anywhere; }
+ .showdown-main-title .title-sub,.showdown-tagline { font-size:12px; letter-spacing:1px; }
+ .showdown-badge { flex-wrap:wrap; justify-content:center; }
+ .specs-grid,.quick-specs-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+ .prizes-grid,.rounds-grid,.contacts-grid,.contact-grid,.prize-podium { grid-template-columns:minmax(0,1fr); }
+ .hero-section { min-height:calc(100svh - 180px); padding:70px 16px 85px; }
+ .hero-main-title { font-size:clamp(45px,12vw,82px); letter-spacing:0; }
+ .hero-content { width:100%; padding:0; }
+ .hero-praxis-wordmark { width:min(80vw,320px); }
+ .hero-protocol-tag { flex-wrap:wrap; justify-content:center; font-size:9px; gap:8px; }
+ .hero-protocol-tag .badge-separator { display:none; }
+ .hero-tagline { font-size:clamp(14px,4vw,22px); }
+ .nav-brand { flex:1; gap:8px; }
+ .nav-logo { max-width:90px; height:auto; }
+ .nav-title-group,.status-pill { display:none; }
+ .nav-actions { margin-left:auto; }
+ .nav-actions a { min-height:44px; padding:10px 14px; }
+ .section-title,.brief-title { overflow-wrap:anywhere; }
+ .footer-content,.footer-brand { flex-wrap:wrap; gap:20px; }
+ .hero-lightning-layer,.sheen-effect,.btn-flare { display:none; }
+ .hero-bg-image { animation:none !important; transform:none !important; }
+ table { width:100%; font-size:12px; }
+ th,td { padding:10px 6px !important; }
+}
+@media(max-width:380px) {
+ .specs-grid,.quick-specs-grid { grid-template-columns:minmax(0,1fr); }
+ .hero-register-btn { width:100%; padding-inline:12px; }
+ .btn-label { font-size:18px; letter-spacing:1px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ *,*::before,*::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}

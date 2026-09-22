@@ -13,6 +13,7 @@ export function useLenis() {
   const ref = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => 1 - Math.pow(1 - t, 3),

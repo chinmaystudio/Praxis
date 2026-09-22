@@ -5,9 +5,11 @@ import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { useLenis } from "@/lib/useLenis";
 import { signals } from "@/lib/signals";
-import CharacterOrbit from "@/components/overlays/CharacterOrbit";
+import dynamic from "next/dynamic";
+import EventGrid from "./EventGrid";
+const CharacterOrbit = dynamic(() => import("@/components/overlays/CharacterOrbit"), { ssr:false });
 import FlashOverlay from "@/components/overlays/FlashOverlay";
-import CinematicCanvas from "@/components/webgl/CinematicCanvas";
+const CinematicCanvas = dynamic(() => import("@/components/webgl/CinematicCanvas"), { ssr:false });
 import styles from "./events.module.css";
 
 /**
@@ -24,6 +26,17 @@ import styles from "./events.module.css";
  * floating even when the user pauses.
  */
 export default function EventsExperience() {
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    const query=window.matchMedia("(min-width: 1100px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+    const update=()=>setDesktop(query.matches);
+    update(); query.addEventListener("change",update);
+    return ()=>query.removeEventListener("change",update);
+  },[]);
+  return desktop ? <DesktopEvents /> : <EventGrid />;
+}
+
+function DesktopEvents() {
   const [mounted, setMounted] = useState(false);
   useLenis();
   const trackRef = useRef<HTMLDivElement>(null);

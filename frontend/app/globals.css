@@ -182,3 +182,20 @@ a {
 .scroll-track section {
   width: 100%;
 }
+
+/* Native mobile scrolling, visible keyboard focus and stable cinematic sizing. */
+html { scrollbar-width: thin; }
+body { overflow-x: clip; }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { touch-action: manipulation; }
+:focus-visible { outline: 2px solid #00ff9c; outline-offset: 4px; }
+.hero-scroll-section { height: var(--hero-height); }
+.cinematic-atmosphere { position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(ellipse at center, transparent 30%, #00180e88 100%); }
+.video-play-fallback { position:absolute; z-index:20; left:50%; top:65%; transform:translateX(-50%); padding:14px 20px; border:1px solid #00ff9c; background:#071b13; color:white; border-radius:8px; }
+@media(max-width:820px) {
+  .hero-scroll-section { height: 540svh; }
+  input, select, textarea { font-size:16px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+}

@@ -29,7 +29,7 @@ export default function CinematicCanvas() {
         premultipliedAlpha: true,
         powerPreference: "high-performance",
       }}
-      dpr={[1, 1.5]}
+      dpr={1}
       camera={{ position: [0, 0, 6], fov: 45, near: 0.1, far: 120 }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0); // fully transparent so the video shows
@@ -42,7 +42,7 @@ export default function CinematicCanvas() {
       {/* deep void dust */}
       <ParticleField
         mode="dust"
-        count={7000}
+        count={1200}
         colorA="#00ff9c"
         colorB="#9dffd6"
         size={4.6}
@@ -51,12 +51,12 @@ export default function CinematicCanvas() {
         mouseStrength={1.2}
       />
 
-      <VolumetricFog />
+
 
       {/* embers drifting in front — atmosphere over the footage */}
       <ParticleField
         mode="ember"
-        count={1600}
+        count={250}
         colorA="#12b877"
         colorB="#d7ffef"
         size={6}
@@ -67,9 +67,9 @@ export default function CinematicCanvas() {
         opacity={0.9}
       />
 
-      <Lightning />
-      <Sparks />
-      <Portal />
+
+
+
 
       {/* Phase 2 · Section 2 — character showcase (self-gates on signals.showcase) */}
       <Showcase />

@@ -13,6 +13,7 @@ export default function InfinityTrialsEntry({ playIntro, children }: { playIntro
 
   useEffect(() => {
     if (!showIntro) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setShowIntro(false); return; }
     // A cached load failure can occur before React attaches the media handlers.
     if (videoRef.current?.error) {
       setShowIntro(false);

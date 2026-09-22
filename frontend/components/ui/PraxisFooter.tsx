@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import styles from "./praxisFooter.module.css";
 
@@ -14,6 +14,14 @@ const STATS = [
 export default function PraxisFooter() {
   const [activeVideo, setActiveVideo] = useState<"title" | "finale">("title");
   const videoRef = useRef<HTMLVideoElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
+  const [visible,setVisible] = useState(false);
+  useEffect(()=>{
+    const observer=new IntersectionObserver(([entry])=>setVisible(entry.isIntersecting),{rootMargin:"150px"});
+    if(footerRef.current) observer.observe(footerRef.current);
+    return ()=>observer.disconnect();
+  },[]);
+  useEffect(()=>{const video=videoRef.current;if(!video)return;if(visible&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)void video.play().catch(()=>{});else video.pause();},[visible,activeVideo]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -28,20 +36,19 @@ export default function PraxisFooter() {
   const posterSrc = activeVideo === "title" ? "/videos/title-reveal-poster.jpg" : "/videos/finale-poster.jpg";
 
   return (
-    <footer className={styles.footerSection} id="praxis-footer">
+    <footer ref={footerRef} className={styles.footerSection} id="praxis-footer">
       {/* ── Background Video Provided by User ───────────────────── */}
       <div className={styles.videoWrap} aria-hidden>
         <video
           key={videoSrc}
           ref={videoRef}
           className={styles.bgVideo}
-          src={videoSrc}
+          src={visible ? videoSrc : undefined}
           poster={posterSrc}
           muted
           loop
-          autoPlay
           playsInline
-          preload="auto"
+          preload="none"
           disablePictureInPicture
         />
         <div className={styles.videoOverlay} />

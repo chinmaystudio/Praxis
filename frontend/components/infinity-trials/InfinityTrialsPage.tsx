@@ -54,7 +54,7 @@ function StoneChapter({ index, paused, reduced, active, onActivate }: { index: n
       <div className={`${styles.gemStage} ${ready && inView && !failed ? styles.ready : ""}`}>
         <div className={styles.portal} aria-hidden="true"><span /><span /><span /><i /></div>
         <div className={styles.gemFallback} aria-hidden="true" />
-        {inView && !failed && <div className={styles.canvas} aria-hidden="true"><StoneCanvas index={index} paused={paused || reduced} active={active === index} onReady={onReady} onFailure={onFailure} /></div>}
+        {inView && !reduced && !failed && <div className={styles.canvas} aria-hidden="true"><StoneCanvas index={index} paused={paused || reduced} active={active === index} onReady={onReady} onFailure={onFailure} /></div>}
         <button type="button" className={styles.gemButton} aria-label={`${item.name} stone: ${open ? "close" : "open"} ${item.label} details`} aria-expanded={open} aria-controls={`stone-details-${index}`} onClick={activate}><span className={styles.srOnly}>{item.label}</span></button>
         <div className={styles.stoneCaption}><span>THE {item.name.toUpperCase()} STONE</span><small>{open ? "MISSION REVEALED" : "TOUCH TO REVEAL"} <b>↗</b></small></div>
       </div>
@@ -91,7 +91,7 @@ export default function InfinityTrialsPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    const media = matchMedia("(prefers-reduced-motion: reduce), (max-width: 820px), (pointer: coarse)");
     const sync = () => setReduced(media.matches);
     sync(); media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);

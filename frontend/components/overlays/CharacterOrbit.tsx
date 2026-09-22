@@ -53,7 +53,7 @@ export default function CharacterOrbit() {
         card.style.opacity = lerp(0.32, 1, depth01).toFixed(3);
         card.style.zIndex = d > 0 ? "4" : "2";
         card.style.pointerEvents = d > 0.35 ? "auto" : "none";
-        card.style.filter = d < -0.05 ? `blur(${(-d * 3).toFixed(2)}px)` : "none";
+        card.style.filter = "none";
         card.style.setProperty("--glow", smoothstep(0.55, 1, depth01).toFixed(3));
       }
       return;
@@ -205,7 +205,7 @@ export default function CharacterOrbit() {
                   </Link>
                 )}
                 {["infinity-trials", "research-x", "bgmi-elite-showdown"].includes(activeEvent.slug) ? (
-                  <Link className={styles.registerButton} href={activeEvent.slug === "infinity-trials" ? "/events/infinity-trials/register" : `/events/${activeEvent.slug}`}>
+                  <Link className={styles.registerButton} href={activeEvent.slug === "infinity-trials" ? "/events/infinity-trials/register" : `/events/${activeEvent.slug}/register`}>
                     Register <span aria-hidden="true">↗</span>
                   </Link>
                 ) : (

@@ -527,3 +527,16 @@
 .exploreBtn:hover .exploreBtnArrow {
   transform: translateX(4px);
 }
+
+.brand { border:0; background:transparent; padding:0; cursor:pointer; }
+@media(max-width:820px) {
+  .header { padding:12px 16px; height:76px; gap:12px; }
+  .brandLogo { width:clamp(100px,32vw,165px); height:auto; }
+  .registerBtn { min-height:44px; padding:10px 14px; letter-spacing:.1em; }
+  .heroUi { padding:0 16px calc(120px + env(safe-area-inset-bottom)); gap:12px; }
+  .heroText { display:none; }
+  .heroScrub { width:100%; align-items:center; }
+  .scrubTrack { width:100%; }
+  .exploreBtn { bottom:calc(65px + env(safe-area-inset-bottom)); max-width:calc(100% - 32px); padding:14px 22px; letter-spacing:.1em; }
+  .sound { bottom:calc(12px + env(safe-area-inset-bottom)); right:12px; min-height:40px; font-size:10px; }
+}

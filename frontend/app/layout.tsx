@@ -21,47 +21,35 @@ const chakra = Chakra_Petch({
 
 // Set NEXT_PUBLIC_SITE_URL to your deployed URL so link previews resolve the
 // social image correctly. Falls back to a sensible default otherwise.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://avengers-doomsday.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxis26.in";
 const description =
-  "An Awwwards-style, fully scroll-driven cinematic web experience — the multiverse is breaking, only legends remain. Built with Next.js, React Three Fiber and GSAP. A Marvel-inspired fan concept.";
+  "PRAXIS 2026 at PCCOE Pune. Explore Infinity Trials, BGMI Elite Showdown, Research X and more. Assemble your team and register.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "AVENGERS: DOOMSDAY — Cinematic Scroll Experience",
+  title: "PRAXIS 2026 — PCCOE Pune",
   description,
-  keywords: [
-    "Avengers",
-    "Doomsday",
-    "Marvel",
-    "cinematic website",
-    "scroll experience",
-    "Next.js",
-    "React Three Fiber",
-    "Three.js",
-    "GSAP",
-    "WebGL",
-    "creative development",
-  ],
+  keywords: ["Praxis 2026", "PCCOE Pune", "Infinity Trials", "BGMI", "Research X"],
+  icons: { icon: "/praxis-icon.png", apple: "/praxis-icon.png" },
   openGraph: {
-    title: "AVENGERS: DOOMSDAY — Cinematic Scroll Experience",
+    title: "PRAXIS 2026 — PCCOE Pune",
     description,
     url: siteUrl,
-    siteName: "AVENGERS: DOOMSDAY",
+    siteName: "PRAXIS 2026",
     type: "website",
-    images: [{ url: "/videos/title-reveal-poster.jpg", width: 1180, height: 486, alt: "AVENGERS: DOOMSDAY" }],
+    images: [{ url: "/images/praxis_new_logo.png", width: 2048, height: 683, alt: "PRAXIS 2026" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVENGERS: DOOMSDAY — Cinematic Scroll Experience",
+    title: "PRAXIS 2026 — PCCOE Pune",
     description,
-    images: ["/videos/title-reveal-poster.jpg"],
+    images: ["/images/praxis_new_logo.png"],
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
   themeColor: "#000000",
 };
 
