@@ -27,9 +27,9 @@ const images = new Map();
 for (const size of sizes) {
   const png = await sharp(badge).resize(size, size).sharpen({ sigma: 0.5 }).png().toBuffer();
   images.set(size, png);
-  if ([16, 32, 192, 512].includes(size)) await writeFile(publicFile(`praxis-icon-v4-${size}.png`), png);
+  if ([16, 32, 192, 512].includes(size)) await writeFile(publicFile(`praxis-icon-v5-${size}.png`), png);
 }
-await writeFile(publicFile("praxis-apple-v4.png"), images.get(180));
+await writeFile(publicFile("praxis-apple-v5.png"), images.get(180));
 await writeFile(publicFile("praxis-icon.png"), images.get(256));
 
 // Modern ICO files can embed PNG images. Include every common tab resolution.
@@ -50,7 +50,6 @@ icoSizes.forEach((size, index) => {
   offset += png.length;
 });
 const ico = Buffer.concat([directory, ...icoSizes.map((size) => images.get(size))]);
-await writeFile(fileURLToPath(new URL("app/favicon.ico", root)), ico);
 await writeFile(publicFile("favicon.ico"), ico);
 await writeFile(publicFile("favicon.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><image width="256" height="256" href="data:image/png;base64,${images.get(256).toString("base64")}"/></svg>\n`);
 console.log("Generated Praxis tab icons (16–64px), touch icon (180px), and app icons (192/512px).");
