@@ -40,6 +40,8 @@ export default function Experience() {
   useEffect(() => {
     if (!mounted || builtRef.current || !trackRef.current) return;
     builtRef.current = true;
+    const mobileScrub = window.matchMedia("(max-width: 820px), (pointer: coarse)").matches;
+    let mobileTarget = Math.min(1, Math.max(0, window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)));
 
     // ── Timeline positions (units; 100vh = 1 unit) — hero only ──
     const heroText  = SCROLL.heroText  / 100; // 2.6
@@ -66,6 +68,14 @@ export default function Experience() {
       const hero = getVideoEl("hero");
       if (!hero || document.hidden) return;
       hero.style.opacity = signals.heroOp.toFixed(3);
+      if (mobileScrub) {
+        hero.pause();
+        if (hero.readyState < 2 || hero.seeking) return;
+        const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
+        const target = Math.min(Math.max(0, duration - 0.04), mobileTarget * duration);
+        if (Math.abs(hero.currentTime - target) >= 1 / 30) hero.currentTime = target;
+        return;
+      }
       if (window.scrollY > 10) {
         hero.pause();
         const duration = Number.isFinite(hero.duration) ? hero.duration : VIDEO.heroDur;
@@ -79,10 +89,15 @@ export default function Experience() {
         trigger: trackRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.25,
+        scrub: mobileScrub ? true : 0.25,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           signals.scroll = self.progress;
+          if (mobileScrub) {
+            mobileTarget = self.progress;
+            signals.heroT = self.progress * VIDEO.heroDur;
+            renderHero();
+          }
         },
       },
     });

@@ -12,8 +12,9 @@ export default function VideoLayer() {
     if (!video) return;
     setVideoEl("hero", video);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const scrollDriven = window.matchMedia("(max-width: 820px), (pointer: coarse)").matches;
     const play = () => {
-      if (reduced || window.scrollY > 10 || document.hidden) return;
+      if (reduced || scrollDriven || window.scrollY > 10 || document.hidden) return;
       video.muted = true;
       void video.play().then(() => setBlocked(false)).catch(() => setBlocked(true));
     };
@@ -21,7 +22,10 @@ export default function VideoLayer() {
     video.addEventListener("canplay", play);
     document.addEventListener("visibilitychange", visibility);
     window.addEventListener("pointerdown", play, { passive: true });
-    if (video.readyState >= 2) play();
+    if (scrollDriven) {
+      video.pause();
+      video.load();
+    } else if (video.readyState >= 2) play();
     return () => {
       video.pause();
       video.removeEventListener("canplay", play);
