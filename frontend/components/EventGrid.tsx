@@ -12,7 +12,7 @@ export default function EventGrid() {
   <div className={styles.grid}>{EVENTS.map(event=><article key={event.slug} style={{"--accent":event.accent} as CSSProperties}>
    <img src={event.image} alt={event.title} loading="lazy" width="640" height="800" />
    <div className={styles.content}><span>{event.theme}</span><h2>{event.title}</h2><p>{event.desc}</p><p className={styles.fee}>{event.feeLabel || formatPrice(event.price)}</p>
-    <div className={styles.actions}>{event.isTeamEvent ? <Link href={"/events/"+event.slug}>Explore event ↗</Link> : <button onClick={()=>setRegistering(event)}>Register ↗</button>}<a href={event.rulebook} download={event.downloadName}>Rulebook ↓</a></div>
+    <div className={styles.actions}>{event.isTeamEvent || event.slug === "tech-roulette" ? <Link href={"/events/"+event.slug}>Explore event ↗</Link> : <button onClick={()=>setRegistering(event)}>Register ↗</button>}<a href={event.rulebook} download={event.downloadName}>Rulebook ↓</a></div>
    </div>
   </article>)}</div>
   {registering && <RegistrationModal event={registering} isOpen onClose={()=>setRegistering(null)} />}

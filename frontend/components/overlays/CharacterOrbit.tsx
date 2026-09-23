@@ -106,7 +106,8 @@ export default function CharacterOrbit() {
       {EVENTS.map((event, i) => {
         const isBgmi = event.slug === "bgmi-elite-showdown";
         const isResearchX = event.slug === "research-x";
-        const isInteractiveCard = isBgmi || isResearchX;
+        const isTechRoulette = event.slug === "tech-roulette";
+        const isInteractiveCard = isBgmi || isResearchX || isTechRoulette;
         return (
           <div
             key={event.slug}
@@ -124,6 +125,8 @@ export default function CharacterOrbit() {
                 window.location.href = "/events/bgmi-elite-showdown";
               } else if (isResearchX) {
                 window.location.href = "/events/research-x";
+              } else if (isTechRoulette) {
+                window.location.href = "/events/tech-roulette";
               }
             }}
             onKeyDown={(e) => {
@@ -134,6 +137,8 @@ export default function CharacterOrbit() {
                     window.location.href = "/events/bgmi-elite-showdown";
                   } else if (isResearchX) {
                     window.location.href = "/events/research-x";
+                  } else if (isTechRoulette) {
+                    window.location.href = "/events/tech-roulette";
                   }
                 }
               }
@@ -149,7 +154,11 @@ export default function CharacterOrbit() {
               <div className={styles.name}>{event.title}</div>
               <div className={styles.desc}>{event.desc}</div>
               <div className={styles.actions}>
-                <button
+                {isTechRoulette ? (
+                  <Link className={styles.exploreButton} href="/events/tech-roulette" onClick={(e) => e.stopPropagation()}>
+                    Explore <span aria-hidden="true">↗</span>
+                  </Link>
+                ) : <button
                   className={styles.exploreButton}
                   type="button"
                   onClick={(e) => {
@@ -158,7 +167,7 @@ export default function CharacterOrbit() {
                   }}
                 >
                   Explore <span aria-hidden="true">↗</span>
-                </button>
+                </button>}
                 <a className={styles.rulebookButton} href={event.rulebook} download={event.downloadName}>
                   View Rulebook <span aria-hidden="true">↓</span>
                 </a>
@@ -204,7 +213,12 @@ export default function CharacterOrbit() {
                     Enter Showdown <span aria-hidden="true">↗</span>
                   </Link>
                 )}
-                {["infinity-trials", "research-x", "bgmi-elite-showdown"].includes(activeEvent.slug) ? (
+                {activeEvent.slug === "tech-roulette" && (
+                  <Link className={styles.exploreButton} href="/events/tech-roulette">
+                    Enter Tech Roulette <span aria-hidden="true">↗</span>
+                  </Link>
+                )}
+                {["infinity-trials", "research-x", "bgmi-elite-showdown", "tech-roulette"].includes(activeEvent.slug) ? (
                   <Link className={styles.registerButton} href={activeEvent.slug === "infinity-trials" ? "/events/infinity-trials/register" : `/events/${activeEvent.slug}/register`}>
                     Register <span aria-hidden="true">↗</span>
                   </Link>

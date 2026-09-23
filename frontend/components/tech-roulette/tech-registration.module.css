@@ -1,0 +1,83 @@
+.page {
+  min-height: 100svh;
+  color: #f7f2e7;
+  background:
+    radial-gradient(ellipse at 20% 35%, rgb(135 24 21 / 26%), transparent 50%),
+    linear-gradient(110deg, rgb(14 13 13 / 93%), rgb(20 14 13 / 75%)),
+    url("/events/tech-roulette.png") center / cover;
+}
+
+.guide {
+  position: fixed;
+  z-index: 1001;
+  top: max(18px, env(safe-area-inset-top));
+  left: 50%;
+  width: min(580px, calc(100% - 40px));
+  transform: translateX(-50%);
+}
+
+.guideTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 13px;
+  color: #baaa87;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .13em;
+}
+
+.back {
+  color: #e1c68a;
+  text-decoration: none;
+  letter-spacing: .03em;
+}
+
+.back:hover { color: #fff2ce; }
+.back:focus-visible { outline: 2px solid #e1c68a; outline-offset: 5px; }
+
+.guide h1 {
+  margin: 0 0 5px;
+  font-family: var(--font-ui), sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.guide p {
+  margin: 0;
+  color: #c4c1bc;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.page > [role="dialog"] {
+  padding-top: 122px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  background: rgb(9 8 8 / 58%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.page > [role="dialog"] > div {
+  max-height: calc(100svh - 146px);
+  border-color: rgb(200 152 78 / 28%);
+  box-shadow: 0 24px 90px rgb(0 0 0 / 60%), 0 0 70px rgb(127 30 23 / 12%);
+  border-radius: 8px;
+  background: linear-gradient(160deg, #171718, #0d0e10);
+}
+
+.page > [role="dialog"] > div > div:first-child { padding-right: 65px; }
+.page form > div:has(> p) { margin-top: 15px; padding: 17px 0; border-top: 1px solid #ffffff1c; }
+.page form > div > p { color: #bdb8ae; font: 12px/1.6 Arial, sans-serif; }
+.page form > div:has(> p) > button { background: #ded2ba; color: #211b13; border: 0; padding: 13px 18px; margin-top: 12px; min-height: 44px; font: 600 12px Arial, sans-serif; cursor: pointer; }
+.page form button[type="submit"] { background: #d6b47d; color: #18130d; box-shadow: none; border-radius: 4px; }
+.page form button[type="submit"]:hover { background: #ebc991; box-shadow: none; }
+
+@media (max-width: 600px) {
+  .guide { width: calc(100% - 40px); }
+  .guideTop { margin-bottom: 10px; }
+  .page > [role="dialog"] { padding-top: 116px; }
+  .page > [role="dialog"] > div { max-height: calc(100svh - 136px); }
+  .page input, .page select { font-size: 16px; }
+}
