@@ -67,7 +67,10 @@ async function saveTeam(draft: TeamDraft, leaderId: string, amount: number) {
   const { error } = await db.from("registrations").update({ custom_fields: {
     leader_user_id: leaderId,
     participants: draft.participants,
-    pricing: { amount, basis: "verified_email_domain" },
+    pricing: {
+      amount,
+      basis: TEAM_EVENT_POLICIES[draft.eventSlug]?.pricing.kind === "fixed-team" ? "fixed_team" : "verified_email_domain",
+    },
   } }).eq("id", record.id);
   if (error) throw new Error(error.message);
   return record;

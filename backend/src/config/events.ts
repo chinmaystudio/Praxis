@@ -76,7 +76,8 @@ export const EVENTS: EventConfig[] = [
     price: 49,
     currency: "INR",
     registrationOpen: true,
-    isTeamEvent: false,
+    isTeamEvent: true,
+    maxTeamSize: 3,
   },
   {
     slug: "storyverse",

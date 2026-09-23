@@ -1,6 +1,7 @@
 export type TeamPricing =
   | { kind: "external-team"; amount: number }
-  | { kind: "external-member"; amount: number };
+  | { kind: "external-member"; amount: number }
+  | { kind: "fixed-team"; amount: number };
 
 export type TeamEventPolicy = {
   slug: string;
@@ -8,7 +9,7 @@ export type TeamEventPolicy = {
   minMembers: number;
   maxMembers: number;
   pricing: TeamPricing;
-  whatsappUrl: string;
+  whatsappUrl?: string;
 };
 
 export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
@@ -36,6 +37,13 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     pricing: { kind: "external-member", amount: 50 },
     whatsappUrl: "https://chat.whatsapp.com/GJtulaML6tx24r9JKpQ1MC",
   },
+  "tech-roulette": {
+    slug: "tech-roulette",
+    title: "Tech Roulette",
+    minMembers: 2,
+    maxMembers: 3,
+    pricing: { kind: "fixed-team", amount: 49 },
+  },
 };
 
 export const PCCOE_EMAIL_DOMAINS = (process.env.PCCOE_EMAIL_DOMAINS || "pccoepune.org")
@@ -49,6 +57,7 @@ export function isPccoeEmail(email: string): boolean {
 }
 
 export function teamAmount(policy: TeamEventPolicy, emails: string[]): number {
+  if (policy.pricing.kind === "fixed-team") return policy.pricing.amount;
   const externalCount = emails.filter((email) => !isPccoeEmail(email)).length;
   return policy.pricing.kind === "external-team"
     ? externalCount > 0 ? policy.pricing.amount : 0
