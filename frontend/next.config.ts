@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/bgmi", destination: "/events/bgmi-elite-showdown", permanent: false },
       { source: "/researchx", destination: "/events/research-x", permanent: false },
+      { source: "/storyverse", destination: "https://mlscstoryverse2026.vercel.app/", permanent: false },
+      { source: "/events/storyverse", destination: "https://mlscstoryverse2026.vercel.app/", permanent: false },
+      { source: "/events/storyverse/register", destination: "https://mlscstoryverse2026.vercel.app/", permanent: false },
     ];
   },
   async rewrites() {

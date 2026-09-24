@@ -107,7 +107,8 @@ export default function CharacterOrbit() {
         const isBgmi = event.slug === "bgmi-elite-showdown";
         const isResearchX = event.slug === "research-x";
         const isTechRoulette = event.slug === "tech-roulette";
-        const isInteractiveCard = isBgmi || isResearchX || isTechRoulette;
+        const isStoryVerse = event.slug === "storyverse";
+        const isInteractiveCard = isBgmi || isResearchX || isTechRoulette || isStoryVerse;
         return (
           <div
             key={event.slug}
@@ -127,6 +128,8 @@ export default function CharacterOrbit() {
                 window.location.href = "/events/research-x";
               } else if (isTechRoulette) {
                 window.location.href = "/events/tech-roulette";
+              } else if (isStoryVerse) {
+                window.location.href = event.externalUrl!;
               }
             }}
             onKeyDown={(e) => {
@@ -139,6 +142,8 @@ export default function CharacterOrbit() {
                     window.location.href = "/events/research-x";
                   } else if (isTechRoulette) {
                     window.location.href = "/events/tech-roulette";
+                  } else if (isStoryVerse) {
+                    window.location.href = event.externalUrl!;
                   }
                 }
               }
@@ -154,10 +159,10 @@ export default function CharacterOrbit() {
               <div className={styles.name}>{event.title}</div>
               <div className={styles.desc}>{event.desc}</div>
               <div className={styles.actions}>
-                {isTechRoulette ? (
-                  <Link className={styles.exploreButton} href="/events/tech-roulette" onClick={(e) => e.stopPropagation()}>
-                    Explore <span aria-hidden="true">↗</span>
-                  </Link>
+                {isTechRoulette || isStoryVerse ? (
+                  <a className={styles.exploreButton} href={isStoryVerse ? event.externalUrl : "/events/tech-roulette"} onClick={(e) => e.stopPropagation()}>
+                    {isStoryVerse ? "Open StoryVerse" : "Explore"} <span aria-hidden="true">↗</span>
+                  </a>
                 ) : <button
                   className={styles.exploreButton}
                   type="button"

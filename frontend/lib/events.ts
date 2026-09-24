@@ -22,6 +22,7 @@ export interface EventConfig {
   registrationOpen: boolean;
   isTeamEvent?: boolean;
   maxTeamSize?: number;
+  externalUrl?: string;
 }
 
 export const EVENTS: EventConfig[] = [
@@ -102,6 +103,7 @@ export const EVENTS: EventConfig[] = [
     currency: "INR",
     registrationOpen: true,
     isTeamEvent: false,
+    externalUrl: "https://mlscstoryverse2026.vercel.app/",
   },
 ];
 
