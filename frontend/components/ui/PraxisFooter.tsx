@@ -5,10 +5,9 @@ import Link from "next/link";
 import styles from "./praxisFooter.module.css";
 
 const STATS = [
-  { num: "₹5L+", label: "Cash Prize Pool" },
-  { num: "30+", label: "Flagship Events" },
-  { num: "5,000+", label: "National Innovators" },
-  { num: "48h", label: "Non-Stop Creation" },
+  { num: "1,000+", label: "Participants" },
+  { num: "₹78,000", label: "Cash Prize Pool" },
+  { num: "5", label: "Flagship Events" },
 ];
 
 export default function PraxisFooter() {
