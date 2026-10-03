@@ -43,6 +43,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     minMembers: 2,
     maxMembers: 3,
     pricing: { kind: "external-team", amount: 49 },
+    whatsappUrl: "https://chat.whatsapp.com/FhwtZ5WJDJBJKoKC9NY9hI",
   },
 };
 

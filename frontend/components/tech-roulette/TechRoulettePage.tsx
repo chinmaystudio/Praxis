@@ -78,7 +78,7 @@ export default function TechRoulettePage() {
         <h1 id="tech-title">TECH<span>ROULETTE<span className={styles.titleDot}>.</span></span></h1>
         <p className={styles.heroTagline}>Genius is a start.<br /><em>What will you build with it?</em></p>
         <p className={styles.heroDescription}>Think on your feet. Build under pressure. Pitch a better tomorrow. Three rounds for the engineer who refuses to settle.</p>
-        <div className={styles.actions}><Link className={styles.primary} href="/events/tech-roulette/register">Register your team <Arrow /></Link><a href="#rounds" className={styles.secondary}>Explore the challenge <Arrow down /></a></div>
+        <div className={styles.actions}><Link className={styles.primary} href="/events/tech-roulette/register">Register your team <Arrow /></Link><a className={styles.secondary} href="https://chat.whatsapp.com/FhwtZ5WJDJBJKoKC9NY9hI" target="_blank" rel="noreferrer">Join group <Arrow /></a><a href="#rounds" className={styles.secondary}>Explore the challenge <Arrow down /></a></div>
       </div>
       <div className={styles.heroSerial} aria-hidden="true"><span>MK. 04</span><div /><small>INNOVATION<br />PROTOCOL</small></div>
       <div className={styles.heroBottom}><span>PCCOE PUNE <b>×</b> PRAXIS 2026</span><a href="#mission">ENTER THE WORKSHOP <Arrow down /></a><span>INSPIRED BY IRON MAN</span></div>
