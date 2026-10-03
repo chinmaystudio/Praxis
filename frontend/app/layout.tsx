@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Chakra_Petch } from "next/font/google";
+import Script from "next/script";
 import BackgroundMusic from "@/components/ui/BackgroundMusic";
 import "./globals.css";
 
