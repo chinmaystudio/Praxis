@@ -2189,20 +2189,672 @@ body {
   cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .nav-links { display: none; }
-  .podium-card.rank-1 { transform: translateY(0); order: 1; }
-  .podium-card.rank-2 { order: 2; }
-  .podium-card.rank-3 { order: 3; }
-  .form-row { grid-template-columns: 1fr; }
-  .footer-copy { text-align: left; }
+/* ========================================================= */
+/* COMPREHENSIVE MOBILE RESPONSIVE ENGINE (PHONE & TABLET)   */
+/* Ensures all text, team info, cards, boxes wrap perfectly  */
+/* Keeps video intro and character loop intact across devices*/
+/* ========================================================= */
+
+/* Base fluid overflow prevention */
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
-  .btn-video-skip { bottom: 15px; right: 20px; width: 180px; height: 44px; }
-  .audio-control-btn { top: 15px; right: 15px; padding: 6px 12px; }
-  .hero-main-title { font-size: 3.6rem; }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ========================================================= */
+/* TABLET & SMALL LAPTOP BREAKPOINT (<= 992px)               */
+/* ========================================================= */
+@media (max-width: 992px) {
+  .nav-links {
+    display: none;
+  }
+
+  .dossier-container,
+  .hero-container,
+  .footer-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .podium-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .podium-card.rank-1 {
+    transform: translateY(0);
+    order: 1;
+  }
+  .podium-card.rank-2 {
+    order: 2;
+  }
+  .podium-card.rank-3 {
+    order: 3;
+  }
+
+  .rulebook-dossier-card {
+    padding: 30px;
+    gap: 24px;
+  }
+}
+
+/* ========================================================= */
+/* SMARTPHONE & PHABLET BREAKPOINT (<= 768px / <= 820px)     */
+/* ========================================================= */
+@media (max-width: 820px) {
+  /* Containers & Spacing */
+  .dossier-container,
+  .hero-container,
+  .footer-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .dossier-section {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+  }
+
+  /* Section Headers & Typography */
+  .section-header {
+    margin-bottom: 28px !important;
+    text-align: center;
+  }
+
+  .section-tag {
+    font-size: 0.72rem !important;
+    letter-spacing: 2px !important;
+    padding: 4px 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 6vw, 2.3rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 1px !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    margin-bottom: 10px !important;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+    padding: 0 4px !important;
+  }
+
+  .section-divider {
+    margin: 16px auto 0 !important;
+    width: 60px !important;
+    height: 3px !important;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 95px 16px 45px !important;
+    min-height: auto !important;
+  }
+
+  .hero-praxis-emblem-box {
+    max-width: 200px !important;
+    margin: 0 auto 16px !important;
+  }
+
+  .hero-main-title {
+    font-size: clamp(2.3rem, 10vw, 3.4rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 12px !important;
+    word-break: break-word !important;
+  }
+
+  .hero-tagline {
+    font-size: clamp(0.95rem, 3.5vw, 1.15rem) !important;
+    line-height: 1.45 !important;
+    margin-bottom: 20px !important;
+    padding: 0 8px !important;
+  }
+
+  .hero-badges-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    margin-bottom: 26px !important;
+  }
+
+  .hero-badge {
+    font-size: 0.72rem !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    letter-spacing: 0.5px !important;
+    white-space: normal !important;
+    text-align: center !important;
+    line-height: 1.3 !important;
+  }
+
+  .hero-actions-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+    gap: 12px !important;
+  }
+
+  .btn-hero-cta,
+  .btn-hero-secondary {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 20px !important;
+    font-size: 0.92rem !important;
+    letter-spacing: 1.5px !important;
+    text-align: center !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* QUICK SPECS / TEAM INFO CARDS & BOXES                     */
+  /* Stacks cleanly into 1 column to avoid crushed text on phones */
+  /* --------------------------------------------------------- */
+  body .quick-specs-grid,
+  .quick-specs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-bottom: 22px !important;
+  }
+
+  body .quick-spec-card,
+  .quick-spec-card {
+    padding: 14px 16px !important;
+    gap: 14px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+
+  body .quick-spec-icon,
+  .quick-spec-icon {
+    font-size: 1.6rem !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  body .quick-spec-info,
+  .quick-spec-info {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+  }
+
+  body .quick-spec-label,
+  .quick-spec-label {
+    font-size: 0.72rem !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 2px !important;
+    font-family: var(--font-hud) !important;
+  }
+
+  body .quick-spec-value,
+  .quick-spec-value {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    letter-spacing: 0.2px !important;
+  }
+
+  /* Event Brief Card */
+  body .event-brief-card,
+  .event-brief-card {
+    padding: 22px 18px !important;
+    border-radius: 12px !important;
+    border-left-width: 3px !important;
+    margin-top: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .brief-tag {
+    font-size: 0.7rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 4px 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .brief-title {
+    font-size: clamp(1.2rem, 4.5vw, 1.45rem) !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+    word-break: break-word !important;
+  }
+
+  .brief-text {
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+    color: #cbd5e1 !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* TOURNAMENT STAGES & ROUNDS                                */
+  /* --------------------------------------------------------- */
+  .round-tabs-bar {
+    gap: 6px !important;
+    margin-bottom: 24px !important;
+    justify-content: center !important;
+  }
+
+  .round-tab-btn {
+    padding: 8px 14px !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 20px !important;
+  }
+
+  body .tournament-stages-grid,
+  .tournament-stages-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+  }
+
+  body .stage-card,
+  .stage-card {
+    padding: 22px 18px !important;
+    border-radius: 12px !important;
+  }
+
+  .stage-badge {
+    font-size: 0.68rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 4px 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .stage-title {
+    font-size: 1.25rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 6px !important;
+    word-break: break-word !important;
+  }
+
+  .stage-tagline {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .stage-points {
+    gap: 10px !important;
+    padding-top: 14px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .stage-points li {
+    font-size: 0.86rem !important;
+    line-height: 1.5 !important;
+    padding-left: 18px !important;
+    word-break: break-word !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* RULEBOOK DOSSIER & RULES CARDS                            */
+  /* --------------------------------------------------------- */
+  body .rulebook-dossier-card,
+  .rulebook-dossier-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 22px 18px !important;
+    gap: 20px !important;
+    border-radius: 12px !important;
+    margin-bottom: 24px !important;
+    box-sizing: border-box !important;
+  }
+
+  body .rulebook-card-left,
+  .rulebook-card-left {
+    width: 100% !important;
+  }
+
+  .rulebook-badge {
+    font-size: 0.68rem !important;
+    letter-spacing: 1px !important;
+    padding: 4px 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .rulebook-card-title {
+    font-size: clamp(1.25rem, 4.5vw, 1.55rem) !important;
+    line-height: 1.25 !important;
+    margin-bottom: 10px !important;
+    word-break: break-word !important;
+  }
+
+  .rulebook-card-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 16px !important;
+    color: #cbd5e1 !important;
+  }
+
+  body .rulebook-specs-tags,
+  .rulebook-specs-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  body .rulebook-specs-tags span,
+  .rulebook-specs-tags span {
+    font-size: 0.72rem !important;
+    padding: 5px 10px !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    line-height: 1.3 !important;
+  }
+
+  body .rulebook-card-right,
+  .rulebook-card-right {
+    width: 100% !important;
+  }
+
+  body .btn-pdf-action,
+  .btn-pdf-action {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 16px !important;
+    font-size: 0.88rem !important;
+    letter-spacing: 1px !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  body .rules-grid,
+  .rules-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  body .rule-card,
+  .rule-card {
+    padding: 20px 18px !important;
+    border-radius: 12px !important;
+  }
+
+  .rule-number {
+    font-size: 1.8rem !important;
+    margin-bottom: 6px !important;
+    line-height: 1 !important;
+  }
+
+  .rule-card h3 {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 8px !important;
+    word-break: break-word !important;
+  }
+
+  .rule-card p {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+    color: var(--text-muted) !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* PRIZES PODIUM CARDS                                       */
+  /* --------------------------------------------------------- */
+  body .podium-grid,
+  .podium-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    margin-bottom: 24px !important;
+  }
+
+  body .podium-card,
+  .podium-card {
+    padding: 24px 18px !important;
+    border-radius: 14px !important;
+    text-align: center !important;
+  }
+
+  body .podium-card.rank-1,
+  .podium-card.rank-1 {
+    order: 1 !important;
+    transform: none !important;
+    border-width: 2px !important;
+    padding: 28px 18px !important;
+  }
+
+  body .podium-card.rank-2,
+  .podium-card.rank-2 {
+    order: 2 !important;
+  }
+
+  body .podium-card.rank-3,
+  .podium-card.rank-3 {
+    order: 3 !important;
+  }
+
+  .podium-badge {
+    font-size: 0.72rem !important;
+    letter-spacing: 2px !important;
+    padding: 4px 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .podium-amount {
+    font-size: clamp(2.2rem, 8vw, 2.7rem) !important;
+    line-height: 1.05 !important;
+    margin: 8px 0 12px !important;
+  }
+
+  .podium-perks {
+    gap: 8px !important;
+    margin-top: 14px !important;
+    padding-top: 14px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .podium-perks li {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* CONTACT LEADS CARDS                                       */
+  /* --------------------------------------------------------- */
+  body .contact-grid,
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  body .contact-card,
+  .contact-card {
+    padding: 22px 18px !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+  }
+
+  .contact-avatar {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 1.4rem !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .contact-name {
+    font-size: 1.25rem !important;
+    margin-bottom: 4px !important;
+    word-break: break-word !important;
+  }
+
+  .contact-role {
+    font-size: 0.72rem !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .contact-phone {
+    font-size: 1.05rem !important;
+    margin-bottom: 16px !important;
+    display: inline-block !important;
+  }
+
+  body .contact-actions,
+  .contact-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  body .btn-contact,
+  .btn-contact {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+    font-size: 0.85rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* FINAL CTA & REGISTRATION SECTION                          */
+  /* --------------------------------------------------------- */
+  .final-cta-section {
+    padding: 40px 16px 60px !important;
+  }
+
+  body .final-cta-box,
+  .final-cta-box {
+    padding: 30px 18px !important;
+    border-radius: 14px !important;
+    text-align: center !important;
+  }
+
+  .final-cta-box h2,
+  .cta-heading {
+    font-size: clamp(1.4rem, 5vw, 1.85rem) !important;
+    line-height: 1.25 !important;
+    margin-bottom: 10px !important;
+    word-break: break-word !important;
+  }
+
+  .final-cta-box p,
+  .cta-text {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 20px !important;
+  }
+
+  body #btn-footer-register,
+  #btn-footer-register {
+    width: 100% !important;
+    max-width: 340px !important;
+    margin: 0 auto !important;
+    padding: 14px 24px !important;
+    font-size: 0.95rem !important;
+    justify-content: center !important;
+  }
+
+  /* --------------------------------------------------------- */
+  /* RETURN TO PRAXIS BUTTON ON MOBILE                         */
+  /* --------------------------------------------------------- */
+  body .praxis-return-pill,
+  .praxis-return-pill {
+    font-size: 0.72rem !important;
+    padding: 6px 14px !important;
+    margin: 12px 16px !important;
+  }
+
+  /* Footer */
+  .footer-bottom {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 12px !important;
+  }
+
+  .footer-copy {
+    text-align: center !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* ========================================================= */
+/* ULTRA-COMPACT PHONES BREAKPOINT (<= 420px)                */
+/* ========================================================= */
+@media (max-width: 420px) {
+  .hero-main-title {
+    font-size: 2.1rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  .hero-tagline {
+    font-size: 0.88rem !important;
+  }
+
+  .hero-badges-row {
+    gap: 6px !important;
+  }
+
+  .hero-badge {
+    font-size: 0.68rem !important;
+    padding: 5px 10px !important;
+  }
+
+  .section-title {
+    font-size: 1.65rem !important;
+  }
+
+  body .quick-spec-card,
+  .quick-spec-card {
+    padding: 12px 14px !important;
+    gap: 12px !important;
+  }
+
+  body .quick-spec-icon,
+  .quick-spec-icon {
+    font-size: 1.4rem !important;
+    min-width: 32px !important;
+    height: 32px !important;
+  }
+
+  body .quick-spec-value,
+  .quick-spec-value {
+    font-size: 0.9rem !important;
+  }
+
+  body .event-brief-card,
+  .event-brief-card {
+    padding: 18px 14px !important;
+  }
+
+  body .stage-card,
+  body .rule-card,
+  body .contact-card,
+  body .rulebook-dossier-card {
+    padding: 18px 14px !important;
+  }
 }
 
 /* Return to Praxis Navigation */
@@ -2247,4 +2899,3 @@ body {
 .praxis-return-pill:hover .praxis-return-arrow {
   transform: translateX(-3px);
 }
-
