@@ -84,7 +84,7 @@ export const EVENTS: EventConfig[] = [
     downloadName: "Tech-Roulette-Rulebook.pdf",
     accent: "#35d9ff",
     price: 49,
-    feeLabel: "₹49 per team · 2–3 members",
+    feeLabel: "Free for PCCOE · ₹49 per external team · 2–3 members",
     currency: "INR",
     registrationOpen: true,
     isTeamEvent: true,

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { getEventBySlug, formatPrice } from "@/lib/events";
+import { getEventBySlug } from "@/lib/events";
 import styles from "./tech-roulette.module.css";
 
 const ArcReactor = dynamic(() => import("./ArcReactor"), { ssr: false });
@@ -84,7 +84,7 @@ export default function TechRoulettePage() {
       <div className={styles.heroBottom}><span>PCCOE PUNE <b>×</b> PRAXIS 2026</span><a href="#mission">ENTER THE WORKSHOP <Arrow down /></a><span>INSPIRED BY IRON MAN</span></div>
     </section>
 
-    <div className={styles.stats} aria-label="Event at a glance"><div><strong>03</strong><span>ROUNDS TO PROVE IT</span></div><div><strong>2–3</strong><span>MEMBERS PER TEAM</span></div><div><strong>6–7<span> HRS</span></strong><span>ONE COMPLETE CHALLENGE</span></div><div><strong>{formatPrice(event.price)}</strong><span>REGISTRATION</span></div></div>
+    <div className={styles.stats} aria-label="Event at a glance"><div><strong>03</strong><span>ROUNDS TO PROVE IT</span></div><div><strong>2–3</strong><span>MEMBERS PER TEAM</span></div><div><strong>6–7<span> HRS</span></strong><span>ONE COMPLETE CHALLENGE</span></div><div><strong>FREE*</strong><span>PCCOE REGISTRATION</span></div></div>
 
     <section id="mission" className={styles.mission} aria-labelledby="mission-title">
       <div className={styles.sectionHeading}><span className={styles.sectionNumber}>01 / THE MISSION</span><p>RESOURCE CONSERVATION<br />& SUSTAINABILITY</p></div>
@@ -116,11 +116,11 @@ export default function TechRoulettePage() {
     </section>
 
     <section id="briefing" className={styles.briefing} aria-labelledby="briefing-title">
-      <div className={styles.briefingIntro}><span className={styles.sectionNumber}>04 / BEFORE YOU SUIT UP</span><h2 id="briefing-title">Mission<br /><em>briefing.</em></h2><p>Know the format.<br />Bring your tools.<br />Make the work your own.</p><a href={event.rulebook} download={event.downloadName} className={styles.download}><span>OFFICIAL RULEBOOK<small>TECH ROULETTE · DOCX</small></span><Arrow down /></a></div>
+      <div className={styles.briefingIntro}><span className={styles.sectionNumber}>04 / BEFORE YOU SUIT UP</span><h2 id="briefing-title">Mission<br /><em>briefing.</em></h2><p>Know the format.<br />Bring your tools.<br />Make the work your own.</p><a href={event.rulebook} download={event.downloadName} className={styles.download}><span>OFFICIAL RULEBOOK<small>TECH ROULETTE · PDF</small></span><Arrow down /></a></div>
       <div className={styles.faq}>{briefing.map(([question, answer], index) => <details key={question} open={index === 0 ? true : undefined}><summary><span>0{index + 1}</span><h3>{question}</h3><b aria-hidden="true" /></summary><p>{answer}</p></details>)}</div>
     </section>
 
-    <section className={styles.final} aria-labelledby="final-title"><div className={styles.finalLines} aria-hidden="true" /><p className={styles.eyebrow}>YOUR NEXT IDEA DESERVES A SHOT.</p><h2 id="final-title">READY TO<br /><em>SUIT UP?</em></h2><div className={styles.finalBottom}><p>Bring your team.<br />Build for a better tomorrow.</p><Link href="/events/tech-roulette/register" className={styles.primary}>Register your team <Arrow /></Link><span>{formatPrice(event.price)} PER TEAM<br />PRAXIS 2026 · PCCOE PUNE</span></div></section>
+    <section className={styles.final} aria-labelledby="final-title"><div className={styles.finalLines} aria-hidden="true" /><p className={styles.eyebrow}>YOUR NEXT IDEA DESERVES A SHOT.</p><h2 id="final-title">READY TO<br /><em>SUIT UP?</em></h2><div className={styles.finalBottom}><p>Bring your team.<br />Build for a better tomorrow.</p><Link href="/events/tech-roulette/register" className={styles.primary}>Register your team <Arrow /></Link><span>FREE FOR PCCOE<br />₹49 FOR AN EXTERNAL TEAM</span></div></section>
 
     <footer className={styles.footer}><Link href="/" aria-label="Praxis home"><img src="/images/praxis_new_logo.png" alt="Praxis" width="105" height="35" /></Link><span>TECH ROULETTE / INNOVATE FOR TOMORROW</span><Link href="/events">Explore all events <Arrow /></Link></footer>
   </main>;

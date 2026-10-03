@@ -42,7 +42,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "Tech Roulette",
     minMembers: 2,
     maxMembers: 3,
-    pricing: { kind: "fixed-team", amount: 49 },
+    pricing: { kind: "external-team", amount: 49 },
   },
 };
 
