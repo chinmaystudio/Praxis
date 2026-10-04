@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import SponsorGrid from "./SponsorGrid";
 import styles from "./praxisFooter.module.css";
 
 const STATS = [
@@ -101,6 +102,19 @@ export default function PraxisFooter() {
         </div>
 
         {/* ── Bottom Base Bar ───────────────────────────────────── */}
+        <section className={styles.sponsors} aria-labelledby="footer-sponsors-title">
+          <div className={styles.sponsorsHeading}>
+            <div>
+              <p className={styles.sponsorsEyebrow}>THE PEOPLE BEHIND THE POSSIBILITY</p>
+              <h2 id="footer-sponsors-title" className={styles.sponsorsTitle}>
+                SPONSORS <span>&amp; PARTNERS</span>
+              </h2>
+            </div>
+            <Link href="/sponsors" className={styles.sponsorsPageLink}>Meet our sponsors <span aria-hidden>→</span></Link>
+          </div>
+          <SponsorGrid />
+        </section>
+
         <div className={styles.bottomBar}>
           <div className={styles.copyright}>
             © 2026 PRAXIS · ALL RIGHTS RESERVED · FAN-INSPIRED CINEMATIC EXPERIENCE
@@ -109,6 +123,9 @@ export default function PraxisFooter() {
           <div className={styles.socialLinks}>
             <Link href="/">Home</Link>
             <Link href="/events">Events</Link>
+            <Link href="/team">Team</Link>
+            <Link href="/gallery">Gallery</Link>
+            <Link href="/sponsors">Sponsors</Link>
             <a href="https://x.com/MarvelStudios" target="_blank" rel="noopener noreferrer">
               X ↗
             </a>
