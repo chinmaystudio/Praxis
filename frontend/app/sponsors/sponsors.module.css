@@ -1,0 +1,32 @@
+.page {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 85% 5%, rgba(0, 255, 156, 0.12), transparent 42%), #020b07;
+  color: var(--white);
+}
+.main, .footer { width: min(1180px, 90%); margin: 0 auto; }
+.main { padding: 150px 0 54px; }
+.intro { padding-bottom: 54px; max-width: 920px; }
+.eyebrow { display: flex; align-items: center; gap: 10px; color: var(--green); font-size: 11px; letter-spacing: 0.24em; line-height: 1.6; margin-bottom: 24px; }
+.eyebrow span { width: 6px; height: 6px; flex-shrink: 0; background: var(--green); box-shadow: 0 0 14px var(--green); }
+.intro h1 { font-family: var(--font-display); font-size: clamp(2.7rem, 6.7vw, 5.5rem); font-weight: 400; line-height: 1.05; letter-spacing: 0.01em; }
+.intro h1 span, .sectionHeading h2 span { color: var(--green); }
+.description { max-width: 590px; margin-top: 24px; font-size: 15px; line-height: 1.85; color: #a9c4b7; }
+.directory { border-top: 1px solid rgba(0,255,156,0.2); padding-top: 30px; }
+.sectionHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.sectionHeading h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 400; }
+.sectionHeading p { color: #a9c4b7; font-size: 12px; }
+.closing { margin-top: 44px; padding: 26px 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; border-top: 1px solid rgba(0,255,156,0.2); }
+.closing p { color: #a9c4b7; font-size: 14px; }
+.closing a { display: inline-flex; align-items: center; gap: 24px; min-height: 46px; padding: 12px 20px; border: 1px solid var(--green); border-radius: 3px; color: var(--green); font-size: 11px; letter-spacing: 0.12em; }
+.closing a:hover { background: var(--green); color: #02140c; }
+.footer { padding: 24px 0 90px; border-top: 1px solid rgba(0,255,156,0.15); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 11px; letter-spacing: 0.12em; color: #a9c4b7; }
+.footer nav { display: flex; gap: 24px; }
+.footer a:hover { color: var(--green); }
+.page a:focus-visible { outline: 2px solid var(--mint); outline-offset: 5px; }
+@media(max-width: 640px) {
+  .main { padding-top: 112px; }
+  .intro { padding-bottom: 36px; }
+  .eyebrow { font-size: 9px; letter-spacing: 0.16em; }
+  .description { font-size: 13px; }
+}
+@media(max-width: 640px) { .main { padding-top: 112px; } }
