@@ -8,6 +8,7 @@ export type TeamEventPolicy = {
   title: string;
   minMembers: number;
   maxMembers: number;
+  registrationOpen: boolean;
   pricing: TeamPricing;
   whatsappUrl?: string;
 };
@@ -18,6 +19,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "Infinity Trials",
     minMembers: 4,
     maxMembers: 4,
+    registrationOpen: true,
     pricing: { kind: "external-team", amount: 200 },
     whatsappUrl: "https://chat.whatsapp.com/CRBxGduw0U8GG3x591hz8Q?s=qt&p=i&mlu=4&ilr=4",
   },
@@ -26,6 +28,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "BGMI Elite Showdown",
     minMembers: 2,
     maxMembers: 4,
+    registrationOpen: false,
     pricing: { kind: "external-member", amount: 50 },
     whatsappUrl: "https://chat.whatsapp.com/IClctDsmKyaEHnaE3E1WXk?s=cl&p=a&mlu=0&ilr=4",
   },
@@ -34,6 +37,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "Research X",
     minMembers: 2,
     maxMembers: 4,
+    registrationOpen: true,
     pricing: { kind: "external-member", amount: 50 },
     whatsappUrl: "https://chat.whatsapp.com/GJtulaML6tx24r9JKpQ1MC",
   },
@@ -42,6 +46,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "Tech Roulette",
     minMembers: 2,
     maxMembers: 3,
+    registrationOpen: true,
     pricing: { kind: "external-team", amount: 49 },
     whatsappUrl: "https://chat.whatsapp.com/FhwtZ5WJDJBJKoKC9NY9hI",
   },

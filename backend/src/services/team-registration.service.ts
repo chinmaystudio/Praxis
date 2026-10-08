@@ -31,6 +31,7 @@ const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 export async function validateTeam(draft: TeamDraft, leaderId: string, proofs: Proof[]) {
   const policy = TEAM_EVENT_POLICIES[draft?.eventSlug];
   if (!policy) throw new Error("This team event is not configured.");
+  if (!policy.registrationOpen) throw new Error(`${policy.title} registration is closed.`);
   if (!draft.accepted || !draft.teamName?.trim() || !validEmail(draft.leaderEmail) ||
       !/^(?:\+91)?[6-9]\d{9}$/.test(draft.phone?.replace(/[\s()-]/g, "") || "")) {
     throw new Error("Complete the team name, leader email, phone number, and consent.");

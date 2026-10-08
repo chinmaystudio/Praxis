@@ -54,7 +54,7 @@ export const EVENTS: EventConfig[] = [
     price: 0,
     feeLabel: "Free for PCCOE · ₹50 per external member",
     currency: "INR",
-    registrationOpen: true,
+    registrationOpen: false,
     isTeamEvent: true,
     maxTeamSize: 4,
   },
