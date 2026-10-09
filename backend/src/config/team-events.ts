@@ -37,7 +37,7 @@ export const TEAM_EVENT_POLICIES: Record<string, TeamEventPolicy> = {
     title: "Research X",
     minMembers: 2,
     maxMembers: 4,
-    registrationOpen: true,
+    registrationOpen: false,
     pricing: { kind: "external-member", amount: 50 },
     whatsappUrl: "https://chat.whatsapp.com/GJtulaML6tx24r9JKpQ1MC",
   },
