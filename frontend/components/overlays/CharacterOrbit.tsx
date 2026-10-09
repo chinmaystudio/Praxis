@@ -223,7 +223,7 @@ export default function CharacterOrbit() {
                     Enter Tech Roulette <span aria-hidden="true">↗</span>
                   </Link>
                 )}
-                {activeEvent.slug === "bgmi-elite-showdown" ? null : ["infinity-trials", "research-x", "tech-roulette"].includes(activeEvent.slug) ? (
+                {activeEvent.slug === "bgmi-elite-showdown" || !activeEvent.registrationOpen ? null : ["infinity-trials", "research-x", "tech-roulette"].includes(activeEvent.slug) ? (
                   <Link className={styles.registerButton} href={activeEvent.slug === "infinity-trials" ? "/events/infinity-trials/register" : `/events/${activeEvent.slug}/register`}>
                     Register <span aria-hidden="true">↗</span>
                   </Link>
